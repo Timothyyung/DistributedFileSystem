@@ -47,4 +47,8 @@ public class Data {
             return out.toByteArray();
         }
     }
+
+    public byte[] getData() {
+        return data;
+    }
 }

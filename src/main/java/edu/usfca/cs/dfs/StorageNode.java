@@ -73,10 +73,31 @@ public class StorageNode extends Thread{
                 ServerSocket serverSocket = new ServerSocket(5050);
                 Socket sock = serverSocket.accept();
             ){
-                InputStream instream = sock.getInputStream();
-                OutputStream outputStream = sock.getOutputStream();
+                store_chunk_listener scl = new store_chunk_listener(sock);
+                scl.run();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    private class store_chunk_listener extends Thread{
+        private Socket s;
+        public store_chunk_listener(Socket s){
+            this.s = s;
+        }
+
+        @Override
+        public void run() {
+            try {
+                InputStream instream = s.getInputStream();
+                StorageMessages.StoreChunk r_chunk = StorageMessages.StoreChunk.parseDelimitedFrom(instream);
+                Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId());
+                store_chunk(s_chunk);
+                s.close();
+            }catch(IOException e)
+            {
+
             }
         }
     }
