@@ -8,6 +8,6 @@ public class Reconstruction extends Thread {
 
     @Override
     public void run() {
-        super.run();
+
     }
 }

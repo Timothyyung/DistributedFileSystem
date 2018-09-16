@@ -2,15 +2,19 @@ package edu.usfca.cs.dfs;
 
 import edu.usfca.cs.dfs.Data.Chunk;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class StorageNode {
+
+public class StorageNode extends Thread{
 
     private HashMap<String,Chunk> chunk_storage = new HashMap<>();
     private int hashspace;
@@ -55,5 +59,28 @@ public class StorageNode {
     public Chunk get_chunk(String key){
         return chunk_storage.get(key);
     }
+    @Override
+    public void run(){
+
+    }
+
+    public void startNode()
+    {
+        boolean run = true;
+        System.out.println("Server Started");
+        while (run){
+            try(
+                ServerSocket serverSocket = new ServerSocket(5050);
+                Socket sock = serverSocket.accept();
+            ){
+                InputStream instream = sock.getInputStream();
+                OutputStream outputStream = sock.getOutputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 
 }
