@@ -1,9 +1,20 @@
 package edu.usfca.cs.dfs;
 
+import edu.usfca.cs.dfs.Data.Chunk;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class StorageNode {
+
+    private HashMap<String,Chunk> chunk_storage = new HashMap<>();
+    private int hashspace;
+    private ReentrantLock lock = new ReentrantLock();
 
     public static void main(String[] args) 
     throws Exception {
@@ -19,6 +30,30 @@ public class StorageNode {
     private static String getHostname()
     throws UnknownHostException {
         return InetAddress.getLocalHost().getHostName();
+    }
+
+
+    public synchronized void store_chunk(Chunk chunk)
+    {
+        boolean isLocked = lock.tryLock();
+        while(!isLocked)
+        {
+            try{
+                isLocked = lock.tryLock(1, TimeUnit.SECONDS);
+            }catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        try{
+            chunk_storage.put(chunk.get_hash_key(),chunk);
+        }finally {
+            lock.unlock();
+        }
+    }
+
+    public Chunk get_chunk(String key){
+        return chunk_storage.get(key);
     }
 
 }
