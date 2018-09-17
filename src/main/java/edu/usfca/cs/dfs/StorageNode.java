@@ -2,9 +2,7 @@ package edu.usfca.cs.dfs;
 
 import edu.usfca.cs.dfs.Data.Chunk;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -24,6 +22,8 @@ public class StorageNode extends Thread{
     throws Exception {
         String hostname = getHostname();
         System.out.println("Starting storage node on " + hostname + "...");
+        StorageNode storageNode = new StorageNode();
+        storageNode.startNode();
     }
 
     /**
@@ -61,7 +61,7 @@ public class StorageNode extends Thread{
     }
     @Override
     public void run(){
-
+        startNode();
     }
 
     public void startNode()
@@ -91,9 +91,21 @@ public class StorageNode extends Thread{
         public void run() {
             try {
                 InputStream instream = s.getInputStream();
+                ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+
                 StorageMessages.StoreChunk r_chunk = StorageMessages.StoreChunk.parseDelimitedFrom(instream);
                 Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId());
                 store_chunk(s_chunk);
+                System.out.println(s_chunk.getChunk_id());
+                System.out.println(s_chunk.getFile_name());
+
+                try{
+                    FileOutputStream fos = new FileOutputStream("outputs");
+                    fos.write(s_chunk.getData_chunk());
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                System.out.println(s_chunk.getData_chunk().length);
                 s.close();
             }catch(IOException e)
             {

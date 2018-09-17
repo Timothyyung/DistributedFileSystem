@@ -2,6 +2,7 @@ package edu.usfca.cs.dfs;
 
 import com.google.protobuf.ByteString;
 import edu.usfca.cs.dfs.Data.Chunk;
+import edu.usfca.cs.dfs.Data.Data;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +13,12 @@ public class Client {
 
     public static void main(String[] args) {
 
-
+        byte[] a = new byte[100];
+        Data data = new Data("inputs/Mytestdoc.txt");
+        System.out.println(data.getData().length);
+        Chunk chunk = new Chunk(data.getData(),"a.txt",1);
+        Client client = new Client();
+        client.send("localhost", 5050, chunk);
     }
     public void send(String ipaddress,int port, Chunk chunk){
         try(
