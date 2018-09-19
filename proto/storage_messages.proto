@@ -5,8 +5,13 @@ message StoreChunk {
     string fileName = 1;
     int32 chunkId = 2;
     bytes data = 3;
+    enum op_code {
+        store_chunk = 0;
+        get_chunk = 1;
+        get_data = 2;
+    }
 }
 
-message RetrieveFile {
-    string fileName = 1;
+message Response {
+    bool recieved = 1;
 }
