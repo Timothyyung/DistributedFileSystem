@@ -1,11 +1,11 @@
-package edu.usfca.cs.dfs;
+package edu.usfca.cs.dfs.Cliet;
 
 import com.google.protobuf.ByteString;
 import edu.usfca.cs.dfs.Data.Chunk;
 import edu.usfca.cs.dfs.Data.Data;
+import edu.usfca.cs.dfs.StorageMessages;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 

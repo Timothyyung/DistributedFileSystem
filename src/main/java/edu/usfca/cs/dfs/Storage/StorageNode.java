@@ -1,6 +1,7 @@
-package edu.usfca.cs.dfs;
+package edu.usfca.cs.dfs.Storage;
 
 import edu.usfca.cs.dfs.Data.Chunk;
+import edu.usfca.cs.dfs.StorageMessages;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -8,10 +9,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 
@@ -121,7 +120,6 @@ public class StorageNode extends Thread{
         public void run() {
             try {
                 InputStream instream = s.getInputStream();
-
                 StorageMessages.StoreChunk r_chunk = StorageMessages.StoreChunk.parseDelimitedFrom(instream);
                 Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId());
                 if(r_chunk.getStoreChunk()) {
