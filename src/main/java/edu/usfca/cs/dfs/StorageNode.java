@@ -7,14 +7,18 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 
 public class StorageNode extends Thread{
 
-    private HashMap<String,Chunk> chunk_storage = new HashMap<>();
+    private ConcurrentHashMap<String,Chunk> chunk_storage = new ConcurrentHashMap<>();
+    //private HashMap<String,Chunk> chunk_storage = new HashMap<>();
     private int hashspace;
     private ReentrantLock lock = new ReentrantLock();
 
@@ -37,24 +41,50 @@ public class StorageNode extends Thread{
     }
 
 
-    public synchronized void store_chunk(Chunk chunk)
+    public void store_chunk(Chunk chunk)
     {
-        boolean isLocked = lock.tryLock();
-        while(!isLocked)
-        {
-            try{
-                isLocked = lock.tryLock(1, TimeUnit.SECONDS);
-            }catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        try{
-            chunk_storage.put(chunk.get_hash_key(),chunk);
-        }finally {
-            lock.unlock();
-        }
+       chunk_storage.put(chunk.get_hash_key(),chunk);
     }
+
+    private int get_total_chunks(String filename)
+    {
+        int i = 1;
+
+        while(chunk_storage.containsKey(filename + Integer.toString(i)))
+            i += 1;
+        return i - 1;
+    }
+
+    private void reassemble(String filename)
+    {
+        List<Byte> file = new ArrayList<>();
+        for(int i = 1; i <= get_total_chunks(filename); i++)
+        {
+            byte[] chunk = chunk_storage.get(filename + Integer.toString(i)).getData_chunk();
+            for(int j = 0; j < chunk.length ; j++)
+                file.add(chunk[j]);
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream("outputs");
+            fos.write(toByteArray(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch ( IOException ie){
+            ie.getStackTrace();
+        }
+
+    }
+
+    private static byte[] toByteArray(List<Byte> in){
+        final int n = in.size();
+        byte ret[] = new byte[n];
+        for (int i = 0; i < n ; i++){
+            ret[i] = in.get(i);
+        }
+        return ret;
+    }
+
 
     public Chunk get_chunk(String key){
         return chunk_storage.get(key);
@@ -91,21 +121,19 @@ public class StorageNode extends Thread{
         public void run() {
             try {
                 InputStream instream = s.getInputStream();
-                ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
 
                 StorageMessages.StoreChunk r_chunk = StorageMessages.StoreChunk.parseDelimitedFrom(instream);
                 Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId());
-                store_chunk(s_chunk);
-                System.out.println(s_chunk.getChunk_id());
-                System.out.println(s_chunk.getFile_name());
-
-                try{
-                    FileOutputStream fos = new FileOutputStream("outputs");
-                    fos.write(s_chunk.getData_chunk());
-                }catch (IOException e){
-                    e.printStackTrace();
+                if(r_chunk.getStoreChunk()) {
+                    chunk_storage.put(s_chunk.get_hash_key(),s_chunk);
+                    System.out.println(s_chunk.getChunk_id());
+                    System.out.println(s_chunk.getFile_name());
+                    System.out.println(s_chunk.getData_chunk().length);
                 }
-                System.out.println(s_chunk.getData_chunk().length);
+                if(r_chunk.getGetChunk()) {
+                    System.out.println("total chunks" + get_total_chunks(r_chunk.getFileName()));
+                    reassemble(r_chunk.getFileName());
+                }
                 s.close();
             }catch(IOException e)
             {
@@ -113,6 +141,7 @@ public class StorageNode extends Thread{
             }
         }
     }
+
 
 
 
