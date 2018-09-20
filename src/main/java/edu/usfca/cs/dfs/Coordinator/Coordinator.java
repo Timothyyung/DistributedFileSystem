@@ -1,4 +1,4 @@
-package edu.usfca.cs.dfs;
+package edu.usfca.cs.dfs.Coordinator;
 
 public class Coordinator {
 

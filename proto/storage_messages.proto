@@ -12,6 +12,10 @@ message StoreChunk {
     }
 }
 
+message ChunkLocation {
+    int64 chunkLocation;
+}
+
 message Response {
     bool recieved = 1;
 }
