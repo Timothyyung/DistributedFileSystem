@@ -5,7 +5,8 @@ message Request {
     string fileName = 1;
     int32 chunkId = 2;
     bytes data = 3;
-    enum op_code {
+    Op_code opcode = 4;
+    enum Op_code {
         store_chunk = 0;
         get_chunk = 1;
         get_data = 2;

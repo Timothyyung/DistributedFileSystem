@@ -117,15 +117,15 @@ public class StorageNode extends Thread{
             try {
                 InputStream instream = s.getInputStream();
 
-                StorageMessages.StoreChunk r_chunk = StorageMessages.StoreChunk.parseDelimitedFrom(instream);
+                StorageMessages.Request r_chunk = StorageMessages.Request.parseDelimitedFrom(instream);
                 Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId());
-                if(r_chunk.getStoreChunk()) {
+                if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.store_chunk) {
                     chunk_storage.put(s_chunk.get_hash_key(),s_chunk);
                     System.out.println(s_chunk.getChunk_id());
                     System.out.println(s_chunk.getFile_name());
                     System.out.println(s_chunk.getData_chunk().length);
                 }
-                if(r_chunk.getGetChunk()) {
+                if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.get_chunk) {
                     System.out.println("total chunks" + get_total_chunks(r_chunk.getFileName()));
                     reassemble(r_chunk.getFileName());
                 }

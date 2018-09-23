@@ -73,12 +73,13 @@ public class Client {
                     OutputStream outputStream = s.getOutputStream();
             ) {
                 ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
-                StorageMessages.StoreChunk s_chunk = StorageMessages.StoreChunk.newBuilder()
+                StorageMessages.Request s_chunk = StorageMessages.Request.newBuilder()
                         .setChunkId(chunk.getChunk_id())
                         .setData(bsval)
                         .setFileName(chunk.getFile_name())
-                        .setStoreChunk(true)
+                        .setOpcode(StorageMessages.Request.Op_code.store_chunk)
                         .build();
+
                 s_chunk.writeDelimitedTo(outputStream);
                 System.out.println("Chunk has been sent " + s_chunk.getChunkId());
                 sent = true;
@@ -97,9 +98,9 @@ public class Client {
                    Socket s = new Socket(ipaddress,port);
                    OutputStream outputStream = s.getOutputStream();
                ){
-                    StorageMessages.StoreChunk s_chunk = StorageMessages.StoreChunk.newBuilder()
+                    StorageMessages.Request s_chunk = StorageMessages.Request.newBuilder()
                             .setFileName(filename)
-                            .setGetChunk(true)
+                            .setOpcode(StorageMessages.Request.Op_code.get_list)
                             .build();
                     s_chunk.writeDelimitedTo(outputStream);
                     sent = true;
