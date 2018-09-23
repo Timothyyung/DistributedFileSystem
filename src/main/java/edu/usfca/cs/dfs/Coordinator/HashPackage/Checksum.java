@@ -1,7 +1,4 @@
 package edu.usfca.cs.dfs.Coordinator.HashPackage;
-
-import com.sun.tools.javac.comp.Check;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

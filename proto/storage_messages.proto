@@ -1,7 +1,7 @@
 syntax = "proto3";
 option java_package = "edu.usfca.cs.dfs";
 
-message StoreChunk {
+message Request {
     string fileName = 1;
     int32 chunkId = 2;
     bytes data = 3;
@@ -9,13 +9,34 @@ message StoreChunk {
         store_chunk = 0;
         get_chunk = 1;
         get_data = 2;
+        get_list = 3;
+        get_chunk_loc = 4;
     }
 }
 
 message ChunkLocation {
-    int64 chunkLocation;
+    int32 chunkLocation = 1;
 }
 
-message Response {
-    bool recieved = 1;
+message NumberOfChunks{
+    int32 chunkNumber = 1;
 }
+
+message ListAllChunks{
+    message SingleChunk{
+        string fileName = 1;
+        int32 chunkNumber = 2;
+    }
+    repeated SingleChunk singlechunk = 1;
+}
+
+message DataPacket {
+    oneof packets{
+        Request request = 1;
+        ChunkLocation chunklocation = 2;
+        NumberOfChunks numberofchunks = 3;
+        ListAllChunks listallchunks = 4;
+    }
+}
+
+

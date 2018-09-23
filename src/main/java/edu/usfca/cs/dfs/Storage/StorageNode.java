@@ -1,17 +1,18 @@
-package edu.usfca.cs.dfs;
+package edu.usfca.cs.dfs.Storage;
 
+import edu.usfca.cs.dfs.Coordinator.HashRing;
 import edu.usfca.cs.dfs.Data.Chunk;
+import edu.usfca.cs.dfs.StorageMessages;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 
@@ -19,16 +20,10 @@ public class StorageNode extends Thread{
 
     private ConcurrentHashMap<String,Chunk> chunk_storage = new ConcurrentHashMap<>();
     //private HashMap<String,Chunk> chunk_storage = new HashMap<>();
-    private int hashspace;
+    private BigInteger hashpos;
+    private HashRing<byte[]> hashRing;
     private ReentrantLock lock = new ReentrantLock();
 
-    public static void main(String[] args) 
-    throws Exception {
-        String hostname = getHostname();
-        System.out.println("Starting storage node on " + hostname + "...");
-        StorageNode storageNode = new StorageNode();
-        storageNode.startNode();
-    }
 
     /**
      * Retrieves the short host name of the current host.
@@ -142,6 +137,13 @@ public class StorageNode extends Thread{
         }
     }
 
+    public static void main(String[] args)
+            throws Exception {
+        String hostname = getHostname();
+        System.out.println("Starting storage node on " + hostname + "...");
+        StorageNode storageNode = new StorageNode();
+        storageNode.startNode();
+    }
 
 
 
