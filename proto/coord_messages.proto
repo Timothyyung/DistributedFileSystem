@@ -1,0 +1,11 @@
+syntax = "proto3";
+option java_package = "edu.usfca.cs.dfs";
+
+message ReqeustEntry{
+    string node_name = 1;
+}
+
+message Response{
+    bool allowed = 1;
+}
+
