@@ -1,15 +1,20 @@
 package edu.usfca.cs.dfs.Storage;
 
+import edu.usfca.cs.dfs.Coordinator.HashPackage.HashRingEntry;
+import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
+import edu.usfca.cs.dfs.Coordinator.HashRing;
 import edu.usfca.cs.dfs.Data.Chunk;
 import edu.usfca.cs.dfs.StorageMessages;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -18,16 +23,11 @@ public class StorageNode extends Thread{
 
     private ConcurrentHashMap<String,Chunk> chunk_storage = new ConcurrentHashMap<>();
     //private HashMap<String,Chunk> chunk_storage = new HashMap<>();
-    private int hashspace;
+    private BigInteger hashpos;
+    private TreeMap<BigInteger, HashRingEntry> hashring;
+    SHA1 sha1 = new SHA1();
     private ReentrantLock lock = new ReentrantLock();
 
-    public static void main(String[] args) 
-    throws Exception {
-        String hostname = getHostname();
-        System.out.println("Starting storage node on " + hostname + "...");
-        StorageNode storageNode = new StorageNode();
-        storageNode.startNode();
-    }
 
     /**
      * Retrieves the short host name of the current host.
@@ -120,18 +120,10 @@ public class StorageNode extends Thread{
         public void run() {
             try {
                 InputStream instream = s.getInputStream();
-                StorageMessages.StoreChunk r_chunk = StorageMessages.StoreChunk.parseDelimitedFrom(instream);
-                Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId());
-                if(r_chunk.getStoreChunk()) {
-                    chunk_storage.put(s_chunk.get_hash_key(),s_chunk);
-                    System.out.println(s_chunk.getChunk_id());
-                    System.out.println(s_chunk.getFile_name());
-                    System.out.println(s_chunk.getData_chunk().length);
-                }
-                if(r_chunk.getGetChunk()) {
-                    System.out.println("total chunks" + get_total_chunks(r_chunk.getFileName()));
-                    reassemble(r_chunk.getFileName());
-                }
+                StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.parseDelimitedFrom(instream);
+                if(dataPacket.hasRequest())
+                    process_request(dataPacket.getRequest());
+
                 s.close();
             }catch(IOException e)
             {
@@ -140,6 +132,27 @@ public class StorageNode extends Thread{
         }
     }
 
+    private void process_request(StorageMessages.Request r_chunk){
+        Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId());
+        if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.store_chunk) {
+            chunk_storage.put(s_chunk.get_hash_key(),s_chunk);
+            System.out.println(s_chunk.getChunk_id());
+            System.out.println(s_chunk.getFile_name());
+            System.out.println(s_chunk.getData_chunk().length);
+        }
+        if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.get_chunk) {
+            System.out.println("total chunks" + get_total_chunks(r_chunk.getFileName()));
+            reassemble(r_chunk.getFileName());
+        }
+    }
+
+    public static void main(String[] args)
+            throws Exception {
+        String hostname = getHostname();
+        System.out.println("Starting storage node on " + hostname + "...");
+        StorageNode storageNode = new StorageNode();
+        storageNode.startNode();
+    }
 
 
 

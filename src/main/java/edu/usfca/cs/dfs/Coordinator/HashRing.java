@@ -12,7 +12,7 @@ import java.util.TreeMap;
 public class HashRing<T> {
     protected HashFunction<T> function;
     protected BigInteger maxHash;
-    protected boolean randomize = false;
+    protected boolean randomize;
 
     protected TreeMap<BigInteger, HashRingEntry> entryMap = new TreeMap<>();
 
@@ -36,6 +36,10 @@ public class HashRing<T> {
         entryMap.put(position,newEntry);
     }
 
+    public HashRingEntry getRingEntry(BigInteger key)
+    {
+        return entryMap.get(key);
+    }
 
     public BigInteger addNode(T data) throws HashTopologyException, HashException{
         if (entryMap.values().size() == 0) {
@@ -66,6 +70,7 @@ public class HashRing<T> {
             entryMap.put(secondPos, secondEntry);
             return secondPos;
         }
+
         BigInteger largestSpan = BigInteger.ZERO;
         HashRingEntry largestEntry = null;
         for (HashRingEntry entry : entryMap.values()){
@@ -86,7 +91,14 @@ public class HashRing<T> {
     }
 
     private BigInteger half(HashRingEntry start, HashRingEntry end){
-        return BigInteger.ZERO;
+        BigInteger length = lengthBetween(start, end);
+        BigInteger half = start.position.add(length.divide(BigInteger.valueOf(2)));
+
+        if(maxHash.compareTo(half) >= 0) {
+            return half;
+        } else {
+            return half.subtract(maxHash);
+        }
     }
 
     private BigInteger lengthBetween(HashRingEntry start, HashRingEntry end){
@@ -106,6 +118,11 @@ public class HashRing<T> {
             node = entryMap.ceilingKey(BigInteger.ZERO);
         }
         return node;
+    }
+
+    public void return_entries()
+    {
+        System.out.println(entryMap.toString());
     }
 
     @Override
