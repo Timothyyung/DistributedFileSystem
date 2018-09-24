@@ -5,7 +5,6 @@ import edu.usfca.cs.dfs.Data.Chunk;
 import edu.usfca.cs.dfs.Data.Data;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
@@ -73,14 +72,18 @@ public class Client {
                     OutputStream outputStream = s.getOutputStream();
             ) {
                 ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
+
                 StorageMessages.Request s_chunk = StorageMessages.Request.newBuilder()
                         .setChunkId(chunk.getChunk_id())
                         .setData(bsval)
                         .setFileName(chunk.getFile_name())
                         .setOpcode(StorageMessages.Request.Op_code.store_chunk)
                         .build();
+                StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                        .setRequest(s_chunk)
+                        .build();
 
-                s_chunk.writeDelimitedTo(outputStream);
+                dataPacket.writeDelimitedTo(outputStream);
                 System.out.println("Chunk has been sent " + s_chunk.getChunkId());
                 sent = true;
             } catch (IOException e) {
