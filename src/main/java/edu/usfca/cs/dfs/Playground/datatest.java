@@ -2,12 +2,16 @@ package edu.usfca.cs.dfs.Playground;
 
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashException;
 
+import edu.usfca.cs.dfs.Coordinator.HashPackage.HashRingEntry;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashTopologyException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
 import edu.usfca.cs.dfs.Data.Data;
 import edu.usfca.cs.dfs.Coordinator.*;
 
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 public class datatest {
@@ -44,9 +48,13 @@ public class datatest {
         System.out.println(hashRing.locate(("c".getBytes())));
         System.out.println(hashRing.locate(("d".getBytes())));
         System.out.print("\n\n\n\n");
-        System.out.println(hashRing.getRingEntry(jello).position);
-        hashRing.return_entries();
+        String jelly = jello.toString();
+        BigInteger muddyjelly = new BigInteger(jelly);
 
+        hashRing.unneighbor();
+        System.out.println(hashRing.toString());
+        hashRing.remap_hashring();
+        System.out.println(hashRing.toString());
     }
 };
 

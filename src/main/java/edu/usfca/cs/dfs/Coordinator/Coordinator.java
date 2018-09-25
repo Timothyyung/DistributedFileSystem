@@ -2,6 +2,8 @@ package edu.usfca.cs.dfs.Coordinator;
 
 
 import edu.usfca.cs.dfs.CoordMessages;
+import edu.usfca.cs.dfs.Coordinator.HashPackage.HashException;
+import edu.usfca.cs.dfs.Coordinator.HashPackage.HashTopologyException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,7 +12,7 @@ import java.net.Socket;
 
 public class Coordinator extends Thread{
 
-    HashRing<byte[]> hashRing;
+    private HashRing<byte[]> hashRing;
 
 
     public Coordinator()
@@ -31,7 +33,7 @@ public class Coordinator extends Thread{
         while (run){
             try(
                     ServerSocket serverSocket = new ServerSocket(6000);
-                    Socket sock = serverSocket.accept();
+                    Socket sock = serverSocket.accept()
             ){
 
             } catch (IOException e) {
@@ -50,12 +52,20 @@ public class Coordinator extends Thread{
         public void run() {
             try {
                 InputStream instream = s.getInputStream();
-                CoordMessages.ReqeustEntry entryRequest = CoordMessages.ReqeustEntry.parseDelimitedFrom(instream);
+                CoordMessages.RequestEntry entryRequest = CoordMessages.RequestEntry.parseDelimitedFrom(instream);
+                try {
+                    hashRing.addNode(entryRequest.getIpaddress(),entryRequest.getPort());
+                } catch (HashTopologyException e) {
+                    e.printStackTrace();
+                } catch (HashException e) {
+                    e.printStackTrace();
+                }
+
 
                 s.close();
             }catch(IOException e)
             {
-
+                e.printStackTrace();
             }
         }
     }

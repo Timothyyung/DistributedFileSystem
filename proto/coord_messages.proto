@@ -1,11 +1,22 @@
 syntax = "proto3";
 option java_package = "edu.usfca.cs.dfs";
 
-message ReqeustEntry{
-    string node_name = 1;
+message RequestEntry{
+    string ipaddress = 1;
+    int32 port = 2;
 }
 
 message Response{
     bool allowed = 1;
+    HashRing hashring = 2;
 }
 
+message HashRingEntry{
+    bytes position = 1;
+    string ipaddress = 2;
+    int32 port = 3;
+}
+
+message HashRing{
+    map<string, HashRingEntry> hashRings = 1;
+}

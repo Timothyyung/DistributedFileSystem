@@ -1,5 +1,6 @@
 package edu.usfca.cs.dfs.Storage;
 
+import edu.usfca.cs.dfs.CoordMessages;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashRingEntry;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
 import edu.usfca.cs.dfs.Coordinator.HashRing;
@@ -24,10 +25,29 @@ public class StorageNode extends Thread{
     private ConcurrentHashMap<String,Chunk> chunk_storage = new ConcurrentHashMap<>();
     //private HashMap<String,Chunk> chunk_storage = new HashMap<>();
     private BigInteger hashpos;
-    private TreeMap<BigInteger, HashRingEntry> hashring;
-    SHA1 sha1 = new SHA1();
+    private HashRing hashRing;
+    private SHA1 sha1 = new SHA1();
     private ReentrantLock lock = new ReentrantLock();
+    private String ipaddress;
+    private int port;
 
+
+    public StorageNode(){
+        try {
+            ipaddress = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public StorageNode(int port){
+        try {
+            ipaddress = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        this.port = port;
+    }
 
     /**
      * Retrieves the short host name of the current host.
@@ -99,7 +119,7 @@ public class StorageNode extends Thread{
         System.out.println("Server Started");
         while (run){
             try(
-                ServerSocket serverSocket = new ServerSocket(5050);
+                ServerSocket serverSocket = new ServerSocket(port);
                 Socket sock = serverSocket.accept();
             ){
                 store_chunk_listener scl = new store_chunk_listener(sock);
@@ -131,6 +151,38 @@ public class StorageNode extends Thread{
             }
         }
     }
+
+    private boolean request_access(String ipaddress, int port)
+    {
+        try (
+                Socket s = new Socket(ipaddress,port);
+                OutputStream outputStream = s.getOutputStream();
+                InputStream inputStream = s.getInputStream();
+        ){
+            CoordMessages.RequestEntry requestEntry = CoordMessages.RequestEntry.newBuilder()
+                    .setIpaddress(ipaddress)
+                    .setPort(port)
+                    .build();
+            requestEntry.writeDelimitedTo(outputStream);
+            CoordMessages.Response response = CoordMessages.Response.getDefaultInstance();
+            response = response.parseDelimitedFrom(inputStream);
+            if(!response.getAllowed())
+                System.out.println(("access denied"));
+            else {
+
+            }
+
+
+
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+
+        return false;
+    }
+
+
+
 
     private void process_request(StorageMessages.Request r_chunk){
         Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId());
