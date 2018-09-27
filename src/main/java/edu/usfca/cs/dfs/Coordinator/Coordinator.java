@@ -7,6 +7,7 @@ import edu.usfca.cs.dfs.Coordinator.HashPackage.HashTopologyException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -15,10 +16,10 @@ public class Coordinator extends Thread{
     private HashRing<byte[]> hashRing;
 
 
-    public Coordinator()
-    {
+    public Coordinator() throws HashTopologyException, HashException {
         SHA1 sha1 = new SHA1();
         hashRing = new HashRing<>(sha1);
+        make_hash();
     }
 
     @Override
@@ -60,8 +61,6 @@ public class Coordinator extends Thread{
                 } catch (HashException e) {
                     e.printStackTrace();
                 }
-
-
                 s.close();
             }catch(IOException e)
             {
@@ -69,6 +68,14 @@ public class Coordinator extends Thread{
             }
         }
     }
+
+     private void make_hash() throws  HashException, HashTopologyException
+     {
+         hashRing.addNode("abc".getBytes());
+         hashRing.addNode("dce".getBytes());
+         hashRing.addNode("jello".getBytes());
+         hashRing.addNode("cookie".getBytes());
+     }
 
 
     public static void main(String[] args) {

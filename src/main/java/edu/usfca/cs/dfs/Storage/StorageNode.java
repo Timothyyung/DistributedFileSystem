@@ -145,10 +145,7 @@ public class StorageNode extends Thread{
                     process_request(dataPacket.getRequest());
 
                 s.close();
-            }catch(IOException e)
-            {
-
-            }
+            }catch(IOException e) { }
         }
     }
 

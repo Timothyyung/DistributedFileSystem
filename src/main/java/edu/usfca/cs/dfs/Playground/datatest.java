@@ -1,5 +1,6 @@
 package edu.usfca.cs.dfs.Playground;
 
+import edu.usfca.cs.dfs.CoordMessages;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashException;
 
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashRingEntry;
@@ -35,10 +36,10 @@ public class datatest {
         }
         HashRing<byte[]> hashRing = new HashRing(sha1);
 
-        BigInteger abc =hashRing.addNode("abc".getBytes());
-        BigInteger dce = hashRing.addNode("dce".getBytes());
-        BigInteger jello = hashRing.addNode("jello".getBytes());
-        BigInteger cookie = hashRing.addNode("cookie".getBytes());
+        BigInteger abc =hashRing.addNode("inet" ,2020);
+        BigInteger dce = hashRing.addNode("wenet", 2030);
+        BigInteger jello = hashRing.addNode("ournet", 2040);
+        BigInteger cookie = hashRing.addNode("himnet", 2050);
 
 
 
@@ -55,6 +56,11 @@ public class datatest {
         System.out.println(hashRing.toString());
         hashRing.remap_hashring();
         System.out.println(hashRing.toString());
+        CoordMessages.HashRing hashRing1 = hashRing.treemap_to_map();
+        System.out.println(hashRing1.getHashRings().toString());
+
+        HashRing<byte[]> hashRing2 = new HashRing(sha1,hashRing1);
+        System.out.println(hashRing2.toString());
     }
 };
 

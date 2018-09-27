@@ -1,5 +1,6 @@
 package edu.usfca.cs.dfs.Coordinator;
 
+import com.google.protobuf.ByteString;
 import edu.usfca.cs.dfs.CoordMessages;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashFunction;
@@ -28,21 +29,39 @@ public class HashRing<T> {
         maxHash = function.maxValue();
     }
 
-    public HashRing(HashFunction<T> function, Map<String,CoordMessages.HashRingEntry> map)
+    public HashRing(HashFunction<T> function, CoordMessages.HashRing map)
     {
         this(function,false);
         map_to_treemap(map);
         remap_hashring();
     }
 
-    private void map_to_treemap(Map<String,CoordMessages.HashRingEntry> map)
+    private void map_to_treemap(CoordMessages.HashRing map)
     {
-        for(Map.Entry<String, CoordMessages.HashRingEntry> entry: map.entrySet()){
+        for(Map.Entry<String, CoordMessages.HashRingEntry> entry: map.getHashRings().entrySet()){
             BigInteger pos = new BigInteger(entry.getValue().getPosition().toByteArray());
             BigInteger key = new BigInteger(entry.getKey().getBytes());
             HashRingEntry hashRingEntry = new HashRingEntry(pos,entry.getValue().getIpaddress(),entry.getValue().getPort());
             entryMap.put(key,hashRingEntry);
         }
+    }
+
+    public CoordMessages.HashRing treemap_to_map()
+    {
+        Map<String,CoordMessages.HashRingEntry> hashRing = new TreeMap<>();
+
+        for (Map.Entry<BigInteger,HashRingEntry> entry: entryMap.entrySet()){
+            String key = entry.getKey().toString();
+            ByteString pos = ByteString.copyFrom(entry.getValue().position.toByteArray(), 0, entry.getValue().position.toByteArray().length);
+            CoordMessages.HashRingEntry coord_hre = CoordMessages.HashRingEntry.newBuilder()
+                    .setPosition(pos)
+                    .setIpaddress(entry.getValue().inetaddress)
+                    .setPort(entry.getValue().port)
+                    .build();
+            hashRing.put(key,coord_hre);
+        }
+        return CoordMessages.HashRing.newBuilder().putAllHashRings(hashRing).build();
+
     }
 
     private void addRingEntry(BigInteger position, HashRingEntry predecessor) throws HashTopologyException{
