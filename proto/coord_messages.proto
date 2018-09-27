@@ -6,11 +6,6 @@ message RequestEntry{
     int32 port = 2;
 }
 
-message Response{
-    bool allowed = 1;
-    HashRing hashring = 2;
-}
-
 message HashRingEntry{
     bytes position = 1;
     string ipaddress = 2;
@@ -20,3 +15,12 @@ message HashRingEntry{
 message HashRing{
     map<string, HashRingEntry> hashRings = 1;
 }
+
+message Response{
+    oneof responses{
+        bool allowed = 1;
+        HashRing hashring = 2;
+        HashRingEntry hashringentry = 3;
+    }
+}
+

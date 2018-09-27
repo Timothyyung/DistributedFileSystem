@@ -113,7 +113,8 @@ public class StorageNode extends Thread{
 
     public void startNode()
     {
-        boolean run = true;
+        boolean run = request_access(ipaddress,port);
+
         System.out.println("Server Started");
         while (run){
             try(
@@ -126,6 +127,7 @@ public class StorageNode extends Thread{
                 e.printStackTrace();
             }
         }
+        System.out.println("Server Ending");
     }
 
     private class store_chunk_listener extends Thread{
@@ -162,11 +164,14 @@ public class StorageNode extends Thread{
             requestEntry.writeDelimitedTo(outputStream);
             CoordMessages.Response response = CoordMessages.Response.getDefaultInstance();
             response = response.parseDelimitedFrom(inputStream);
-            if(!response.getAllowed())
+            if(!response.getAllowed()) {
                 System.out.println(("access denied"));
-            else {
-
+                return false;
             }
+            else {
+                hashRing = new HashRing(sha1,response.getHashring());
+            }
+            return true;
 
 
 

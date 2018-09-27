@@ -7,6 +7,7 @@ import edu.usfca.cs.dfs.Coordinator.HashPackage.HashTopologyException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -54,7 +55,6 @@ public class Coordinator extends Thread{
             try {
                 InputStream instream = s.getInputStream();
                 CoordMessages.RequestEntry entryRequest = CoordMessages.RequestEntry.parseDelimitedFrom(instream);
-
                 try {
                     hashRing.addNode(entryRequest.getIpaddress(),entryRequest.getPort());
                 } catch (HashTopologyException e) {
@@ -68,9 +68,30 @@ public class Coordinator extends Thread{
                 e.printStackTrace();
             }
         }
+    }
 
-        private void sendUpdates(CoordMessages.RequestEntry requestEntry){
+    private class hash_updator extends Thread{
+        private Socket s;
+        private CoordMessages.HashRingEntry hashRingEntry;
+        public hash_updator(Socket s, CoordMessages.HashRingEntry hashRingEntry) {
+            this.s = s;
+            this.hashRingEntry = hashRingEntry;
+        }
 
+        @Override
+        public void run() {
+            try {
+                OutputStream outputStream = s.getOutputStream();
+                InputStream instream = s.getInputStream();
+                CoordMessages.Response response = CoordMessages.Response.newBuilder()
+                        .setAllowed(true)
+                        .setHashring(hashRingEntry)
+                        .build();
+                s.close();
+            }catch(IOException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
