@@ -84,8 +84,7 @@ public class Coordinator extends Thread{
                 OutputStream outputStream = s.getOutputStream();
                 InputStream instream = s.getInputStream();
                 CoordMessages.Response response = CoordMessages.Response.newBuilder()
-                        .setAllowed(true)
-                        .setHashring(hashRingEntry)
+                        .setHashringentry(hashRingEntry)
                         .build();
                 s.close();
             }catch(IOException e)
