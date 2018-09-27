@@ -1,7 +1,6 @@
 package edu.usfca.cs.dfs.Storage;
 
 import edu.usfca.cs.dfs.CoordMessages;
-import edu.usfca.cs.dfs.Coordinator.HashPackage.HashRingEntry;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
 import edu.usfca.cs.dfs.Coordinator.HashRing;
 import edu.usfca.cs.dfs.Data.Chunk;
@@ -15,7 +14,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -141,7 +139,8 @@ public class StorageNode extends Thread{
             try {
                 InputStream instream = s.getInputStream();
                 StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.parseDelimitedFrom(instream);
-                if(dataPacket.hasRequest())
+
+                if(dataPacket.has)
                     process_request(dataPacket.getRequest());
 
                 s.close();

@@ -54,6 +54,7 @@ public class Coordinator extends Thread{
             try {
                 InputStream instream = s.getInputStream();
                 CoordMessages.RequestEntry entryRequest = CoordMessages.RequestEntry.parseDelimitedFrom(instream);
+
                 try {
                     hashRing.addNode(entryRequest.getIpaddress(),entryRequest.getPort());
                 } catch (HashTopologyException e) {
@@ -66,6 +67,10 @@ public class Coordinator extends Thread{
             {
                 e.printStackTrace();
             }
+        }
+
+        private void sendUpdates(CoordMessages.RequestEntry requestEntry){
+
         }
     }
 
