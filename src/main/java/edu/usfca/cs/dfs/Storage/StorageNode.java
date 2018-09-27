@@ -140,7 +140,7 @@ public class StorageNode extends Thread{
                 InputStream instream = s.getInputStream();
                 StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.parseDelimitedFrom(instream);
 
-                if(dataPacket.has)
+                if(dataPacket.hasRequest())
                     process_request(dataPacket.getRequest());
 
                 s.close();
