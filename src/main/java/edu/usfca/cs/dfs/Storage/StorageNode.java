@@ -21,8 +21,6 @@ import java.util.concurrent.locks.ReentrantLock;
 public class StorageNode extends Thread{
 
     private ConcurrentHashMap<String,Chunk> chunk_storage = new ConcurrentHashMap<>();
-    //private HashMap<String,Chunk> chunk_storage = new HashMap<>();
-    private BigInteger hashpos;
     private HashRing hashRing;
     private SHA1 sha1 = new SHA1();
     private ReentrantLock lock = new ReentrantLock();
@@ -138,6 +136,7 @@ public class StorageNode extends Thread{
 
         @Override
         public void run() {
+            System.out.println(s.getInetAddress() + "  " + Integer.toString(s.getPort()));
             try {
                 InputStream instream = s.getInputStream();
                 StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.parseDelimitedFrom(instream);
@@ -182,7 +181,7 @@ public class StorageNode extends Thread{
 
 
     private void process_request(StorageMessages.Request r_chunk){
-        Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId());
+        Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
         if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.store_chunk) {
             chunk_storage.put(s_chunk.get_hash_key(),s_chunk);
             System.out.println(s_chunk.getChunk_id());
@@ -193,6 +192,10 @@ public class StorageNode extends Thread{
             System.out.println("total chunks" + get_total_chunks(r_chunk.getFileName()));
             reassemble(r_chunk.getFileName());
         }
+    }
+
+    private void send_chunks_reply(String filename){
+
     }
 
     public static void main(String[] args)

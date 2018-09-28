@@ -5,7 +5,10 @@ message Request {
     string fileName = 1;
     int32 chunkId = 2;
     bytes data = 3;
-    Op_code opcode = 4;
+    bool islast = 4;
+    Op_code opcode = 5;
+    string ipaddress = 6;
+    int32 port = 7;
     enum Op_code {
         store_chunk = 0;
         get_chunk = 1;
@@ -13,6 +16,13 @@ message Request {
         get_list = 3;
         get_chunk_loc = 4;
     }
+}
+
+message ChunkReply{
+    string fileName = 1;
+    int32 chunkId = 2;
+    bytes data = 3;
+    bool islast = 4;
 }
 
 message HashRingEntry{
@@ -25,11 +35,16 @@ message NumberOfChunks{
     int32 chunkNumber = 1;
 }
 
+message SingleChunk{
+    string fileName = 1;
+    int32 chunkNumber = 2;
+    bytes data = 3;
+    string ipaddress = 4;
+    int32 port = 5;
+    bool isLast = 6;
+}
+
 message ListAllChunks{
-    message SingleChunk{
-        string fileName = 1;
-        int32 chunkNumber = 2;
-    }
     repeated SingleChunk singlechunk = 1;
 }
 
@@ -39,6 +54,8 @@ message DataPacket {
         HashRingEntry hashringentry = 2;
         NumberOfChunks numberofchunks = 3;
         ListAllChunks listallchunks = 4;
+        ChunkReply chunkReply = 5;
+        SingleChunk singlechunk = 6;
     }
 }
 

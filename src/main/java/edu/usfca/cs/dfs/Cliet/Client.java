@@ -7,23 +7,34 @@ import edu.usfca.cs.dfs.StorageMessages;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
-public class Client {
+public class Client{
 
-    public static void main(String[] args) {
-        Data data = new Data("inputs/Mytestdoc.txt");
-        System.out.println(data.getData().length);
-        Client client = new Client();
-        client.shard("localhost", 5050,data);
+    String ipaddress;
+    int port;
+
+    public Client(){
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
+            ipaddress = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        client.request_file_chunks("localhost", 5050, "a.txt");
-
     }
+
+    public Client(int port){
+        try {
+            ipaddress = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        this.port = port;
+    }
+
+
 
     public void shard(String ipaddress, int port, Data data)
     {
@@ -40,7 +51,7 @@ public class Client {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Chunk chunk = new Chunk(data_chunk,"a.txt",j);
+                Chunk chunk = new Chunk(data_chunk,"a.txt",j,false);
                 b_val = b_val - chunk_size;
                 System.out.println( b_val);
                 data_chunk = new byte[check_size(chunk_size,b_val)];
@@ -53,7 +64,7 @@ public class Client {
             k += 1;
         }
         System.out.println(data_chunk.length);
-        Chunk chunk = new Chunk(data_chunk, "a.txt", j);
+        Chunk chunk = new Chunk(data_chunk, "a.txt", j,true);
         send(ipaddress,port,chunk);
 
 
@@ -81,6 +92,9 @@ public class Client {
                         .setData(bsval)
                         .setFileName(chunk.getFile_name())
                         .setOpcode(StorageMessages.Request.Op_code.store_chunk)
+                        .setIslast(chunk.getIs_last())
+                        .setIpaddress(ipaddress)
+                        .setPort(port)
                         .build();
                 StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
                         .setRequest(s_chunk)
@@ -120,4 +134,19 @@ public class Client {
            }
        }
    }
+
+    public static void main(String[] args) {
+        Data data = new Data("inputs/Mytestdoc.txt");
+        System.out.println(data.getData().length);
+        Client client = new Client(1010);
+        client.shard("localhost", 5050,data);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        client.request_file_chunks("localhost", 5050, "a.txt");
+
+    }
+
 }
