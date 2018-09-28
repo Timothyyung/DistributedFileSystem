@@ -22,6 +22,7 @@ public class Client {
             e.printStackTrace();
         }
         client.request_file_chunks("localhost", 5050, "a.txt");
+
     }
 
     public void shard(String ipaddress, int port, Data data)
@@ -29,10 +30,10 @@ public class Client {
         int chunk_size = 10000;
         byte[] data_chunk = new byte[chunk_size];
         int i = 0; int j = 1; int k = 0;
-        int b_val = data.getData().length;
+        int b_val = data.getData().length - chunk_size;
         while(i < data.getData().length)
         {
-            if(i % chunk_size == 0)
+            if(i % chunk_size == 0 & i != 0)
             {
                 try {
                     Thread.sleep(1000);
@@ -40,7 +41,8 @@ public class Client {
                     e.printStackTrace();
                 }
                 Chunk chunk = new Chunk(data_chunk,"a.txt",j);
-                b_val -= chunk_size;
+                b_val = b_val - chunk_size;
+                System.out.println( b_val);
                 data_chunk = new byte[check_size(chunk_size,b_val)];
                 send(ipaddress,port,chunk);
                 j += 1;
@@ -85,7 +87,7 @@ public class Client {
                         .build();
 
                 dataPacket.writeDelimitedTo(outputStream);
-                System.out.println("Chunk has been sent " + s_chunk.getChunkId());
+                System.out.println("Chunk has been sent " + s_chunk.getChunkId() +s_chunk.getData());
                 sent = true;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -104,9 +106,12 @@ public class Client {
                ){
                     StorageMessages.Request s_chunk = StorageMessages.Request.newBuilder()
                             .setFileName(filename)
-                            .setOpcode(StorageMessages.Request.Op_code.get_list)
+                            .setOpcode(StorageMessages.Request.Op_code.get_chunk)
                             .build();
-                    s_chunk.writeDelimitedTo(outputStream);
+                    StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                            .setRequest(s_chunk)
+                            .build();
+                    dataPacket.writeDelimitedTo(outputStream);
                     sent = true;
 
 

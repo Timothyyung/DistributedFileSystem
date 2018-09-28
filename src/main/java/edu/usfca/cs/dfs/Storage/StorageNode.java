@@ -113,12 +113,12 @@ public class StorageNode extends Thread{
 
     public void startNode()
     {
-        boolean run = request_access(ipaddress,port);
+        boolean run = request_access("localhost",6000);
 
         System.out.println("Server Started");
         while (run){
             try(
-                ServerSocket serverSocket = new ServerSocket(port);
+                ServerSocket serverSocket = new ServerSocket(this.port);
                 Socket sock = serverSocket.accept();
             ){
                 store_chunk_listener scl = new store_chunk_listener(sock);
@@ -159,18 +159,14 @@ public class StorageNode extends Thread{
         ){
             CoordMessages.RequestEntry requestEntry = CoordMessages.RequestEntry.newBuilder()
                     .setIpaddress(ipaddress)
-                    .setPort(port)
+                    .setPort(this.port)
                     .build();
             requestEntry.writeDelimitedTo(outputStream);
             CoordMessages.Response response = CoordMessages.Response.getDefaultInstance();
             response = response.parseDelimitedFrom(inputStream);
-            if(!response.getAllowed()) {
-                System.out.println(("access denied"));
-                return false;
-            }
-            else {
-                hashRing = new HashRing(sha1,response.getHashring());
-            }
+
+            hashRing = new HashRing(sha1,response.getHashring());
+            System.out.println(hashRing.toString());
             return true;
 
 
@@ -203,7 +199,7 @@ public class StorageNode extends Thread{
             throws Exception {
         String hostname = getHostname();
         System.out.println("Starting storage node on " + hostname + "...");
-        StorageNode storageNode = new StorageNode();
+        StorageNode storageNode = new StorageNode(5050);
         storageNode.startNode();
     }
 

@@ -258,7 +258,7 @@ public class HashRing<T> {
         for (Map.Entry<BigInteger, HashRingEntry> entry : entryMap.entrySet()) {
             HashRingEntry hashRingEntry = entry.getValue();
             if (hashRingEntry != firstEntry) {
-                System.out.println("mapping " + prevEntry.position + " to " + hashRingEntry.position + "\n\n");
+                //System.out.println("mapping " + prevEntry.position + " to " + hashRingEntry.position + "\n\n");
                 prevEntry.neighbor = hashRingEntry;
                 prevEntry = hashRingEntry;
             }
