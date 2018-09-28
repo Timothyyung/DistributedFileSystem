@@ -18,13 +18,6 @@ message Request {
     }
 }
 
-message ChunkReply{
-    string fileName = 1;
-    int32 chunkId = 2;
-    bytes data = 3;
-    bool islast = 4;
-}
-
 message HashRingEntry{
     bytes position = 1;
     string ipaddress = 2;
@@ -54,8 +47,7 @@ message DataPacket {
         HashRingEntry hashringentry = 2;
         NumberOfChunks numberofchunks = 3;
         ListAllChunks listallchunks = 4;
-        ChunkReply chunkReply = 5;
-        SingleChunk singlechunk = 6;
+        SingleChunk singlechunk = 5;
     }
 }
 

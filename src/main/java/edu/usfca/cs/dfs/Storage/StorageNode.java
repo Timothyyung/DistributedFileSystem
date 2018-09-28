@@ -1,13 +1,14 @@
 package edu.usfca.cs.dfs.Storage;
 
+import com.google.protobuf.ByteString;
 import edu.usfca.cs.dfs.CoordMessages;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
 import edu.usfca.cs.dfs.Coordinator.HashRing;
 import edu.usfca.cs.dfs.Data.Chunk;
+import edu.usfca.cs.dfs.DataSender.DataRequester;
 import edu.usfca.cs.dfs.StorageMessages;
 
 import java.io.*;
-import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -120,7 +121,7 @@ public class StorageNode extends Thread{
                 Socket sock = serverSocket.accept();
             ){
                 store_chunk_listener scl = new store_chunk_listener(sock);
-                scl.run();
+                scl.start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -135,7 +136,7 @@ public class StorageNode extends Thread{
         }
 
         @Override
-        public void run() {
+        public synchronized void start() {
             System.out.println(s.getInetAddress() + "  " + Integer.toString(s.getPort()));
             try {
                 InputStream instream = s.getInputStream();
@@ -145,8 +146,13 @@ public class StorageNode extends Thread{
                     process_request(dataPacket.getRequest());
 
                 s.close();
-            }catch(IOException e) { }
+            }catch(IOException e) {
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     private boolean request_access(String ipaddress, int port)
@@ -180,23 +186,72 @@ public class StorageNode extends Thread{
 
 
 
-    private void process_request(StorageMessages.Request r_chunk){
+    private void process_request(StorageMessages.Request r_chunk) throws InterruptedException {
         Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
         if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.store_chunk) {
-            chunk_storage.put(s_chunk.get_hash_key(),s_chunk);
+            store_chunk(s_chunk);
             System.out.println(s_chunk.getChunk_id());
             System.out.println(s_chunk.getFile_name());
             System.out.println(s_chunk.getData_chunk().length);
         }
-        if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.get_chunk) {
+        else if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.get_chunk) {
             System.out.println("total chunks" + get_total_chunks(r_chunk.getFileName()));
-            reassemble(r_chunk.getFileName());
+        }
+
+        else if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.get_data){
+            System.out.println("Request Accepted");
+            data_reply(r_chunk.getFileName(), r_chunk.getIpaddress(),r_chunk.getPort());
+        }
+
+    }
+
+    private void data_reply(String filename, String ipaddress, int port) throws InterruptedException {
+        int i = 1;
+        boolean finished = false;
+        while(!finished)
+        {
+            Thread.sleep(1000);
+            String key = filename + Integer.toString(i);
+            finished = search_and_send(key,ipaddress,port);
+            i += 1;
+
         }
     }
 
-    private void send_chunks_reply(String filename){
+    private boolean search_and_send(String filekey, String ipaddress,int port){
+        if(chunk_storage.containsKey(filekey)){
+            send_to_node(filekey,ipaddress,port);
+        }else
+            request_from_storage(ipaddress,port);
+        System.out.println("data chunk " + filekey + "sent");
+        if(chunk_storage.get(filekey).getIs_last())
+            return true;
+        else
+            return false;
+    }
+
+    private void send_to_node(String filekey,String ipaddress, int port){
+            Chunk chunk = chunk_storage.get(filekey);
+            ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
+            System.out.println("sending file: " + chunk.getFile_name());
+            StorageMessages.SingleChunk singleChunk = StorageMessages.SingleChunk.newBuilder()
+                    .setChunkNumber(chunk.getChunk_id())
+                    .setFileName(chunk.getFile_name())
+                    .setIsLast(chunk.getIs_last())
+                    .setData(bsval)
+                    .build();
+            StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                    .setSinglechunk(singleChunk)
+                    .build();
+            DataRequester sender = new DataRequester(dataPacket,ipaddress,port);
+            sender.start();
+        }
+
+    private void request_from_storage(String ipaddress, int port){
 
     }
+
+
 
     public static void main(String[] args)
             throws Exception {

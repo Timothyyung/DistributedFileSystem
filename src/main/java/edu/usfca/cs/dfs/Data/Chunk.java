@@ -10,12 +10,13 @@ public class Chunk {
     boolean isLast;
 
     public Chunk(StorageMessages.DataPacket dataPacket){
-        if(dataPacket.hasChunkReply()){
-            data_chunk = dataPacket.getChunkReply().getData().toByteArray();
-            file_name = dataPacket.getChunkReply().getFileName();
-            chunk_id = dataPacket.getChunkReply().getChunkId();
-            isLast = dataPacket.getChunkReply().getIslast();
-        }
+        if(dataPacket.hasSinglechunk()){
+            data_chunk = dataPacket.getSinglechunk().getData().toByteArray();
+            file_name = dataPacket.getSinglechunk().getFileName();
+            chunk_id = dataPacket.getSinglechunk().getChunkNumber();
+            isLast = dataPacket.getSinglechunk().getIsLast();
+        }else
+            System.out.println("Wrong Packet");
     }
 
     public Chunk(byte[] chunk, String file_name, int chunk_id, boolean isLast)
