@@ -42,12 +42,12 @@ public class datatest {
         BigInteger cookie = hashRing.addNode("himnet", 2050);
 
 
-
+        System.out.println("FDSAFHSDIFSAHFSDFD");
         System.out.println(hashRing.toString());
-        System.out.println(hashRing.locate(("a".getBytes())));
-        System.out.println(hashRing.locate(("b".getBytes())));
-        System.out.println(hashRing.locate(("c".getBytes())));
-        System.out.println(hashRing.locate(("d".getBytes())));
+        System.out.println(hashRing.locate(("a.txt1".getBytes())));
+        System.out.println(hashRing.locate(("a.txt2".getBytes())));
+        System.out.println(hashRing.locate(("a.txt3".getBytes())));
+        System.out.println(hashRing.locate(("a.txt4".getBytes())));
         System.out.print("\n\n\n\n");
         String jelly = jello.toString();
         BigInteger muddyjelly = new BigInteger(jelly);
@@ -60,6 +60,10 @@ public class datatest {
         System.out.println(hashRing1.getHashRings().toString());
 
         HashRing<byte[]> hashRing2 = new HashRing(sha1,hashRing1);
+        System.out.println(hashRing2.locate(("a.txt1".getBytes())));
+        System.out.println(hashRing2.locate(("a.txt2".getBytes())));
+        System.out.println(hashRing2.locate(("a.txt3".getBytes())));
+        System.out.println(hashRing2.locate(("a.txt4".getBytes())));
         System.out.println(hashRing2.toString());
     }
 };

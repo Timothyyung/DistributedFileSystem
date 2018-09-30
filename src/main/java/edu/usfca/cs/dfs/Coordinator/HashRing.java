@@ -36,14 +36,22 @@ public class HashRing<T> {
         remap_hashring();
     }
 
+    public HashRingEntry returnNode(BigInteger pos){
+        return entryMap.get(pos);
+    }
+
     private void map_to_treemap(CoordMessages.HashRing map)
     {
+        System.out.println("MAKING MAP TO TREEMAP");
         for(Map.Entry<String, CoordMessages.HashRingEntry> entry: map.getHashRings().entrySet()){
+            System.out.println(entry.getKey());
             BigInteger pos = new BigInteger(entry.getValue().getPosition().toByteArray());
-            BigInteger key = new BigInteger(entry.getKey().getBytes());
+            BigInteger key = new BigInteger(entry.getKey());
+            System.out.println(key.toString() + " \n\n\n");
             HashRingEntry hashRingEntry = new HashRingEntry(pos,entry.getValue().getIpaddress(),entry.getValue().getPort());
             entryMap.put(key,hashRingEntry);
         }
+        System.out.println("\n\n\n");
     }
 
     public CoordMessages.HashRing treemap_to_map()
@@ -80,6 +88,18 @@ public class HashRing<T> {
             System.out.println(position);
             throw new HashTopologyException("Hash space exhausted!");
         }
+
+        HashRingEntry newEntry = new HashRingEntry(position,predecessor.neighbor,ipaddress,port);
+        predecessor.neighbor = newEntry;
+        entryMap.put(position,newEntry);
+    }
+
+    public void addNodePos(BigInteger position, String ipaddress,int port) throws HashTopologyException{
+        if (entryMap.get(position) != null){
+            System.out.println(position);
+            throw new HashTopologyException("Hash space exhausted!");
+        }
+        HashRingEntry predecessor = entryMap.ceilingEntry(position).getValue();
 
         HashRingEntry newEntry = new HashRingEntry(position,predecessor.neighbor,ipaddress,port);
         predecessor.neighbor = newEntry;

@@ -23,7 +23,7 @@ public class Coordinator extends Thread{
         SHA1 sha1 = new SHA1();
         hashRing = new HashRing<>(sha1);
         node_map = new HashMap<>();
-        make_hash();
+        //make_hash();
     }
 
     @Override
@@ -61,8 +61,8 @@ public class Coordinator extends Thread{
                 InputStream instream = s.getInputStream();
                 OutputStream outputStream = s.getOutputStream();
                 CoordMessages.RequestEntry entryRequest = CoordMessages.RequestEntry.parseDelimitedFrom(instream);
-
                 CoordMessages.HashRingEntry hashRingEntry = put_in_map(entryRequest);
+
                 send_update(entryRequest.getIpaddress(),entryRequest.getPort(),hashRingEntry);
 
                 CoordMessages.Response response = CoordMessages.Response.newBuilder()
@@ -77,10 +77,17 @@ public class Coordinator extends Thread{
         }
 
         private CoordMessages.HashRingEntry put_in_map(CoordMessages.RequestEntry entryRequest) throws HashException, HashTopologyException {
-            BigInteger pos = hashRing.addNode(entryRequest.getIpaddress(),entryRequest.getPort());
-            System.out.println("adding new node " + pos);
-            node_map.put(entryRequest.getIpaddress()+Integer.toString(entryRequest.getPort()),pos);
-            System.out.println(node_map.toString());
+
+            BigInteger pos;
+            if(!node_map.containsKey(entryRequest.getIpaddress()+Integer.toString(entryRequest.getPort()))) {
+                pos = hashRing.addNode(entryRequest.getIpaddress(),entryRequest.getPort());
+                System.out.println("adding new node " + pos);
+                node_map.put(entryRequest.getIpaddress() + Integer.toString(entryRequest.getPort()), pos);
+                System.out.println(node_map.toString());
+            }else{
+                pos = node_map.get(entryRequest.getIpaddress()+Integer.toString(entryRequest.getPort()));
+            }
+
             ByteString bsval = ByteString.copyFrom(pos.toByteArray(), 0, pos.toByteArray().length);
             CoordMessages.HashRingEntry hashRingEntry = CoordMessages.HashRingEntry.newBuilder()
                     .setPosition(bsval)
@@ -89,6 +96,7 @@ public class Coordinator extends Thread{
                     .build();
 
             return hashRingEntry;
+
         }
 
         private void send_update(String ipaddress, int port, CoordMessages.HashRingEntry hashRingEntry)
@@ -122,8 +130,7 @@ public class Coordinator extends Thread{
     }
 
      private void make_hash() throws  HashException, HashTopologyException
-     {
-         node_map.put("localhost2020",hashRing.addNode("localhost", 2020));
+     { node_map.put("localhost2020",hashRing.addNode("localhost", 2020));
          node_map.put("localhost2030",hashRing.addNode("localhost", 2030));
          node_map.put("localhost2040",hashRing.addNode("localhost", 2040));
          node_map.put("localhost2050",hashRing.addNode("localhost", 2050));

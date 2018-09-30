@@ -54,6 +54,11 @@ public class Client{
             i += 1;
             k += 1;
         }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println(data_chunk.length);
         Chunk chunk = new Chunk(data_chunk, "a.txt", j,true);
         send_chunk(ipaddress,port,chunk);
@@ -103,6 +108,7 @@ public class Client{
 
    public void request_data(String ipaddress, int port, String filename)
    {
+       System.out.println("making requests");
        StorageMessages.Request request = StorageMessages.Request.newBuilder()
                .setFileName(filename)
                .setIpaddress(this.ipaddress)
@@ -118,14 +124,14 @@ public class Client{
 
 
     public static void main(String[] args) {
-        Data data = new Data("inputs/Mytestdoc2.txt");
+        Data data = new Data("inputs/Mytestdoc3.txt");
         System.out.println(data.getData().length);
         Client client = new Client(7000);
         ClientReciever clientReciever = new ClientReciever(7000);
         clientReciever.start();
         client.shard("localhost", 5050,data);
         try {
-            Thread.sleep(500);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
