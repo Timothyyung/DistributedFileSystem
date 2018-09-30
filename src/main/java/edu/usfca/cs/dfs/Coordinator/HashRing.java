@@ -6,6 +6,8 @@ import edu.usfca.cs.dfs.Coordinator.HashPackage.HashException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashFunction;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashRingEntry;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashTopologyException;
+import edu.usfca.cs.dfs.DataSender.DataRequester;
+import edu.usfca.cs.dfs.StorageMessages;
 
 import java.math.BigInteger;
 import java.util.Map;
@@ -97,9 +99,14 @@ public class HashRing<T> {
     public void addNodePos(BigInteger position, String ipaddress,int port) throws HashTopologyException{
         if (entryMap.get(position) != null){
             System.out.println(position);
-            throw new HashTopologyException("Hash space exhausted!");
+            throw new HashTopologyException("Hash space exhausted! or somthing is here already");
         }
-        HashRingEntry predecessor = entryMap.ceilingEntry(position).getValue();
+        HashRingEntry predecessor;
+        BigInteger node = entryMap.ceilingKey(position);
+        if(node == null)
+            predecessor = entryMap.get(BigInteger.ZERO);
+        else
+            predecessor = entryMap.get(node);
 
         HashRingEntry newEntry = new HashRingEntry(position,predecessor.neighbor,ipaddress,port);
         predecessor.neighbor = newEntry;
@@ -286,6 +293,25 @@ public class HashRing<T> {
         }
         prevEntry.neighbor = firstEntry;
     }
+
+    public void sendUpdate(String ipaddress, int port,CoordMessages.HashRingEntry hre){
+        for(Map.Entry<BigInteger,HashRingEntry> entry: entryMap.entrySet()) {
+            if(entry.getValue().inetaddress != ipaddress && entry.getValue().port != port){
+                StorageMessages.HashRingEntry hashRingEntry = StorageMessages.HashRingEntry.newBuilder()
+                        .setPosition(hre.getPosition())
+                        .setIpaddress(hre.getIpaddress())
+                        .setPort(hre.getPort())
+                        .build();
+                StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                        .setHashringentry(hashRingEntry)
+                        .build();
+                DataRequester dataRequester = new DataRequester(dataPacket,entry.getValue().inetaddress,entry.getValue().port);
+                dataRequester.start();
+            }
+
+        }
+    }
+
 }
 
 

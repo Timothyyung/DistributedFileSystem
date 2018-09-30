@@ -6,6 +6,7 @@ import edu.usfca.cs.dfs.CoordMessages;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashTopologyException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -63,7 +64,7 @@ public class Coordinator extends Thread{
                 CoordMessages.RequestEntry entryRequest = CoordMessages.RequestEntry.parseDelimitedFrom(instream);
                 CoordMessages.HashRingEntry hashRingEntry = put_in_map(entryRequest);
 
-                send_update(entryRequest.getIpaddress(),entryRequest.getPort(),hashRingEntry);
+                hashRing.sendUpdate(entryRequest.getIpaddress(),entryRequest.getPort(),hashRingEntry);
 
                 CoordMessages.Response response = CoordMessages.Response.newBuilder()
                         .setHashring(hashRing.treemap_to_map())
@@ -99,10 +100,7 @@ public class Coordinator extends Thread{
 
         }
 
-        private void send_update(String ipaddress, int port, CoordMessages.HashRingEntry hashRingEntry)
-        {
 
-        }
     }
 
     private class hash_updator extends Thread{

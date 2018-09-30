@@ -124,7 +124,7 @@ public class Client{
 
 
     public static void main(String[] args) {
-        Data data = new Data("inputs/Mytestdoc3.txt");
+        Data data = new Data("inputs/Mytestdoc2.txt");
         System.out.println(data.getData().length);
         Client client = new Client(7000);
         ClientReciever clientReciever = new ClientReciever(7000);

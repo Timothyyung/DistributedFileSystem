@@ -4,6 +4,7 @@ import com.google.protobuf.ByteString;
 import edu.usfca.cs.dfs.CoordMessages;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashRingEntry;
+import edu.usfca.cs.dfs.Coordinator.HashPackage.HashTopologyException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
 import edu.usfca.cs.dfs.Coordinator.HashRing;
 import edu.usfca.cs.dfs.Data.Chunk;
@@ -101,7 +102,9 @@ public class StorageNode extends Thread{
 
                 if(dataPacket.hasRequest())
                     process_request(dataPacket.getRequest());
-
+                else if(dataPacket.hasHashringentry()) {
+                    process_hre(dataPacket);
+                }
                 s.close();
             }catch(IOException e) {
 
@@ -110,6 +113,17 @@ public class StorageNode extends Thread{
             }
         }
 
+    }
+
+    private void process_hre(StorageMessages.DataPacket dataPacket)
+    {
+        System.out.println("adding node");
+        StorageMessages.HashRingEntry hashRingEntry = dataPacket.getHashringentry();
+        try {
+            hashRing.addNodePos(new BigInteger(hashRingEntry.getPosition().toByteArray()),hashRingEntry.getIpaddress(),hashRingEntry.getPort());
+        } catch (HashTopologyException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean request_access(String ipaddress, int port)
@@ -232,12 +246,14 @@ public class StorageNode extends Thread{
     private boolean search_and_send(String filename,int chunknumber, String ipaddress,int port) throws HashException {
         boolean last;
         String key = filename + Integer.toString(chunknumber);
-        if(chunk_storage.containsKey(filename)){
-            last = send_to_node(filename,ipaddress,port);
+        if(chunk_storage.containsKey(key)){
+            System.out.println("I have this chunk");
+            last = send_to_node(key,ipaddress,port);
         }else {
+            System.out.println("I dont having this chunk");
             last = request_from_storage(filename,chunknumber,ipaddress, port);
         }
-        System.out.println("data chunk " + filename + "sent");
+        System.out.println("data chunk " + filename + Integer.toString(chunknumber)+ "sent");
         return last;
     }
 
