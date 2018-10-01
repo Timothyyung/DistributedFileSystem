@@ -103,29 +103,6 @@ public class Coordinator extends Thread{
 
     }
 
-    private class hash_updator extends Thread{
-        private Socket s;
-        private CoordMessages.HashRingEntry hashRingEntry;
-        public hash_updator(Socket s, CoordMessages.HashRingEntry hashRingEntry) {
-            this.s = s;
-            this.hashRingEntry = hashRingEntry;
-        }
-
-        @Override
-        public void run() {
-            try {
-                OutputStream outputStream = s.getOutputStream();
-                InputStream instream = s.getInputStream();
-                CoordMessages.Response response = CoordMessages.Response.newBuilder()
-                        .setHashringentry(hashRingEntry)
-                        .build();
-                s.close();
-            }catch(IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
 
      private void make_hash() throws  HashException, HashTopologyException
      { node_map.put("localhost2020",hashRing.addNode("localhost", 2020));

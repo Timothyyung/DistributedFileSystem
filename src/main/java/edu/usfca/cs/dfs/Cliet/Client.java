@@ -1,19 +1,27 @@
 package edu.usfca.cs.dfs.Cliet;
 
 import com.google.protobuf.ByteString;
+import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
+import edu.usfca.cs.dfs.Coordinator.HashRing;
 import edu.usfca.cs.dfs.Data.Chunk;
 import edu.usfca.cs.dfs.Data.Data;
 import edu.usfca.cs.dfs.DataSender.DataRequester;
 import edu.usfca.cs.dfs.StorageMessages;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Client{
 
     String ipaddress;
     int port;
-    //ClientReciever clientReciever;
+    HashRing<byte[]> hashRing;
+    SHA1 sha1 = new SHA1();
+    ClientReciever clientReciever;
     public Client(int port){
         try {
             ipaddress = InetAddress.getLocalHost().getHostName();
@@ -21,8 +29,9 @@ public class Client{
             e.printStackTrace();
         }
         this.port = port;
-      /* clientReciever = new ClientReciever(port);
-        clientReciever.start();*/
+        this.hashRing = new HashRing<>(sha1);
+        clientReciever = new ClientReciever(port);
+        clientReciever.start();
     }
 
 
@@ -122,13 +131,28 @@ public class Client{
        requester.start();
    }
 
+   public void request_hashring(String ipaddress,int port)
+   {
+       boolean sent = false;
+       while(!sent){
+           try(
+                   Socket s = new Socket(this.ipaddress,this.port);
+                   OutputStream outputStream = s.getOutputStream();
+                   InputStream inputStream = s.getInputStream();
+           ){
+
+               sent = true;
+           }catch (IOException ie){
+               ie.getStackTrace();
+           }
+       }
+   }
+
 
     public static void main(String[] args) {
-        Data data = new Data("inputs/Mytestdoc2.txt");
+        Data data = new Data("inputs/Mytestdoc3.txt");
         System.out.println(data.getData().length);
         Client client = new Client(7000);
-        ClientReciever clientReciever = new ClientReciever(7000);
-        clientReciever.start();
         client.shard("localhost", 5050,data);
         try {
             Thread.sleep(2000);

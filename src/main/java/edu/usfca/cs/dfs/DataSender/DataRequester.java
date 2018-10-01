@@ -20,7 +20,7 @@ public class DataRequester extends Thread{
     }
 
     @Override
-    public void run() {
+    public void start() {
         System.out.println("Packet sent to:  " + ipaddress +":"+Integer.toString(port));
         while(!sent){
             try(
