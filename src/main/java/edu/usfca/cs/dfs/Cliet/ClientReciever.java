@@ -37,7 +37,7 @@ public class ClientReciever extends Thread {
                     ServerSocket serverSocket = new ServerSocket(this.port);
                     Socket sock = serverSocket.accept();
             ){
-                System.out.println("data recieved " + Integer.toString(sock.getPort()));
+                System.out.println("data recieved ");
                 Client_reciever cr = new Client_reciever(sock);
                 cr.start();
             } catch (IOException e) {

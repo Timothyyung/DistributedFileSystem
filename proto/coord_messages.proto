@@ -16,11 +16,17 @@ message HashRing{
     map<string, HashRingEntry> hashRings = 1;
 }
 
-message Response{
+message RequestMap{
+    string ipaddress = 1;
+    int32 port = 2;
+}
+
+message DataPacket{
     oneof responses{
-        bool allowed = 1;
+        RequestEntry requestentry = 1;
         HashRing hashring = 2;
         HashRingEntry hashringentry = 3;
+        RequestMap requestmap = 4;
     }
 }
 

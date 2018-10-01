@@ -19,7 +19,7 @@ public class datatest {
     public static void main(String[] args) throws HashException, HashTopologyException {
         SHA1 sha1 = new SHA1();
         System.out.println(sha1.maxValue());
-        Data data = new Data("inputs/Mytestdoc.txt");
+        Data data = new Data("inputs/Mytestdoc.txt","a.txt");
         BigInteger bigInteger;
         System.out.println(sha1.hash("abc".getBytes()));
         System.out.println(sha1.hash("abc".getBytes()));

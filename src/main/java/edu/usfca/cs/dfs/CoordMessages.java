@@ -2028,14 +2028,635 @@ public final class CoordMessages {
 
   }
 
-  public interface ResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:Response)
+  public interface RequestMapOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RequestMap)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>bool allowed = 1;</code>
+     * <code>string ipaddress = 1;</code>
      */
-    boolean getAllowed();
+    java.lang.String getIpaddress();
+    /**
+     * <code>string ipaddress = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getIpaddressBytes();
+
+    /**
+     * <code>int32 port = 2;</code>
+     */
+    int getPort();
+  }
+  /**
+   * Protobuf type {@code RequestMap}
+   */
+  public  static final class RequestMap extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:RequestMap)
+      RequestMapOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RequestMap.newBuilder() to construct.
+    private RequestMap(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RequestMap() {
+      ipaddress_ = "";
+      port_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RequestMap(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              ipaddress_ = s;
+              break;
+            }
+            case 16: {
+
+              port_ = input.readInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.usfca.cs.dfs.CoordMessages.internal_static_RequestMap_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.usfca.cs.dfs.CoordMessages.internal_static_RequestMap_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.usfca.cs.dfs.CoordMessages.RequestMap.class, edu.usfca.cs.dfs.CoordMessages.RequestMap.Builder.class);
+    }
+
+    public static final int IPADDRESS_FIELD_NUMBER = 1;
+    private volatile java.lang.Object ipaddress_;
+    /**
+     * <code>string ipaddress = 1;</code>
+     */
+    public java.lang.String getIpaddress() {
+      java.lang.Object ref = ipaddress_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        ipaddress_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string ipaddress = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getIpaddressBytes() {
+      java.lang.Object ref = ipaddress_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ipaddress_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PORT_FIELD_NUMBER = 2;
+    private int port_;
+    /**
+     * <code>int32 port = 2;</code>
+     */
+    public int getPort() {
+      return port_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getIpaddressBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, ipaddress_);
+      }
+      if (port_ != 0) {
+        output.writeInt32(2, port_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getIpaddressBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, ipaddress_);
+      }
+      if (port_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, port_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof edu.usfca.cs.dfs.CoordMessages.RequestMap)) {
+        return super.equals(obj);
+      }
+      edu.usfca.cs.dfs.CoordMessages.RequestMap other = (edu.usfca.cs.dfs.CoordMessages.RequestMap) obj;
+
+      boolean result = true;
+      result = result && getIpaddress()
+          .equals(other.getIpaddress());
+      result = result && (getPort()
+          == other.getPort());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + IPADDRESS_FIELD_NUMBER;
+      hash = (53 * hash) + getIpaddress().hashCode();
+      hash = (37 * hash) + PORT_FIELD_NUMBER;
+      hash = (53 * hash) + getPort();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(edu.usfca.cs.dfs.CoordMessages.RequestMap prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RequestMap}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RequestMap)
+        edu.usfca.cs.dfs.CoordMessages.RequestMapOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.usfca.cs.dfs.CoordMessages.internal_static_RequestMap_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.usfca.cs.dfs.CoordMessages.internal_static_RequestMap_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.usfca.cs.dfs.CoordMessages.RequestMap.class, edu.usfca.cs.dfs.CoordMessages.RequestMap.Builder.class);
+      }
+
+      // Construct using edu.usfca.cs.dfs.CoordMessages.RequestMap.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        ipaddress_ = "";
+
+        port_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.usfca.cs.dfs.CoordMessages.internal_static_RequestMap_descriptor;
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.CoordMessages.RequestMap getDefaultInstanceForType() {
+        return edu.usfca.cs.dfs.CoordMessages.RequestMap.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.CoordMessages.RequestMap build() {
+        edu.usfca.cs.dfs.CoordMessages.RequestMap result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.CoordMessages.RequestMap buildPartial() {
+        edu.usfca.cs.dfs.CoordMessages.RequestMap result = new edu.usfca.cs.dfs.CoordMessages.RequestMap(this);
+        result.ipaddress_ = ipaddress_;
+        result.port_ = port_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.usfca.cs.dfs.CoordMessages.RequestMap) {
+          return mergeFrom((edu.usfca.cs.dfs.CoordMessages.RequestMap)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.usfca.cs.dfs.CoordMessages.RequestMap other) {
+        if (other == edu.usfca.cs.dfs.CoordMessages.RequestMap.getDefaultInstance()) return this;
+        if (!other.getIpaddress().isEmpty()) {
+          ipaddress_ = other.ipaddress_;
+          onChanged();
+        }
+        if (other.getPort() != 0) {
+          setPort(other.getPort());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.usfca.cs.dfs.CoordMessages.RequestMap parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.usfca.cs.dfs.CoordMessages.RequestMap) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object ipaddress_ = "";
+      /**
+       * <code>string ipaddress = 1;</code>
+       */
+      public java.lang.String getIpaddress() {
+        java.lang.Object ref = ipaddress_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          ipaddress_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string ipaddress = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getIpaddressBytes() {
+        java.lang.Object ref = ipaddress_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          ipaddress_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string ipaddress = 1;</code>
+       */
+      public Builder setIpaddress(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        ipaddress_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string ipaddress = 1;</code>
+       */
+      public Builder clearIpaddress() {
+        
+        ipaddress_ = getDefaultInstance().getIpaddress();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string ipaddress = 1;</code>
+       */
+      public Builder setIpaddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        ipaddress_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int port_ ;
+      /**
+       * <code>int32 port = 2;</code>
+       */
+      public int getPort() {
+        return port_;
+      }
+      /**
+       * <code>int32 port = 2;</code>
+       */
+      public Builder setPort(int value) {
+        
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 port = 2;</code>
+       */
+      public Builder clearPort() {
+        
+        port_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:RequestMap)
+    }
+
+    // @@protoc_insertion_point(class_scope:RequestMap)
+    private static final edu.usfca.cs.dfs.CoordMessages.RequestMap DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new edu.usfca.cs.dfs.CoordMessages.RequestMap();
+    }
+
+    public static edu.usfca.cs.dfs.CoordMessages.RequestMap getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RequestMap>
+        PARSER = new com.google.protobuf.AbstractParser<RequestMap>() {
+      @java.lang.Override
+      public RequestMap parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RequestMap(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RequestMap> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RequestMap> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public edu.usfca.cs.dfs.CoordMessages.RequestMap getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface DataPacketOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:DataPacket)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.RequestEntry requestentry = 1;</code>
+     */
+    boolean hasRequestentry();
+    /**
+     * <code>.RequestEntry requestentry = 1;</code>
+     */
+    edu.usfca.cs.dfs.CoordMessages.RequestEntry getRequestentry();
+    /**
+     * <code>.RequestEntry requestentry = 1;</code>
+     */
+    edu.usfca.cs.dfs.CoordMessages.RequestEntryOrBuilder getRequestentryOrBuilder();
 
     /**
      * <code>.HashRing hashring = 2;</code>
@@ -2063,21 +2684,34 @@ public final class CoordMessages {
      */
     edu.usfca.cs.dfs.CoordMessages.HashRingEntryOrBuilder getHashringentryOrBuilder();
 
-    public edu.usfca.cs.dfs.CoordMessages.Response.ResponsesCase getResponsesCase();
+    /**
+     * <code>.RequestMap requestmap = 4;</code>
+     */
+    boolean hasRequestmap();
+    /**
+     * <code>.RequestMap requestmap = 4;</code>
+     */
+    edu.usfca.cs.dfs.CoordMessages.RequestMap getRequestmap();
+    /**
+     * <code>.RequestMap requestmap = 4;</code>
+     */
+    edu.usfca.cs.dfs.CoordMessages.RequestMapOrBuilder getRequestmapOrBuilder();
+
+    public edu.usfca.cs.dfs.CoordMessages.DataPacket.ResponsesCase getResponsesCase();
   }
   /**
-   * Protobuf type {@code Response}
+   * Protobuf type {@code DataPacket}
    */
-  public  static final class Response extends
+  public  static final class DataPacket extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:Response)
-      ResponseOrBuilder {
+      // @@protoc_insertion_point(message_implements:DataPacket)
+      DataPacketOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use Response.newBuilder() to construct.
-    private Response(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use DataPacket.newBuilder() to construct.
+    private DataPacket(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private Response() {
+    private DataPacket() {
     }
 
     @java.lang.Override
@@ -2085,7 +2719,7 @@ public final class CoordMessages {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private Response(
+    private DataPacket(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2104,9 +2738,18 @@ public final class CoordMessages {
             case 0:
               done = true;
               break;
-            case 8: {
+            case 10: {
+              edu.usfca.cs.dfs.CoordMessages.RequestEntry.Builder subBuilder = null;
+              if (responsesCase_ == 1) {
+                subBuilder = ((edu.usfca.cs.dfs.CoordMessages.RequestEntry) responses_).toBuilder();
+              }
+              responses_ =
+                  input.readMessage(edu.usfca.cs.dfs.CoordMessages.RequestEntry.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((edu.usfca.cs.dfs.CoordMessages.RequestEntry) responses_);
+                responses_ = subBuilder.buildPartial();
+              }
               responsesCase_ = 1;
-              responses_ = input.readBool();
               break;
             }
             case 18: {
@@ -2137,6 +2780,20 @@ public final class CoordMessages {
               responsesCase_ = 3;
               break;
             }
+            case 34: {
+              edu.usfca.cs.dfs.CoordMessages.RequestMap.Builder subBuilder = null;
+              if (responsesCase_ == 4) {
+                subBuilder = ((edu.usfca.cs.dfs.CoordMessages.RequestMap) responses_).toBuilder();
+              }
+              responses_ =
+                  input.readMessage(edu.usfca.cs.dfs.CoordMessages.RequestMap.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((edu.usfca.cs.dfs.CoordMessages.RequestMap) responses_);
+                responses_ = subBuilder.buildPartial();
+              }
+              responsesCase_ = 4;
+              break;
+            }
             default: {
               if (!parseUnknownFieldProto3(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -2158,24 +2815,25 @@ public final class CoordMessages {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return edu.usfca.cs.dfs.CoordMessages.internal_static_Response_descriptor;
+      return edu.usfca.cs.dfs.CoordMessages.internal_static_DataPacket_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return edu.usfca.cs.dfs.CoordMessages.internal_static_Response_fieldAccessorTable
+      return edu.usfca.cs.dfs.CoordMessages.internal_static_DataPacket_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              edu.usfca.cs.dfs.CoordMessages.Response.class, edu.usfca.cs.dfs.CoordMessages.Response.Builder.class);
+              edu.usfca.cs.dfs.CoordMessages.DataPacket.class, edu.usfca.cs.dfs.CoordMessages.DataPacket.Builder.class);
     }
 
     private int responsesCase_ = 0;
     private java.lang.Object responses_;
     public enum ResponsesCase
         implements com.google.protobuf.Internal.EnumLite {
-      ALLOWED(1),
+      REQUESTENTRY(1),
       HASHRING(2),
       HASHRINGENTRY(3),
+      REQUESTMAP(4),
       RESPONSES_NOT_SET(0);
       private final int value;
       private ResponsesCase(int value) {
@@ -2191,9 +2849,10 @@ public final class CoordMessages {
 
       public static ResponsesCase forNumber(int value) {
         switch (value) {
-          case 1: return ALLOWED;
+          case 1: return REQUESTENTRY;
           case 2: return HASHRING;
           case 3: return HASHRINGENTRY;
+          case 4: return REQUESTMAP;
           case 0: return RESPONSES_NOT_SET;
           default: return null;
         }
@@ -2209,15 +2868,30 @@ public final class CoordMessages {
           responsesCase_);
     }
 
-    public static final int ALLOWED_FIELD_NUMBER = 1;
+    public static final int REQUESTENTRY_FIELD_NUMBER = 1;
     /**
-     * <code>bool allowed = 1;</code>
+     * <code>.RequestEntry requestentry = 1;</code>
      */
-    public boolean getAllowed() {
+    public boolean hasRequestentry() {
+      return responsesCase_ == 1;
+    }
+    /**
+     * <code>.RequestEntry requestentry = 1;</code>
+     */
+    public edu.usfca.cs.dfs.CoordMessages.RequestEntry getRequestentry() {
       if (responsesCase_ == 1) {
-        return (java.lang.Boolean) responses_;
+         return (edu.usfca.cs.dfs.CoordMessages.RequestEntry) responses_;
       }
-      return false;
+      return edu.usfca.cs.dfs.CoordMessages.RequestEntry.getDefaultInstance();
+    }
+    /**
+     * <code>.RequestEntry requestentry = 1;</code>
+     */
+    public edu.usfca.cs.dfs.CoordMessages.RequestEntryOrBuilder getRequestentryOrBuilder() {
+      if (responsesCase_ == 1) {
+         return (edu.usfca.cs.dfs.CoordMessages.RequestEntry) responses_;
+      }
+      return edu.usfca.cs.dfs.CoordMessages.RequestEntry.getDefaultInstance();
     }
 
     public static final int HASHRING_FIELD_NUMBER = 2;
@@ -2272,6 +2946,32 @@ public final class CoordMessages {
       return edu.usfca.cs.dfs.CoordMessages.HashRingEntry.getDefaultInstance();
     }
 
+    public static final int REQUESTMAP_FIELD_NUMBER = 4;
+    /**
+     * <code>.RequestMap requestmap = 4;</code>
+     */
+    public boolean hasRequestmap() {
+      return responsesCase_ == 4;
+    }
+    /**
+     * <code>.RequestMap requestmap = 4;</code>
+     */
+    public edu.usfca.cs.dfs.CoordMessages.RequestMap getRequestmap() {
+      if (responsesCase_ == 4) {
+         return (edu.usfca.cs.dfs.CoordMessages.RequestMap) responses_;
+      }
+      return edu.usfca.cs.dfs.CoordMessages.RequestMap.getDefaultInstance();
+    }
+    /**
+     * <code>.RequestMap requestmap = 4;</code>
+     */
+    public edu.usfca.cs.dfs.CoordMessages.RequestMapOrBuilder getRequestmapOrBuilder() {
+      if (responsesCase_ == 4) {
+         return (edu.usfca.cs.dfs.CoordMessages.RequestMap) responses_;
+      }
+      return edu.usfca.cs.dfs.CoordMessages.RequestMap.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -2287,14 +2987,16 @@ public final class CoordMessages {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (responsesCase_ == 1) {
-        output.writeBool(
-            1, (boolean)((java.lang.Boolean) responses_));
+        output.writeMessage(1, (edu.usfca.cs.dfs.CoordMessages.RequestEntry) responses_);
       }
       if (responsesCase_ == 2) {
         output.writeMessage(2, (edu.usfca.cs.dfs.CoordMessages.HashRing) responses_);
       }
       if (responsesCase_ == 3) {
         output.writeMessage(3, (edu.usfca.cs.dfs.CoordMessages.HashRingEntry) responses_);
+      }
+      if (responsesCase_ == 4) {
+        output.writeMessage(4, (edu.usfca.cs.dfs.CoordMessages.RequestMap) responses_);
       }
       unknownFields.writeTo(output);
     }
@@ -2307,8 +3009,7 @@ public final class CoordMessages {
       size = 0;
       if (responsesCase_ == 1) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(
-              1, (boolean)((java.lang.Boolean) responses_));
+          .computeMessageSize(1, (edu.usfca.cs.dfs.CoordMessages.RequestEntry) responses_);
       }
       if (responsesCase_ == 2) {
         size += com.google.protobuf.CodedOutputStream
@@ -2317,6 +3018,10 @@ public final class CoordMessages {
       if (responsesCase_ == 3) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, (edu.usfca.cs.dfs.CoordMessages.HashRingEntry) responses_);
+      }
+      if (responsesCase_ == 4) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, (edu.usfca.cs.dfs.CoordMessages.RequestMap) responses_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2328,10 +3033,10 @@ public final class CoordMessages {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof edu.usfca.cs.dfs.CoordMessages.Response)) {
+      if (!(obj instanceof edu.usfca.cs.dfs.CoordMessages.DataPacket)) {
         return super.equals(obj);
       }
-      edu.usfca.cs.dfs.CoordMessages.Response other = (edu.usfca.cs.dfs.CoordMessages.Response) obj;
+      edu.usfca.cs.dfs.CoordMessages.DataPacket other = (edu.usfca.cs.dfs.CoordMessages.DataPacket) obj;
 
       boolean result = true;
       result = result && getResponsesCase().equals(
@@ -2339,8 +3044,8 @@ public final class CoordMessages {
       if (!result) return false;
       switch (responsesCase_) {
         case 1:
-          result = result && (getAllowed()
-              == other.getAllowed());
+          result = result && getRequestentry()
+              .equals(other.getRequestentry());
           break;
         case 2:
           result = result && getHashring()
@@ -2349,6 +3054,10 @@ public final class CoordMessages {
         case 3:
           result = result && getHashringentry()
               .equals(other.getHashringentry());
+          break;
+        case 4:
+          result = result && getRequestmap()
+              .equals(other.getRequestmap());
           break;
         case 0:
         default:
@@ -2366,9 +3075,8 @@ public final class CoordMessages {
       hash = (19 * hash) + getDescriptor().hashCode();
       switch (responsesCase_) {
         case 1:
-          hash = (37 * hash) + ALLOWED_FIELD_NUMBER;
-          hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-              getAllowed());
+          hash = (37 * hash) + REQUESTENTRY_FIELD_NUMBER;
+          hash = (53 * hash) + getRequestentry().hashCode();
           break;
         case 2:
           hash = (37 * hash) + HASHRING_FIELD_NUMBER;
@@ -2378,6 +3086,10 @@ public final class CoordMessages {
           hash = (37 * hash) + HASHRINGENTRY_FIELD_NUMBER;
           hash = (53 * hash) + getHashringentry().hashCode();
           break;
+        case 4:
+          hash = (37 * hash) + REQUESTMAP_FIELD_NUMBER;
+          hash = (53 * hash) + getRequestmap().hashCode();
+          break;
         case 0:
         default:
       }
@@ -2386,69 +3098,69 @@ public final class CoordMessages {
       return hash;
     }
 
-    public static edu.usfca.cs.dfs.CoordMessages.Response parseFrom(
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static edu.usfca.cs.dfs.CoordMessages.Response parseFrom(
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static edu.usfca.cs.dfs.CoordMessages.Response parseFrom(
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static edu.usfca.cs.dfs.CoordMessages.Response parseFrom(
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static edu.usfca.cs.dfs.CoordMessages.Response parseFrom(byte[] data)
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static edu.usfca.cs.dfs.CoordMessages.Response parseFrom(
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static edu.usfca.cs.dfs.CoordMessages.Response parseFrom(java.io.InputStream input)
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static edu.usfca.cs.dfs.CoordMessages.Response parseFrom(
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static edu.usfca.cs.dfs.CoordMessages.Response parseDelimitedFrom(java.io.InputStream input)
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static edu.usfca.cs.dfs.CoordMessages.Response parseDelimitedFrom(
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static edu.usfca.cs.dfs.CoordMessages.Response parseFrom(
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static edu.usfca.cs.dfs.CoordMessages.Response parseFrom(
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -2461,7 +3173,7 @@ public final class CoordMessages {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(edu.usfca.cs.dfs.CoordMessages.Response prototype) {
+    public static Builder newBuilder(edu.usfca.cs.dfs.CoordMessages.DataPacket prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -2477,26 +3189,26 @@ public final class CoordMessages {
       return builder;
     }
     /**
-     * Protobuf type {@code Response}
+     * Protobuf type {@code DataPacket}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:Response)
-        edu.usfca.cs.dfs.CoordMessages.ResponseOrBuilder {
+        // @@protoc_insertion_point(builder_implements:DataPacket)
+        edu.usfca.cs.dfs.CoordMessages.DataPacketOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return edu.usfca.cs.dfs.CoordMessages.internal_static_Response_descriptor;
+        return edu.usfca.cs.dfs.CoordMessages.internal_static_DataPacket_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return edu.usfca.cs.dfs.CoordMessages.internal_static_Response_fieldAccessorTable
+        return edu.usfca.cs.dfs.CoordMessages.internal_static_DataPacket_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                edu.usfca.cs.dfs.CoordMessages.Response.class, edu.usfca.cs.dfs.CoordMessages.Response.Builder.class);
+                edu.usfca.cs.dfs.CoordMessages.DataPacket.class, edu.usfca.cs.dfs.CoordMessages.DataPacket.Builder.class);
       }
 
-      // Construct using edu.usfca.cs.dfs.CoordMessages.Response.newBuilder()
+      // Construct using edu.usfca.cs.dfs.CoordMessages.DataPacket.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -2522,17 +3234,17 @@ public final class CoordMessages {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return edu.usfca.cs.dfs.CoordMessages.internal_static_Response_descriptor;
+        return edu.usfca.cs.dfs.CoordMessages.internal_static_DataPacket_descriptor;
       }
 
       @java.lang.Override
-      public edu.usfca.cs.dfs.CoordMessages.Response getDefaultInstanceForType() {
-        return edu.usfca.cs.dfs.CoordMessages.Response.getDefaultInstance();
+      public edu.usfca.cs.dfs.CoordMessages.DataPacket getDefaultInstanceForType() {
+        return edu.usfca.cs.dfs.CoordMessages.DataPacket.getDefaultInstance();
       }
 
       @java.lang.Override
-      public edu.usfca.cs.dfs.CoordMessages.Response build() {
-        edu.usfca.cs.dfs.CoordMessages.Response result = buildPartial();
+      public edu.usfca.cs.dfs.CoordMessages.DataPacket build() {
+        edu.usfca.cs.dfs.CoordMessages.DataPacket result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -2540,10 +3252,14 @@ public final class CoordMessages {
       }
 
       @java.lang.Override
-      public edu.usfca.cs.dfs.CoordMessages.Response buildPartial() {
-        edu.usfca.cs.dfs.CoordMessages.Response result = new edu.usfca.cs.dfs.CoordMessages.Response(this);
+      public edu.usfca.cs.dfs.CoordMessages.DataPacket buildPartial() {
+        edu.usfca.cs.dfs.CoordMessages.DataPacket result = new edu.usfca.cs.dfs.CoordMessages.DataPacket(this);
         if (responsesCase_ == 1) {
-          result.responses_ = responses_;
+          if (requestentryBuilder_ == null) {
+            result.responses_ = responses_;
+          } else {
+            result.responses_ = requestentryBuilder_.build();
+          }
         }
         if (responsesCase_ == 2) {
           if (hashringBuilder_ == null) {
@@ -2557,6 +3273,13 @@ public final class CoordMessages {
             result.responses_ = responses_;
           } else {
             result.responses_ = hashringentryBuilder_.build();
+          }
+        }
+        if (responsesCase_ == 4) {
+          if (requestmapBuilder_ == null) {
+            result.responses_ = responses_;
+          } else {
+            result.responses_ = requestmapBuilder_.build();
           }
         }
         result.responsesCase_ = responsesCase_;
@@ -2598,19 +3321,19 @@ public final class CoordMessages {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof edu.usfca.cs.dfs.CoordMessages.Response) {
-          return mergeFrom((edu.usfca.cs.dfs.CoordMessages.Response)other);
+        if (other instanceof edu.usfca.cs.dfs.CoordMessages.DataPacket) {
+          return mergeFrom((edu.usfca.cs.dfs.CoordMessages.DataPacket)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(edu.usfca.cs.dfs.CoordMessages.Response other) {
-        if (other == edu.usfca.cs.dfs.CoordMessages.Response.getDefaultInstance()) return this;
+      public Builder mergeFrom(edu.usfca.cs.dfs.CoordMessages.DataPacket other) {
+        if (other == edu.usfca.cs.dfs.CoordMessages.DataPacket.getDefaultInstance()) return this;
         switch (other.getResponsesCase()) {
-          case ALLOWED: {
-            setAllowed(other.getAllowed());
+          case REQUESTENTRY: {
+            mergeRequestentry(other.getRequestentry());
             break;
           }
           case HASHRING: {
@@ -2619,6 +3342,10 @@ public final class CoordMessages {
           }
           case HASHRINGENTRY: {
             mergeHashringentry(other.getHashringentry());
+            break;
+          }
+          case REQUESTMAP: {
+            mergeRequestmap(other.getRequestmap());
             break;
           }
           case RESPONSES_NOT_SET: {
@@ -2640,11 +3367,11 @@ public final class CoordMessages {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        edu.usfca.cs.dfs.CoordMessages.Response parsedMessage = null;
+        edu.usfca.cs.dfs.CoordMessages.DataPacket parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (edu.usfca.cs.dfs.CoordMessages.Response) e.getUnfinishedMessage();
+          parsedMessage = (edu.usfca.cs.dfs.CoordMessages.DataPacket) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -2669,34 +3396,140 @@ public final class CoordMessages {
       }
 
 
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.CoordMessages.RequestEntry, edu.usfca.cs.dfs.CoordMessages.RequestEntry.Builder, edu.usfca.cs.dfs.CoordMessages.RequestEntryOrBuilder> requestentryBuilder_;
       /**
-       * <code>bool allowed = 1;</code>
+       * <code>.RequestEntry requestentry = 1;</code>
        */
-      public boolean getAllowed() {
-        if (responsesCase_ == 1) {
-          return (java.lang.Boolean) responses_;
+      public boolean hasRequestentry() {
+        return responsesCase_ == 1;
+      }
+      /**
+       * <code>.RequestEntry requestentry = 1;</code>
+       */
+      public edu.usfca.cs.dfs.CoordMessages.RequestEntry getRequestentry() {
+        if (requestentryBuilder_ == null) {
+          if (responsesCase_ == 1) {
+            return (edu.usfca.cs.dfs.CoordMessages.RequestEntry) responses_;
+          }
+          return edu.usfca.cs.dfs.CoordMessages.RequestEntry.getDefaultInstance();
+        } else {
+          if (responsesCase_ == 1) {
+            return requestentryBuilder_.getMessage();
+          }
+          return edu.usfca.cs.dfs.CoordMessages.RequestEntry.getDefaultInstance();
         }
-        return false;
       }
       /**
-       * <code>bool allowed = 1;</code>
+       * <code>.RequestEntry requestentry = 1;</code>
        */
-      public Builder setAllowed(boolean value) {
-        responsesCase_ = 1;
-        responses_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>bool allowed = 1;</code>
-       */
-      public Builder clearAllowed() {
-        if (responsesCase_ == 1) {
-          responsesCase_ = 0;
-          responses_ = null;
+      public Builder setRequestentry(edu.usfca.cs.dfs.CoordMessages.RequestEntry value) {
+        if (requestentryBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          responses_ = value;
           onChanged();
+        } else {
+          requestentryBuilder_.setMessage(value);
+        }
+        responsesCase_ = 1;
+        return this;
+      }
+      /**
+       * <code>.RequestEntry requestentry = 1;</code>
+       */
+      public Builder setRequestentry(
+          edu.usfca.cs.dfs.CoordMessages.RequestEntry.Builder builderForValue) {
+        if (requestentryBuilder_ == null) {
+          responses_ = builderForValue.build();
+          onChanged();
+        } else {
+          requestentryBuilder_.setMessage(builderForValue.build());
+        }
+        responsesCase_ = 1;
+        return this;
+      }
+      /**
+       * <code>.RequestEntry requestentry = 1;</code>
+       */
+      public Builder mergeRequestentry(edu.usfca.cs.dfs.CoordMessages.RequestEntry value) {
+        if (requestentryBuilder_ == null) {
+          if (responsesCase_ == 1 &&
+              responses_ != edu.usfca.cs.dfs.CoordMessages.RequestEntry.getDefaultInstance()) {
+            responses_ = edu.usfca.cs.dfs.CoordMessages.RequestEntry.newBuilder((edu.usfca.cs.dfs.CoordMessages.RequestEntry) responses_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            responses_ = value;
+          }
+          onChanged();
+        } else {
+          if (responsesCase_ == 1) {
+            requestentryBuilder_.mergeFrom(value);
+          }
+          requestentryBuilder_.setMessage(value);
+        }
+        responsesCase_ = 1;
+        return this;
+      }
+      /**
+       * <code>.RequestEntry requestentry = 1;</code>
+       */
+      public Builder clearRequestentry() {
+        if (requestentryBuilder_ == null) {
+          if (responsesCase_ == 1) {
+            responsesCase_ = 0;
+            responses_ = null;
+            onChanged();
+          }
+        } else {
+          if (responsesCase_ == 1) {
+            responsesCase_ = 0;
+            responses_ = null;
+          }
+          requestentryBuilder_.clear();
         }
         return this;
+      }
+      /**
+       * <code>.RequestEntry requestentry = 1;</code>
+       */
+      public edu.usfca.cs.dfs.CoordMessages.RequestEntry.Builder getRequestentryBuilder() {
+        return getRequestentryFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.RequestEntry requestentry = 1;</code>
+       */
+      public edu.usfca.cs.dfs.CoordMessages.RequestEntryOrBuilder getRequestentryOrBuilder() {
+        if ((responsesCase_ == 1) && (requestentryBuilder_ != null)) {
+          return requestentryBuilder_.getMessageOrBuilder();
+        } else {
+          if (responsesCase_ == 1) {
+            return (edu.usfca.cs.dfs.CoordMessages.RequestEntry) responses_;
+          }
+          return edu.usfca.cs.dfs.CoordMessages.RequestEntry.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.RequestEntry requestentry = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.CoordMessages.RequestEntry, edu.usfca.cs.dfs.CoordMessages.RequestEntry.Builder, edu.usfca.cs.dfs.CoordMessages.RequestEntryOrBuilder> 
+          getRequestentryFieldBuilder() {
+        if (requestentryBuilder_ == null) {
+          if (!(responsesCase_ == 1)) {
+            responses_ = edu.usfca.cs.dfs.CoordMessages.RequestEntry.getDefaultInstance();
+          }
+          requestentryBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              edu.usfca.cs.dfs.CoordMessages.RequestEntry, edu.usfca.cs.dfs.CoordMessages.RequestEntry.Builder, edu.usfca.cs.dfs.CoordMessages.RequestEntryOrBuilder>(
+                  (edu.usfca.cs.dfs.CoordMessages.RequestEntry) responses_,
+                  getParentForChildren(),
+                  isClean());
+          responses_ = null;
+        }
+        responsesCase_ = 1;
+        onChanged();;
+        return requestentryBuilder_;
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -2970,6 +3803,142 @@ public final class CoordMessages {
         onChanged();;
         return hashringentryBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.CoordMessages.RequestMap, edu.usfca.cs.dfs.CoordMessages.RequestMap.Builder, edu.usfca.cs.dfs.CoordMessages.RequestMapOrBuilder> requestmapBuilder_;
+      /**
+       * <code>.RequestMap requestmap = 4;</code>
+       */
+      public boolean hasRequestmap() {
+        return responsesCase_ == 4;
+      }
+      /**
+       * <code>.RequestMap requestmap = 4;</code>
+       */
+      public edu.usfca.cs.dfs.CoordMessages.RequestMap getRequestmap() {
+        if (requestmapBuilder_ == null) {
+          if (responsesCase_ == 4) {
+            return (edu.usfca.cs.dfs.CoordMessages.RequestMap) responses_;
+          }
+          return edu.usfca.cs.dfs.CoordMessages.RequestMap.getDefaultInstance();
+        } else {
+          if (responsesCase_ == 4) {
+            return requestmapBuilder_.getMessage();
+          }
+          return edu.usfca.cs.dfs.CoordMessages.RequestMap.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.RequestMap requestmap = 4;</code>
+       */
+      public Builder setRequestmap(edu.usfca.cs.dfs.CoordMessages.RequestMap value) {
+        if (requestmapBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          responses_ = value;
+          onChanged();
+        } else {
+          requestmapBuilder_.setMessage(value);
+        }
+        responsesCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>.RequestMap requestmap = 4;</code>
+       */
+      public Builder setRequestmap(
+          edu.usfca.cs.dfs.CoordMessages.RequestMap.Builder builderForValue) {
+        if (requestmapBuilder_ == null) {
+          responses_ = builderForValue.build();
+          onChanged();
+        } else {
+          requestmapBuilder_.setMessage(builderForValue.build());
+        }
+        responsesCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>.RequestMap requestmap = 4;</code>
+       */
+      public Builder mergeRequestmap(edu.usfca.cs.dfs.CoordMessages.RequestMap value) {
+        if (requestmapBuilder_ == null) {
+          if (responsesCase_ == 4 &&
+              responses_ != edu.usfca.cs.dfs.CoordMessages.RequestMap.getDefaultInstance()) {
+            responses_ = edu.usfca.cs.dfs.CoordMessages.RequestMap.newBuilder((edu.usfca.cs.dfs.CoordMessages.RequestMap) responses_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            responses_ = value;
+          }
+          onChanged();
+        } else {
+          if (responsesCase_ == 4) {
+            requestmapBuilder_.mergeFrom(value);
+          }
+          requestmapBuilder_.setMessage(value);
+        }
+        responsesCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>.RequestMap requestmap = 4;</code>
+       */
+      public Builder clearRequestmap() {
+        if (requestmapBuilder_ == null) {
+          if (responsesCase_ == 4) {
+            responsesCase_ = 0;
+            responses_ = null;
+            onChanged();
+          }
+        } else {
+          if (responsesCase_ == 4) {
+            responsesCase_ = 0;
+            responses_ = null;
+          }
+          requestmapBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.RequestMap requestmap = 4;</code>
+       */
+      public edu.usfca.cs.dfs.CoordMessages.RequestMap.Builder getRequestmapBuilder() {
+        return getRequestmapFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.RequestMap requestmap = 4;</code>
+       */
+      public edu.usfca.cs.dfs.CoordMessages.RequestMapOrBuilder getRequestmapOrBuilder() {
+        if ((responsesCase_ == 4) && (requestmapBuilder_ != null)) {
+          return requestmapBuilder_.getMessageOrBuilder();
+        } else {
+          if (responsesCase_ == 4) {
+            return (edu.usfca.cs.dfs.CoordMessages.RequestMap) responses_;
+          }
+          return edu.usfca.cs.dfs.CoordMessages.RequestMap.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.RequestMap requestmap = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.CoordMessages.RequestMap, edu.usfca.cs.dfs.CoordMessages.RequestMap.Builder, edu.usfca.cs.dfs.CoordMessages.RequestMapOrBuilder> 
+          getRequestmapFieldBuilder() {
+        if (requestmapBuilder_ == null) {
+          if (!(responsesCase_ == 4)) {
+            responses_ = edu.usfca.cs.dfs.CoordMessages.RequestMap.getDefaultInstance();
+          }
+          requestmapBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              edu.usfca.cs.dfs.CoordMessages.RequestMap, edu.usfca.cs.dfs.CoordMessages.RequestMap.Builder, edu.usfca.cs.dfs.CoordMessages.RequestMapOrBuilder>(
+                  (edu.usfca.cs.dfs.CoordMessages.RequestMap) responses_,
+                  getParentForChildren(),
+                  isClean());
+          responses_ = null;
+        }
+        responsesCase_ = 4;
+        onChanged();;
+        return requestmapBuilder_;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -2983,41 +3952,41 @@ public final class CoordMessages {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:Response)
+      // @@protoc_insertion_point(builder_scope:DataPacket)
     }
 
-    // @@protoc_insertion_point(class_scope:Response)
-    private static final edu.usfca.cs.dfs.CoordMessages.Response DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:DataPacket)
+    private static final edu.usfca.cs.dfs.CoordMessages.DataPacket DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new edu.usfca.cs.dfs.CoordMessages.Response();
+      DEFAULT_INSTANCE = new edu.usfca.cs.dfs.CoordMessages.DataPacket();
     }
 
-    public static edu.usfca.cs.dfs.CoordMessages.Response getDefaultInstance() {
+    public static edu.usfca.cs.dfs.CoordMessages.DataPacket getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<Response>
-        PARSER = new com.google.protobuf.AbstractParser<Response>() {
+    private static final com.google.protobuf.Parser<DataPacket>
+        PARSER = new com.google.protobuf.AbstractParser<DataPacket>() {
       @java.lang.Override
-      public Response parsePartialFrom(
+      public DataPacket parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Response(input, extensionRegistry);
+        return new DataPacket(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<Response> parser() {
+    public static com.google.protobuf.Parser<DataPacket> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Response> getParserForType() {
+    public com.google.protobuf.Parser<DataPacket> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public edu.usfca.cs.dfs.CoordMessages.Response getDefaultInstanceForType() {
+    public edu.usfca.cs.dfs.CoordMessages.DataPacket getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -3044,10 +4013,15 @@ public final class CoordMessages {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_HashRing_HashRingsEntry_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Response_descriptor;
+    internal_static_RequestMap_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Response_fieldAccessorTable;
+      internal_static_RequestMap_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_DataPacket_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_DataPacket_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -3063,11 +4037,13 @@ public final class CoordMessages {
       "\002 \001(\t\022\014\n\004port\030\003 \001(\005\"y\n\010HashRing\022+\n\thashR" +
       "ings\030\001 \003(\0132\030.HashRing.HashRingsEntry\032@\n\016" +
       "HashRingsEntry\022\013\n\003key\030\001 \001(\t\022\035\n\005value\030\002 \001" +
-      "(\0132\016.HashRingEntry:\0028\001\"r\n\010Response\022\021\n\007al" +
-      "lowed\030\001 \001(\010H\000\022\035\n\010hashring\030\002 \001(\0132\t.HashRi" +
-      "ngH\000\022\'\n\rhashringentry\030\003 \001(\0132\016.HashRingEn" +
-      "tryH\000B\013\n\tresponsesB\022\n\020edu.usfca.cs.dfsb\006" +
-      "proto3"
+      "(\0132\016.HashRingEntry:\0028\001\"-\n\nRequestMap\022\021\n\t" +
+      "ipaddress\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\"\253\001\n\nDataPa" +
+      "cket\022%\n\014requestentry\030\001 \001(\0132\r.RequestEntr" +
+      "yH\000\022\035\n\010hashring\030\002 \001(\0132\t.HashRingH\000\022\'\n\rha" +
+      "shringentry\030\003 \001(\0132\016.HashRingEntryH\000\022!\n\nr" +
+      "equestmap\030\004 \001(\0132\013.RequestMapH\000B\013\n\trespon" +
+      "sesB\022\n\020edu.usfca.cs.dfsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3105,12 +4081,18 @@ public final class CoordMessages {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_HashRing_HashRingsEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
-    internal_static_Response_descriptor =
+    internal_static_RequestMap_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_Response_fieldAccessorTable = new
+    internal_static_RequestMap_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Response_descriptor,
-        new java.lang.String[] { "Allowed", "Hashring", "Hashringentry", "Responses", });
+        internal_static_RequestMap_descriptor,
+        new java.lang.String[] { "Ipaddress", "Port", });
+    internal_static_DataPacket_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_DataPacket_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_DataPacket_descriptor,
+        new java.lang.String[] { "Requestentry", "Hashring", "Hashringentry", "Requestmap", "Responses", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -61,20 +61,40 @@ public class Coordinator extends Thread{
             try {
                 InputStream instream = s.getInputStream();
                 OutputStream outputStream = s.getOutputStream();
-                CoordMessages.RequestEntry entryRequest = CoordMessages.RequestEntry.parseDelimitedFrom(instream);
-                CoordMessages.HashRingEntry hashRingEntry = put_in_map(entryRequest);
-
-                hashRing.sendUpdate(entryRequest.getIpaddress(),entryRequest.getPort(),hashRingEntry);
-
-                CoordMessages.Response response = CoordMessages.Response.newBuilder()
-                        .setHashring(hashRing.treemap_to_map())
-                        .build();
-                response.writeDelimitedTo(outputStream);
+                CoordMessages.DataPacket request = CoordMessages.DataPacket.parseDelimitedFrom(instream);
+                System.out.println("Data Packet Accepted");
+                if(request.hasRequestentry())
+                {
+                    process_entry(request,outputStream);
+                }
+                else if(request.hasRequestmap()){
+                    System.out.println("hash map request");
+                    process_map_request(outputStream);
+                }
                 s.close();
             }catch(IOException | HashTopologyException | HashException e)
             {
                 e.printStackTrace();
             }
+        }
+
+        private void process_map_request(OutputStream outputStream) throws IOException {
+            CoordMessages.DataPacket response = CoordMessages.DataPacket.newBuilder()
+                    .setHashring(hashRing.treemap_to_map())
+                    .build();
+            response.writeDelimitedTo(outputStream);
+        }
+
+        private void process_entry(CoordMessages.DataPacket dataPacket, OutputStream outputStream) throws HashTopologyException, HashException, IOException {
+            CoordMessages.RequestEntry entryRequest = dataPacket.getRequestentry();
+            CoordMessages.HashRingEntry hashRingEntry = put_in_map(entryRequest);
+
+            hashRing.sendUpdate(entryRequest.getIpaddress(),entryRequest.getPort(),hashRingEntry);
+
+            CoordMessages.DataPacket response = CoordMessages.DataPacket.newBuilder()
+                    .setHashring(hashRing.treemap_to_map())
+                    .build();
+            response.writeDelimitedTo(outputStream);
         }
 
         private CoordMessages.HashRingEntry put_in_map(CoordMessages.RequestEntry entryRequest) throws HashException, HashTopologyException {
@@ -97,7 +117,6 @@ public class Coordinator extends Thread{
                     .build();
 
             return hashRingEntry;
-
         }
 
 
@@ -115,7 +134,7 @@ public class Coordinator extends Thread{
 
     public static void main(String[] args) {
 
-        System.out.println("Starting coordinator...");
+        System.out.println("Starting coordinator on localhost");
         try {
             Coordinator coordinator = new Coordinator();
             coordinator.startCoord();

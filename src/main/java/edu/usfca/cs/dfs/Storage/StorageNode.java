@@ -17,10 +17,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
+
 
 
 public class StorageNode extends Thread{
@@ -51,17 +49,6 @@ public class StorageNode extends Thread{
     throws UnknownHostException {
         return InetAddress.getLocalHost().getHostName();
     }
-
-
-    private int get_total_chunks(String filename)
-    {
-        int i = 1;
-
-        while(chunk_storage.containsKey(filename + Integer.toString(i)))
-            i += 1;
-        return i - 1;
-    }
-
 
 
     @Override
@@ -105,6 +92,8 @@ public class StorageNode extends Thread{
                     process_request(dataPacket.getRequest(),s);
                 else if(dataPacket.hasHashringentry()) {
                     process_hre(dataPacket);
+                }else if(dataPacket.hasSinglechunk()){
+                    process_single_chunk(dataPacket, s);
                 }
                 s.close();
             }catch(IOException e) {
@@ -115,7 +104,9 @@ public class StorageNode extends Thread{
         }
 
     }
-
+    /*
+    Function used to proccess hash ring request
+     */
     private void process_hre(StorageMessages.DataPacket dataPacket)
     {
         System.out.println("adding node");
@@ -127,6 +118,9 @@ public class StorageNode extends Thread{
         }
     }
 
+    /*
+    Request access from the coordinator.
+     */
     private boolean request_access(String ipaddress, int port)
     {
         try (
@@ -138,8 +132,12 @@ public class StorageNode extends Thread{
                     .setIpaddress(this.ipaddress)
                     .setPort(this.port)
                     .build();
-            requestEntry.writeDelimitedTo(outputStream);
-            CoordMessages.Response response = CoordMessages.Response.getDefaultInstance();
+            CoordMessages.DataPacket dataPacket = CoordMessages.DataPacket.newBuilder()
+                    .setRequestentry(requestEntry)
+                    .build();
+
+            dataPacket.writeDelimitedTo(outputStream);
+            CoordMessages.DataPacket response = CoordMessages.DataPacket.getDefaultInstance();
             response = response.parseDelimitedFrom(inputStream);
 
             hashRing = new HashRing(sha1,response.getHashring());
@@ -155,9 +153,11 @@ public class StorageNode extends Thread{
         return false;
     }
 
-
-
-
+    /*
+    Process request packets
+    -   Storage packets
+    -   Get requests
+     */
     private void process_request(StorageMessages.Request r_chunk,Socket s) throws InterruptedException {
         Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
         System.out.println(chunk_storage.toString());
@@ -172,8 +172,8 @@ public class StorageNode extends Thread{
             System.out.println(s_chunk.getData_chunk().length);
         }
         else if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.get_chunk) {
-            if(get_chunk(r_chunk.getFileName() + Integer.toString(r_chunk.getChunkId()), r_chunk.getIpaddress(),r_chunk.getPort()))
-                send_flag(s.getInetAddress().toString(),s.getPort());
+            String key = key_gen(r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
+            get_chunk(key, r_chunk.getIpaddress(),r_chunk.getPort());
 
 
         }
@@ -184,8 +184,10 @@ public class StorageNode extends Thread{
         }
 
     }
-
-    public boolean get_chunk(String key,String ipaddress,int port){
+    /*
+    processes a single chunk to send back to cliet
+     */
+    public void get_chunk(String key,String ipaddress,int port){
         if(chunk_storage.containsKey(key))
         {
             Chunk chunk = chunk_storage.get(key);
@@ -202,25 +204,20 @@ public class StorageNode extends Thread{
                     .build();
             DataRequester dataRequester = new DataRequester(dataPacket,ipaddress,port);
             dataRequester.start();
-            return chunk.getIs_last();
         }
-        return false;
     }
 
-    private void send_flag(String ipaddress, int port){
-
-    }
 
     public void store_chunk(StorageMessages.Request r_chunk) throws HashException {
         Chunk chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
-        String key = chunk.getFile_name() + Integer.toString(chunk.getChunk_id());
+        String key = key_gen(chunk.getFile_name(),chunk.getChunk_id(),chunk.getIs_last());
         System.out.println(key);
         System.out.println(hashRing.toString());
         BigInteger pos = hashRing.locate(key.getBytes());
         HashRingEntry node = hashRing.returnNode(pos);
         System.out.println(pos);
         if(node.inetaddress.equals(this.ipaddress) && node.port == this.port)
-            chunk_storage.put(chunk.getFile_name()+Integer.toString(r_chunk.getChunkId()),chunk);
+            chunk_storage.put(key,chunk);
         else {
             System.out.println("Storing on external node " + chunk.getFile_name() + Integer.toString(chunk.getChunk_id()));
             System.out.println(node.inetaddress + " " + Integer.toString(node.port));
@@ -230,6 +227,37 @@ public class StorageNode extends Thread{
                     .build();
             DataRequester dataRequester = new DataRequester(dataPacket,node.inetaddress,node.port);
             dataRequester.start();
+        }
+    }
+
+    private String key_gen(String filename, int chunkid, boolean islast){
+        if(islast)
+            return filename + "last";
+        else
+            return filename + Integer.toString(chunkid);
+    }
+
+    private void process_single_chunk(StorageMessages.DataPacket dataPacket, Socket s){
+        StorageMessages.SingleChunk singleChunk = dataPacket.getSinglechunk();
+
+        try (
+                OutputStream outputStream = s.getOutputStream();
+        ) {
+            Chunk chunk = chunk_storage.get(singleChunk.getFileName()+"last");
+            ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
+            System.out.println("sending file: " + chunk.getFile_name());
+            singleChunk = StorageMessages.SingleChunk.newBuilder()
+                    .setChunkNumber(chunk.getChunk_id())
+                    .setFileName(chunk.getFile_name())
+                    .setIsLast(chunk.getIs_last())
+                    .setData(bsval)
+                    .build();
+            dataPacket = StorageMessages.DataPacket.newBuilder()
+                    .setSinglechunk(singleChunk)
+                    .build();
+            dataPacket.writeDelimitedTo(outputStream);
+        }catch(IOException ioe){
+            ioe.printStackTrace();
         }
     }
 
@@ -246,7 +274,6 @@ public class StorageNode extends Thread{
                 e.printStackTrace();
             }
             i += 1;
-
         }
     }
 
@@ -306,7 +333,7 @@ public class StorageNode extends Thread{
             throws Exception {
         String hostname = getHostname();
         System.out.println("Starting storage node on " + hostname + "...");
-        StorageNode storageNode = new StorageNode(5050);
+        StorageNode storageNode = new StorageNode(5070);
         storageNode.startNode();
 
     }

@@ -4,19 +4,22 @@ import java.io.*;
 
 
 public class Data {
-    byte[] data;
+    private byte[] data;
+    private String filename;
 
-    public Data(byte[] data){
+    public Data(byte[] data, String filename){
+        this.filename = filename;
         this.data = data;
     }
 
-    public Data(String path){
+    public Data(String path, String filename){
         File file = new File(path);
         try {
             data = read(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.filename = filename;
     }
 
     private byte[] read(File file) throws IOException {
@@ -51,4 +54,5 @@ public class Data {
     public byte[] getData() {
         return data;
     }
+    public String getFilename(){return filename;}
 }

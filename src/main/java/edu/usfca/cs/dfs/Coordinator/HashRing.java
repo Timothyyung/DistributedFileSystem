@@ -46,14 +46,11 @@ public class HashRing<T> {
     {
         System.out.println("MAKING MAP TO TREEMAP");
         for(Map.Entry<String, CoordMessages.HashRingEntry> entry: map.getHashRings().entrySet()){
-            System.out.println(entry.getKey());
             BigInteger pos = new BigInteger(entry.getValue().getPosition().toByteArray());
             BigInteger key = new BigInteger(entry.getKey());
-            System.out.println(key.toString() + " \n\n\n");
             HashRingEntry hashRingEntry = new HashRingEntry(pos,entry.getValue().getIpaddress(),entry.getValue().getPort());
             entryMap.put(key,hashRingEntry);
         }
-        System.out.println("\n\n\n");
     }
 
     public CoordMessages.HashRing treemap_to_map()
