@@ -22,12 +22,22 @@ import java.net.UnknownHostException;
 
 public class Client{
 
-    String ipaddress;
-    int port;
-    HashRing<byte[]> hashRing;
-    SHA1 sha1 = new SHA1();
-    ClientReciever clientReciever;
-    private boolean finished;
+    private String ipaddress;
+    private int port;
+    private HashRing<byte[]> hashRing;
+    private SHA1 sha1 = new SHA1();
+    private ClientReciever clientReciever;
+
+    /*
+    Client class will be used to interact with storage nodes...
+    Will be able to
+    - Shard data
+    - Get data from nodes
+    - View chunk list from a specfic storage node
+    - Get the number of chunks in a file
+
+     */
+
     public Client(int port){
         try {
             ipaddress = InetAddress.getLocalHost().getHostName();
@@ -40,7 +50,10 @@ public class Client{
         clientReciever.start();
     }
 
-
+/*
+Sharding allows for the user to input a file ( right now can only handle TXT files ) and split them up into
+different chunks to be sent to the storage nodes. We will allow the storage nodes to handle all storage operations
+ */
 
     public void shard(String ipaddress, int port, Data data)
     {
@@ -158,8 +171,8 @@ public class Client{
         try(
                Socket s = new Socket(node.inetaddress,node.port);
                OutputStream outputStream = s.getOutputStream();
-               InputStream inputStream = s.getInputStream();
-       ) {
+               InputStream inputStream = s.getInputStream()
+        ) {
 
            StorageMessages.SingleChunk singleChunk = StorageMessages.SingleChunk.newBuilder()
                    .setFileName(filename)
@@ -171,7 +184,7 @@ public class Client{
 
            dataPacket.writeDelimitedTo(outputStream);
 
-           dataPacket = dataPacket.parseDelimitedFrom(inputStream);
+           dataPacket = StorageMessages.DataPacket.parseDelimitedFrom(inputStream);
            return dataPacket.getSinglechunk().getChunkNumber();
        }catch(IOException ioe){
            ioe.printStackTrace();
@@ -213,7 +226,7 @@ public class Client{
            try(
                    Socket s = new Socket(ipaddress,port);
                    OutputStream outputStream = s.getOutputStream();
-                   InputStream inputStream = s.getInputStream();
+                   InputStream inputStream = s.getInputStream()
            ){
                CoordMessages.RequestMap request = CoordMessages.RequestMap.newBuilder()
                        .setIpaddress(this.ipaddress)
@@ -225,7 +238,7 @@ public class Client{
                dataPacket.writeDelimitedTo(outputStream);
 
                CoordMessages.DataPacket response = CoordMessages.DataPacket.getDefaultInstance();
-               response = response.parseDelimitedFrom(inputStream);
+               response = CoordMessages.DataPacket.parseDelimitedFrom(inputStream);
 
                hashRing = new HashRing(sha1,response.getHashring());
                System.out.println(hashRing.toString());
