@@ -243,9 +243,16 @@ public class HashRing<T> {
         return node;
     }
 
-    public void return_entries()
+    public void remove_node(BigInteger pos)
     {
-        System.out.println(entryMap.toString());
+        entryMap.remove(pos);
+        remap_hashring();
+    }
+
+    public HashRingEntry get_next_entry(BigInteger pos)
+    {
+        pos = pos.add(BigInteger.ONE);
+        return entryMap.ceilingEntry(pos).getValue();
     }
 
     @Override
@@ -276,7 +283,6 @@ public class HashRing<T> {
 
     public void remap_hashring() {
         HashRingEntry firstEntry = entryMap.values().iterator().next();
-        HashRingEntry currentEntry = firstEntry;
         HashRingEntry prevEntry = firstEntry;
 
         for (Map.Entry<BigInteger, HashRingEntry> entry : entryMap.entrySet()) {

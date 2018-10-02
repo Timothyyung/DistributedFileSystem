@@ -21,6 +21,11 @@ message RequestMap{
     int32 port = 2;
 }
 
+message Heartbeat{
+    int32 map_size = 1;
+    bool map_correct = 2;
+}
+
 message DataPacket{
     oneof responses{
         RequestEntry requestentry = 1;

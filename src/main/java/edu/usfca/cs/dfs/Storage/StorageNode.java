@@ -28,7 +28,6 @@ public class StorageNode extends Thread{
     private SHA1 sha1 = new SHA1();
     private String ipaddress;
     private int port;
-    private boolean finished;
 
 
     public StorageNode(int port){
@@ -178,10 +177,6 @@ public class StorageNode extends Thread{
 
         }
 
-        else if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.get_data){
-            System.out.println("Request Accepted");
-            data_reply(r_chunk.getFileName(), r_chunk.getIpaddress(),r_chunk.getPort());
-        }
 
     }
     /*
@@ -230,6 +225,10 @@ public class StorageNode extends Thread{
         }
     }
 
+    private void pipline_update(Chunk chunk){
+
+    }
+
     private String key_gen(String filename, int chunkid, boolean islast){
         if(islast)
             return filename + "last";
@@ -261,71 +260,6 @@ public class StorageNode extends Thread{
         }
     }
 
-    private void data_reply(String filename, String ipaddress, int port) throws InterruptedException {
-        int i = 1;
-       finished = false;
-        while(!finished)
-        {
-            Thread.sleep(1000);
-
-            try {
-                search_and_send(filename,i,ipaddress,port);
-            } catch (HashException e) {
-                e.printStackTrace();
-            }
-            i += 1;
-        }
-    }
-
-    private void search_and_send(String filename,int chunknumber, String ipaddress,int port) throws HashException {
-        boolean last = false;
-        String key = filename + Integer.toString(chunknumber);
-        if(chunk_storage.containsKey(key)){
-            System.out.println("I have this chunk");
-            last = send_to_node(key,ipaddress,port);
-        }else {
-            System.out.println("I dont having this chunk");
-            request_from_storage(filename,chunknumber,ipaddress, port);
-        }
-        System.out.println("data chunk " + filename + Integer.toString(chunknumber)+ "sent");
-        finished = last;
-    }
-
-    private boolean send_to_node(String filekey,String ipaddress, int port){
-            Chunk chunk = chunk_storage.get(filekey);
-            ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
-            System.out.println("sending file: " + chunk.getFile_name());
-            StorageMessages.SingleChunk singleChunk = StorageMessages.SingleChunk.newBuilder()
-                    .setChunkNumber(chunk.getChunk_id())
-                    .setFileName(chunk.getFile_name())
-                    .setIsLast(chunk.getIs_last())
-                    .setData(bsval)
-                    .build();
-            StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
-                    .setSinglechunk(singleChunk)
-                    .build();
-            DataRequester sender = new DataRequester(dataPacket,ipaddress,port);
-            sender.start();
-            return chunk.getIs_last();
-        }
-
-    private void request_from_storage(String filename, int chunknumber,String ipaddress, int port) throws HashException {
-        StorageMessages.Request request = StorageMessages.Request.newBuilder()
-                .setOpcode(StorageMessages.Request.Op_code.get_chunk)
-                .setFileName(filename)
-                .setChunkId(chunknumber)
-                .setIpaddress(ipaddress)
-                .setPort(port)
-                .build();
-        StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
-                .setRequest(request)
-                .build();
-        BigInteger pos = hashRing.locate((filename+Integer.toString(chunknumber)).getBytes());
-        HashRingEntry node = hashRing.returnNode(pos);
-        DataRequester dataRequester = new DataRequester(dataPacket,node.inetaddress ,node.port);
-        dataRequester.start();
-
-    }
 
 
 

@@ -37,6 +37,11 @@ message SingleChunk{
     bool isLast = 6;
 }
 
+message ChunkLife{
+    SingleChunk singleChunk = 1;
+    int32 life = 2;
+}
+
 message ListAllChunks{
     repeated SingleChunk singlechunk = 1;
 }
@@ -48,6 +53,7 @@ message DataPacket {
         NumberOfChunks numberofchunks = 3;
         ListAllChunks listallchunks = 4;
         SingleChunk singlechunk = 5;
+        ChunkLife chunklife = 6;
     }
 }
 

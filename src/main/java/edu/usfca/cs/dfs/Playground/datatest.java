@@ -50,8 +50,10 @@ public class datatest {
         System.out.println(hashRing.locate(("a.txt4".getBytes())));
         System.out.print("\n\n\n\n");
         String jelly = jello.toString();
+        System.out.println(jelly);
+        System.out.println(hashRing.get_next_entry(jello).position);
         BigInteger muddyjelly = new BigInteger(jelly);
-
+/*
         hashRing.unneighbor();
         System.out.println(hashRing.toString());
         hashRing.remap_hashring();
@@ -60,11 +62,16 @@ public class datatest {
         System.out.println(hashRing1.getHashRings().toString());
 
         HashRing<byte[]> hashRing2 = new HashRing(sha1,hashRing1);
+        System.out.println(sha1.hash("a.txt1".getBytes()));
         System.out.println(hashRing2.locate(("a.txt1".getBytes())));
+        System.out.println(sha1.hash("a.txt2".getBytes()));
         System.out.println(hashRing2.locate(("a.txt2".getBytes())));
+        System.out.println(sha1.hash("a.txt3".getBytes()));
         System.out.println(hashRing2.locate(("a.txt3".getBytes())));
+        System.out.println(sha1.hash("a.txt4".getBytes()));
         System.out.println(hashRing2.locate(("a.txt4".getBytes())));
         System.out.println(hashRing2.toString());
+        */
     }
 };
 
