@@ -26,15 +26,19 @@ public class StorageNode extends Thread{
     private SHA1 sha1 = new SHA1();
     private String ipaddress;
     private int port;
+    private boolean run;
+    private Heartbeat heartbeat;
 
-
-    public StorageNode(int port){
+    public StorageNode(int port,String coordip,int coordport){
         try {
             ipaddress = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
         this.port = port;
+        this.run = request_access(coordip,coordport);
+        heartbeat = new Heartbeat(hashRing.get_size(),ipaddress+Integer.toString(port),coordip,coordport);
+        heartbeat.start();
     }
 
     /**
@@ -47,23 +51,24 @@ public class StorageNode extends Thread{
         return InetAddress.getLocalHost().getHostName();
     }
 
+    @Override
+    public String toString() {
+        return ipaddress + Integer.toString(port);
+    }
 
     @Override
-    public void run(){
+    public void start(){
         startNode();
     }
 
     public void startNode()
     {
-        boolean run = request_access("localhost",6000);
-
         System.out.println("Server Started");
         while (run){
             try(
                 ServerSocket serverSocket = new ServerSocket(this.port);
-                Socket sock = serverSocket.accept();
             ){
-                store_chunk_listener scl = new store_chunk_listener(sock);
+                store_chunk_listener scl = new store_chunk_listener(serverSocket.accept());
                 scl.start();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -79,15 +84,17 @@ public class StorageNode extends Thread{
         }
 
         @Override
-        public synchronized void start() {
+        public synchronized void run() {
             System.out.println(s.getInetAddress() + "  " + Integer.toString(s.getPort()));
             try {
                 InputStream instream = s.getInputStream();
                 OutputStream outputStream = s.getOutputStream();
                 StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.parseDelimitedFrom(instream);
 
-                if(dataPacket.hasRequest())
-                    process_request(dataPacket.getRequest(),s);
+                if(dataPacket.hasRequest()) {
+                    System.out.println("Request Recieved");
+                    process_request(dataPacket.getRequest(), s);
+                }
                 else if(dataPacket.hasHashringentry()) {
                     process_hre(dataPacket);
                 }else if(dataPacket.hasSinglechunk()){
@@ -113,13 +120,15 @@ public class StorageNode extends Thread{
      */
     private void process_hre(StorageMessages.DataPacket dataPacket)
     {
-        System.out.println("adding node");
+
         StorageMessages.HashRingEntry hashRingEntry = dataPacket.getHashringentry();
         try {
             if(hashRingEntry.getAdd()) {
+                System.out.println("adding node");
                 hashRing.addNodePos(new BigInteger(hashRingEntry.getPosition().toByteArray()), hashRingEntry.getIpaddress(), hashRingEntry.getPort());
             }
             else if(!hashRingEntry.getAdd()) {
+                System.out.println("removing node");
                 hashRing.remove_node(new BigInteger(hashRingEntry.getPosition().toByteArray()));
             }
         } catch (HashTopologyException e) {
@@ -132,6 +141,7 @@ public class StorageNode extends Thread{
      */
     private boolean request_access(String ipaddress, int port)
     {
+        System.out.println("requesting access");
         try (
                 Socket s = new Socket(ipaddress,port);
                 OutputStream outputStream = s.getOutputStream();
@@ -228,8 +238,10 @@ public class StorageNode extends Thread{
                     .setChunklife(chunkLife)
                     .build();
             HashRingEntry hre = get_next_neighbor(key,2);
-            DataRequesterWithAck dataRequester = new DataRequesterWithAck(dataPacket, hre.inetaddress,hre.port);
-            dataRequester.start();
+            if(hre.inetaddress != this.ipaddress && hre.port != this.port) {
+                DataRequesterWithAck dataRequester = new DataRequesterWithAck(dataPacket, hre.inetaddress, hre.port);
+                dataRequester.start();
+            }
         }
         else {
            forward_chunk(chunk,node,r_chunk);
@@ -278,15 +290,17 @@ public class StorageNode extends Thread{
         StorageMessages.SingleChunk singleChunk = chunkLife.getSingleChunk();
         Chunk chunk = new Chunk(singleChunk.getData().toByteArray(),singleChunk.getFileName(),singleChunk.getChunkNumber(),singleChunk.getIsLast());
         String key = key_gen(chunk.getFile_name(),chunk.getChunk_id(),chunk.getIs_last());
-        chunk_storage.put(key,chunk);
-        if(chunkLife.getLife() > 0) {
-            StorageMessages.DataPacket sendpacket = StorageMessages.DataPacket.newBuilder().setChunklife(chunkLife).build();
-            try {
-                HashRingEntry hre = get_next_neighbor(key, chunkLife.getLife());
-                DataRequesterWithAck dataRequester = new DataRequesterWithAck(sendpacket, hre.inetaddress, hre.port);
-                dataRequester.start();
-            } catch (HashException e) {
-                e.printStackTrace();
+        if(!chunk_storage.containsKey(key)) {
+            chunk_storage.put(key, chunk);
+            if (chunkLife.getLife() > 0) {
+                StorageMessages.DataPacket sendpacket = StorageMessages.DataPacket.newBuilder().setChunklife(chunkLife).build();
+                try {
+                    HashRingEntry hre = get_next_neighbor(key, chunkLife.getLife());
+                    DataRequesterWithAck dataRequester = new DataRequesterWithAck(sendpacket, hre.inetaddress, hre.port);
+                    dataRequester.start();
+                } catch (HashException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -331,7 +345,7 @@ public class StorageNode extends Thread{
             throws Exception {
         String hostname = getHostname();
         System.out.println("Starting storage node on " + hostname + "...");
-        StorageNode storageNode = new StorageNode(5070);
+        StorageNode storageNode = new StorageNode(5000,"localhost",6000);
         storageNode.startNode();
 
     }

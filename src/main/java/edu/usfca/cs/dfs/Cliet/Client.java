@@ -9,6 +9,7 @@ import edu.usfca.cs.dfs.Coordinator.HashRing;
 import edu.usfca.cs.dfs.Data.Chunk;
 import edu.usfca.cs.dfs.Data.Data;
 import edu.usfca.cs.dfs.DataSender.DataRequester;
+import edu.usfca.cs.dfs.DataSender.DataRequesterRunnable;
 import edu.usfca.cs.dfs.DataSender.DataRequesterWithAck;
 import edu.usfca.cs.dfs.Storage.StorageNode;
 import edu.usfca.cs.dfs.StorageMessages;
@@ -20,6 +21,8 @@ import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Client{
 
@@ -28,6 +31,7 @@ public class Client{
     private HashRing<byte[]> hashRing;
     private SHA1 sha1 = new SHA1();
     private ClientReciever clientReciever;
+
 
     /*
     Client class will be used to interact with storage nodes...
@@ -100,26 +104,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
             return chunk_size;
     }
 
-    public void send_chunk(String ipaddress, int port, Chunk chunk){
-        ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
-        StorageMessages.Request s_chunk = StorageMessages.Request.newBuilder()
-                .setChunkId(chunk.getChunk_id())
-                .setData(bsval)
-                .setFileName(chunk.getFile_name())
-                .setOpcode(StorageMessages.Request.Op_code.store_chunk)
-                .setIslast(chunk.getIs_last())
-                .setIpaddress(ipaddress)
-                .setPort(port)
-                .build();
-        StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
-                .setRequest(s_chunk)
-                .build();
 
-
-        DataRequester requester = new DataRequester(dataPacket,ipaddress,port);
-        requester.start();
-        System.out.println("Chunk has been sent " + s_chunk.getChunkId() +s_chunk.getData());
-   }
 
 
     public void send_chunk_direct(String ipaddress, int port, Chunk chunk) throws HashException {
@@ -142,6 +127,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
 
         DataRequesterWithAck requester = new DataRequesterWithAck(dataPacket,node.inetaddress,node.port);
         requester.start();
+
         System.out.println("Chunk has been sent " + s_chunk.getChunkId() +s_chunk.getData());
     }
 
@@ -255,7 +241,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
         System.out.println(data.getData().length);
         Client client = new Client(7000);
         client.request_hashring("localhost",6000);
-        client.shard("localhost", 5050,data);
+        client.shard("localhost", 5000,data);
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {

@@ -35,10 +35,9 @@ public class ClientReciever extends Thread {
         while (this.running){
             try(
                     ServerSocket serverSocket = new ServerSocket(this.port);
-                    Socket sock = serverSocket.accept();
             ){
                 System.out.println("data recieved ");
-                Client_reciever cr = new Client_reciever(sock);
+                Client_reciever cr = new Client_reciever(serverSocket.accept());
                 cr.start();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -55,7 +54,7 @@ public class ClientReciever extends Thread {
         }
 
         @Override
-        public synchronized void start() {
+        public synchronized void run() {
             try {
                 InputStream instream = s.getInputStream();
                 StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.parseDelimitedFrom(instream);

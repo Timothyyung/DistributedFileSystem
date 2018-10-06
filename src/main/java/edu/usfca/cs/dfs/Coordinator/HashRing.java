@@ -198,7 +198,8 @@ public class HashRing<T> {
     public void remove_node(BigInteger pos)
     {
         entryMap.remove(pos);
-        remap_hashring();
+        if(!entryMap.isEmpty())
+            remap_hashring();
     }
 
     public HashRingEntry get_next_entry(BigInteger pos)
@@ -214,6 +215,8 @@ public class HashRing<T> {
     @Override
     public String toString(){
         String str = "";
+        if(entryMap.isEmpty())
+            return "No map";
         HashRingEntry firstEntry = entryMap.values().iterator().next();
         HashRingEntry currentEntry = firstEntry;
         HashRingEntry nextEntry;
@@ -260,6 +263,7 @@ public class HashRing<T> {
 
     public void sendUpdate(String ipaddress, int port,CoordMessages.HashRingEntry hre){
         for(Map.Entry<BigInteger,HashRingEntry> entry: entryMap.entrySet()) {
+            System.out.println(entry.getValue().inetaddress + ":" + Integer.toString(entry.getValue().port));
             if(entry.getValue().inetaddress != ipaddress && entry.getValue().port != port){
                 StorageMessages.HashRingEntry hashRingEntry = StorageMessages.HashRingEntry.newBuilder()
                         .setPosition(hre.getPosition())
@@ -273,8 +277,8 @@ public class HashRing<T> {
                 DataRequester dataRequester = new DataRequester(dataPacket,entry.getValue().inetaddress,entry.getValue().port);
                 dataRequester.start();
             }
-
         }
+        System.out.println("all nodes updated");
     }
 
 }

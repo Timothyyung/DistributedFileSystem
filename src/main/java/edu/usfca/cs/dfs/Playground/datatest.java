@@ -56,6 +56,17 @@ public class datatest {
         System.out.println(jelly);
         System.out.println(hashRing.get_next_entry(jello).position);
         BigInteger muddyjelly = new BigInteger(jelly);
+
+
+        System.out.println(Thread.currentThread().getName());
+        for(int i=0; i<10; i++){
+            new Thread("" + i){
+                public void run(){
+                    System.out.println("Thread: " + getName() + " running");
+                }
+            }.start();
+        }
+
 /*
         hashRing.unneighbor();
         System.out.println(hashRing.toString());

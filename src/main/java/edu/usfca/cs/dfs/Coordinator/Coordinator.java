@@ -34,7 +34,7 @@ public class Coordinator{
         node_map = new HashMap<>();
         this.ipaddress = "localhost";
         this.port = 6000;
-        make_hash();
+        //make_hash();
     }
 
     public void startCoord()
@@ -84,6 +84,9 @@ public class Coordinator{
                     System.out.println("removing node: " + request.getRemovenode().getKey());
                     remove_node(request.getRemovenode().getKey());
                     System.out.println(hashRing.toString());
+                }else if(request.hasHeartbeat()) {
+                    System.out.println("heartbeat recieved");
+                    node_map.get(request.getHeartbeat().getNodeKey()).resetTime();
                 }
                 s.close();
             }catch(IOException | HashTopologyException | HashException e)
@@ -113,23 +116,25 @@ public class Coordinator{
                     .setHashringentry(hashRingEntry)
                     .build();
 
-            /*
+
             for (Map.Entry<BigInteger, HashRingEntry> entry: hashRing.getMap().entrySet()){
                 DataRequesterWithAck dataRequesterWithAck = new DataRequesterWithAck(dataPacket,entry.getValue().inetaddress,entry.getValue().port);
                 dataRequesterWithAck.start();
-            }*/
+            }
         }
 
         private void process_entry(CoordMessages.DataPacket dataPacket, OutputStream outputStream) throws HashTopologyException, HashException, IOException {
             CoordMessages.RequestEntry entryRequest = dataPacket.getRequestentry();
             CoordMessages.HashRingEntry hashRingEntry = put_in_map(entryRequest);
 
-            hashRing.sendUpdate(entryRequest.getIpaddress(),entryRequest.getPort(),hashRingEntry);
+
 
             CoordMessages.DataPacket response = CoordMessages.DataPacket.newBuilder()
                     .setHashring(hashRing.treemap_to_map())
                     .build();
             response.writeDelimitedTo(outputStream);
+            hashRing.sendUpdate(entryRequest.getIpaddress(),entryRequest.getPort(),hashRingEntry);
+            System.out.println("update sent");
         }
 
         private CoordMessages.HashRingEntry put_in_map(CoordMessages.RequestEntry entryRequest) throws HashException, HashTopologyException {

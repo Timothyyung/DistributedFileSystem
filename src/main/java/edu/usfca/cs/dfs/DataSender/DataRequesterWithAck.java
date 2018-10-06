@@ -21,15 +21,15 @@ public class DataRequesterWithAck extends Thread{
     }
 
     @Override
-    public void start() {
-        System.out.println("Packet sent to:  " + ipaddress +":"+Integer.toString(port));
-        int trails = 0;
-        while(!sent && trails < 10){
+    public void run() {
+        System.out.println("Packet with ack sent to:  " + ipaddress +":"+Integer.toString(port));
+        while(!sent){
             try(
                     Socket s = new Socket(this.ipaddress,this.port);
                     OutputStream outputStream = s.getOutputStream();
                     InputStream inputStream = s.getInputStream();
             ){
+
                 dataPacket.writeDelimitedTo(outputStream);
                 Thread.sleep(100);
                 dataPacket = dataPacket.parseDelimitedFrom(inputStream);
@@ -37,11 +37,11 @@ public class DataRequesterWithAck extends Thread{
                     System.out.println("Ack Recieved");
                     sent = true;
                 }
-                else
-                    trails += 1;
+
             }catch (IOException | InterruptedException ie){
                 ie.getStackTrace();
             }
         }
+        System.out.println("done");
     }
 }
