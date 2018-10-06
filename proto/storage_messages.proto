@@ -22,6 +22,7 @@ message HashRingEntry{
     bytes position = 1;
     string ipaddress = 2;
     int32 port = 3;
+    bool add = 4;
 }
 
 message NumberOfChunks{
@@ -35,6 +36,7 @@ message SingleChunk{
     string ipaddress = 4;
     int32 port = 5;
     bool isLast = 6;
+    bool write = 7;
 }
 
 message ChunkLife{
@@ -46,6 +48,11 @@ message ListAllChunks{
     repeated SingleChunk singlechunk = 1;
 }
 
+message Ack{
+    bool ack = 1;
+}
+
+
 message DataPacket {
     oneof packets{
         Request request = 1;
@@ -54,6 +61,7 @@ message DataPacket {
         ListAllChunks listallchunks = 4;
         SingleChunk singlechunk = 5;
         ChunkLife chunklife = 6;
+        Ack ack = 7;
     }
 }
 

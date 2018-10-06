@@ -1199,6 +1199,11 @@ public final class StorageMessages {
      * <code>int32 port = 3;</code>
      */
     int getPort();
+
+    /**
+     * <code>bool add = 4;</code>
+     */
+    boolean getAdd();
   }
   /**
    * Protobuf type {@code HashRingEntry}
@@ -1216,6 +1221,7 @@ public final class StorageMessages {
       position_ = com.google.protobuf.ByteString.EMPTY;
       ipaddress_ = "";
       port_ = 0;
+      add_ = false;
     }
 
     @java.lang.Override
@@ -1256,6 +1262,11 @@ public final class StorageMessages {
             case 24: {
 
               port_ = input.readInt32();
+              break;
+            }
+            case 32: {
+
+              add_ = input.readBool();
               break;
             }
             default: {
@@ -1342,6 +1353,15 @@ public final class StorageMessages {
       return port_;
     }
 
+    public static final int ADD_FIELD_NUMBER = 4;
+    private boolean add_;
+    /**
+     * <code>bool add = 4;</code>
+     */
+    public boolean getAdd() {
+      return add_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1365,6 +1385,9 @@ public final class StorageMessages {
       if (port_ != 0) {
         output.writeInt32(3, port_);
       }
+      if (add_ != false) {
+        output.writeBool(4, add_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1384,6 +1407,10 @@ public final class StorageMessages {
       if (port_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, port_);
+      }
+      if (add_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, add_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1407,6 +1434,8 @@ public final class StorageMessages {
           .equals(other.getIpaddress());
       result = result && (getPort()
           == other.getPort());
+      result = result && (getAdd()
+          == other.getAdd());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1424,6 +1453,9 @@ public final class StorageMessages {
       hash = (53 * hash) + getIpaddress().hashCode();
       hash = (37 * hash) + PORT_FIELD_NUMBER;
       hash = (53 * hash) + getPort();
+      hash = (37 * hash) + ADD_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getAdd());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1563,6 +1595,8 @@ public final class StorageMessages {
 
         port_ = 0;
 
+        add_ = false;
+
         return this;
       }
 
@@ -1592,6 +1626,7 @@ public final class StorageMessages {
         result.position_ = position_;
         result.ipaddress_ = ipaddress_;
         result.port_ = port_;
+        result.add_ = add_;
         onBuilt();
         return result;
       }
@@ -1649,6 +1684,9 @@ public final class StorageMessages {
         }
         if (other.getPort() != 0) {
           setPort(other.getPort());
+        }
+        if (other.getAdd() != false) {
+          setAdd(other.getAdd());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1799,6 +1837,32 @@ public final class StorageMessages {
       public Builder clearPort() {
         
         port_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean add_ ;
+      /**
+       * <code>bool add = 4;</code>
+       */
+      public boolean getAdd() {
+        return add_;
+      }
+      /**
+       * <code>bool add = 4;</code>
+       */
+      public Builder setAdd(boolean value) {
+        
+        add_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool add = 4;</code>
+       */
+      public Builder clearAdd() {
+        
+        add_ = false;
         onChanged();
         return this;
       }
@@ -2374,6 +2438,11 @@ public final class StorageMessages {
      * <code>bool isLast = 6;</code>
      */
     boolean getIsLast();
+
+    /**
+     * <code>bool write = 7;</code>
+     */
+    boolean getWrite();
   }
   /**
    * Protobuf type {@code SingleChunk}
@@ -2394,6 +2463,7 @@ public final class StorageMessages {
       ipaddress_ = "";
       port_ = 0;
       isLast_ = false;
+      write_ = false;
     }
 
     @java.lang.Override
@@ -2450,6 +2520,11 @@ public final class StorageMessages {
             case 48: {
 
               isLast_ = input.readBool();
+              break;
+            }
+            case 56: {
+
+              write_ = input.readBool();
               break;
             }
             default: {
@@ -2588,6 +2663,15 @@ public final class StorageMessages {
       return isLast_;
     }
 
+    public static final int WRITE_FIELD_NUMBER = 7;
+    private boolean write_;
+    /**
+     * <code>bool write = 7;</code>
+     */
+    public boolean getWrite() {
+      return write_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -2620,6 +2704,9 @@ public final class StorageMessages {
       if (isLast_ != false) {
         output.writeBool(6, isLast_);
       }
+      if (write_ != false) {
+        output.writeBool(7, write_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -2651,6 +2738,10 @@ public final class StorageMessages {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(6, isLast_);
       }
+      if (write_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, write_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -2679,6 +2770,8 @@ public final class StorageMessages {
           == other.getPort());
       result = result && (getIsLast()
           == other.getIsLast());
+      result = result && (getWrite()
+          == other.getWrite());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -2703,6 +2796,9 @@ public final class StorageMessages {
       hash = (37 * hash) + ISLAST_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getIsLast());
+      hash = (37 * hash) + WRITE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getWrite());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2848,6 +2944,8 @@ public final class StorageMessages {
 
         isLast_ = false;
 
+        write_ = false;
+
         return this;
       }
 
@@ -2880,6 +2978,7 @@ public final class StorageMessages {
         result.ipaddress_ = ipaddress_;
         result.port_ = port_;
         result.isLast_ = isLast_;
+        result.write_ = write_;
         onBuilt();
         return result;
       }
@@ -2947,6 +3046,9 @@ public final class StorageMessages {
         }
         if (other.getIsLast() != false) {
           setIsLast(other.getIsLast());
+        }
+        if (other.getWrite() != false) {
+          setWrite(other.getWrite());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3218,6 +3320,32 @@ public final class StorageMessages {
       public Builder clearIsLast() {
         
         isLast_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean write_ ;
+      /**
+       * <code>bool write = 7;</code>
+       */
+      public boolean getWrite() {
+        return write_;
+      }
+      /**
+       * <code>bool write = 7;</code>
+       */
+      public Builder setWrite(boolean value) {
+        
+        write_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool write = 7;</code>
+       */
+      public Builder clearWrite() {
+        
+        write_ = false;
         onChanged();
         return this;
       }
@@ -4726,6 +4854,483 @@ public final class StorageMessages {
 
   }
 
+  public interface AckOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Ack)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>bool ack = 1;</code>
+     */
+    boolean getAck();
+  }
+  /**
+   * Protobuf type {@code Ack}
+   */
+  public  static final class Ack extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:Ack)
+      AckOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Ack.newBuilder() to construct.
+    private Ack(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Ack() {
+      ack_ = false;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Ack(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              ack_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.usfca.cs.dfs.StorageMessages.internal_static_Ack_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.usfca.cs.dfs.StorageMessages.internal_static_Ack_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.usfca.cs.dfs.StorageMessages.Ack.class, edu.usfca.cs.dfs.StorageMessages.Ack.Builder.class);
+    }
+
+    public static final int ACK_FIELD_NUMBER = 1;
+    private boolean ack_;
+    /**
+     * <code>bool ack = 1;</code>
+     */
+    public boolean getAck() {
+      return ack_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (ack_ != false) {
+        output.writeBool(1, ack_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (ack_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, ack_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof edu.usfca.cs.dfs.StorageMessages.Ack)) {
+        return super.equals(obj);
+      }
+      edu.usfca.cs.dfs.StorageMessages.Ack other = (edu.usfca.cs.dfs.StorageMessages.Ack) obj;
+
+      boolean result = true;
+      result = result && (getAck()
+          == other.getAck());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ACK_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getAck());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static edu.usfca.cs.dfs.StorageMessages.Ack parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.Ack parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.Ack parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.Ack parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.Ack parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.Ack parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.Ack parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.Ack parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.Ack parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.Ack parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.Ack parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.Ack parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(edu.usfca.cs.dfs.StorageMessages.Ack prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code Ack}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Ack)
+        edu.usfca.cs.dfs.StorageMessages.AckOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_Ack_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_Ack_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.usfca.cs.dfs.StorageMessages.Ack.class, edu.usfca.cs.dfs.StorageMessages.Ack.Builder.class);
+      }
+
+      // Construct using edu.usfca.cs.dfs.StorageMessages.Ack.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        ack_ = false;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_Ack_descriptor;
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.StorageMessages.Ack getDefaultInstanceForType() {
+        return edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.StorageMessages.Ack build() {
+        edu.usfca.cs.dfs.StorageMessages.Ack result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.StorageMessages.Ack buildPartial() {
+        edu.usfca.cs.dfs.StorageMessages.Ack result = new edu.usfca.cs.dfs.StorageMessages.Ack(this);
+        result.ack_ = ack_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.usfca.cs.dfs.StorageMessages.Ack) {
+          return mergeFrom((edu.usfca.cs.dfs.StorageMessages.Ack)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.usfca.cs.dfs.StorageMessages.Ack other) {
+        if (other == edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance()) return this;
+        if (other.getAck() != false) {
+          setAck(other.getAck());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.usfca.cs.dfs.StorageMessages.Ack parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.usfca.cs.dfs.StorageMessages.Ack) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private boolean ack_ ;
+      /**
+       * <code>bool ack = 1;</code>
+       */
+      public boolean getAck() {
+        return ack_;
+      }
+      /**
+       * <code>bool ack = 1;</code>
+       */
+      public Builder setAck(boolean value) {
+        
+        ack_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool ack = 1;</code>
+       */
+      public Builder clearAck() {
+        
+        ack_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:Ack)
+    }
+
+    // @@protoc_insertion_point(class_scope:Ack)
+    private static final edu.usfca.cs.dfs.StorageMessages.Ack DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new edu.usfca.cs.dfs.StorageMessages.Ack();
+    }
+
+    public static edu.usfca.cs.dfs.StorageMessages.Ack getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Ack>
+        PARSER = new com.google.protobuf.AbstractParser<Ack>() {
+      @java.lang.Override
+      public Ack parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Ack(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Ack> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Ack> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public edu.usfca.cs.dfs.StorageMessages.Ack getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface DataPacketOrBuilder extends
       // @@protoc_insertion_point(interface_extends:DataPacket)
       com.google.protobuf.MessageOrBuilder {
@@ -4807,6 +5412,19 @@ public final class StorageMessages {
      * <code>.ChunkLife chunklife = 6;</code>
      */
     edu.usfca.cs.dfs.StorageMessages.ChunkLifeOrBuilder getChunklifeOrBuilder();
+
+    /**
+     * <code>.Ack ack = 7;</code>
+     */
+    boolean hasAck();
+    /**
+     * <code>.Ack ack = 7;</code>
+     */
+    edu.usfca.cs.dfs.StorageMessages.Ack getAck();
+    /**
+     * <code>.Ack ack = 7;</code>
+     */
+    edu.usfca.cs.dfs.StorageMessages.AckOrBuilder getAckOrBuilder();
 
     public edu.usfca.cs.dfs.StorageMessages.DataPacket.PacketsCase getPacketsCase();
   }
@@ -4933,6 +5551,20 @@ public final class StorageMessages {
               packetsCase_ = 6;
               break;
             }
+            case 58: {
+              edu.usfca.cs.dfs.StorageMessages.Ack.Builder subBuilder = null;
+              if (packetsCase_ == 7) {
+                subBuilder = ((edu.usfca.cs.dfs.StorageMessages.Ack) packets_).toBuilder();
+              }
+              packets_ =
+                  input.readMessage(edu.usfca.cs.dfs.StorageMessages.Ack.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((edu.usfca.cs.dfs.StorageMessages.Ack) packets_);
+                packets_ = subBuilder.buildPartial();
+              }
+              packetsCase_ = 7;
+              break;
+            }
             default: {
               if (!parseUnknownFieldProto3(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -4975,6 +5607,7 @@ public final class StorageMessages {
       LISTALLCHUNKS(4),
       SINGLECHUNK(5),
       CHUNKLIFE(6),
+      ACK(7),
       PACKETS_NOT_SET(0);
       private final int value;
       private PacketsCase(int value) {
@@ -4996,6 +5629,7 @@ public final class StorageMessages {
           case 4: return LISTALLCHUNKS;
           case 5: return SINGLECHUNK;
           case 6: return CHUNKLIFE;
+          case 7: return ACK;
           case 0: return PACKETS_NOT_SET;
           default: return null;
         }
@@ -5167,6 +5801,32 @@ public final class StorageMessages {
       return edu.usfca.cs.dfs.StorageMessages.ChunkLife.getDefaultInstance();
     }
 
+    public static final int ACK_FIELD_NUMBER = 7;
+    /**
+     * <code>.Ack ack = 7;</code>
+     */
+    public boolean hasAck() {
+      return packetsCase_ == 7;
+    }
+    /**
+     * <code>.Ack ack = 7;</code>
+     */
+    public edu.usfca.cs.dfs.StorageMessages.Ack getAck() {
+      if (packetsCase_ == 7) {
+         return (edu.usfca.cs.dfs.StorageMessages.Ack) packets_;
+      }
+      return edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
+    }
+    /**
+     * <code>.Ack ack = 7;</code>
+     */
+    public edu.usfca.cs.dfs.StorageMessages.AckOrBuilder getAckOrBuilder() {
+      if (packetsCase_ == 7) {
+         return (edu.usfca.cs.dfs.StorageMessages.Ack) packets_;
+      }
+      return edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -5198,6 +5858,9 @@ public final class StorageMessages {
       }
       if (packetsCase_ == 6) {
         output.writeMessage(6, (edu.usfca.cs.dfs.StorageMessages.ChunkLife) packets_);
+      }
+      if (packetsCase_ == 7) {
+        output.writeMessage(7, (edu.usfca.cs.dfs.StorageMessages.Ack) packets_);
       }
       unknownFields.writeTo(output);
     }
@@ -5231,6 +5894,10 @@ public final class StorageMessages {
       if (packetsCase_ == 6) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, (edu.usfca.cs.dfs.StorageMessages.ChunkLife) packets_);
+      }
+      if (packetsCase_ == 7) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, (edu.usfca.cs.dfs.StorageMessages.Ack) packets_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5276,6 +5943,10 @@ public final class StorageMessages {
           result = result && getChunklife()
               .equals(other.getChunklife());
           break;
+        case 7:
+          result = result && getAck()
+              .equals(other.getAck());
+          break;
         case 0:
         default:
       }
@@ -5314,6 +5985,10 @@ public final class StorageMessages {
         case 6:
           hash = (37 * hash) + CHUNKLIFE_FIELD_NUMBER;
           hash = (53 * hash) + getChunklife().hashCode();
+          break;
+        case 7:
+          hash = (37 * hash) + ACK_FIELD_NUMBER;
+          hash = (53 * hash) + getAck().hashCode();
           break;
         case 0:
         default:
@@ -5521,6 +6196,13 @@ public final class StorageMessages {
             result.packets_ = chunklifeBuilder_.build();
           }
         }
+        if (packetsCase_ == 7) {
+          if (ackBuilder_ == null) {
+            result.packets_ = packets_;
+          } else {
+            result.packets_ = ackBuilder_.build();
+          }
+        }
         result.packetsCase_ = packetsCase_;
         onBuilt();
         return result;
@@ -5593,6 +6275,10 @@ public final class StorageMessages {
           }
           case CHUNKLIFE: {
             mergeChunklife(other.getChunklife());
+            break;
+          }
+          case ACK: {
+            mergeAck(other.getAck());
             break;
           }
           case PACKETS_NOT_SET: {
@@ -6458,6 +7144,142 @@ public final class StorageMessages {
         onChanged();;
         return chunklifeBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.StorageMessages.Ack, edu.usfca.cs.dfs.StorageMessages.Ack.Builder, edu.usfca.cs.dfs.StorageMessages.AckOrBuilder> ackBuilder_;
+      /**
+       * <code>.Ack ack = 7;</code>
+       */
+      public boolean hasAck() {
+        return packetsCase_ == 7;
+      }
+      /**
+       * <code>.Ack ack = 7;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.Ack getAck() {
+        if (ackBuilder_ == null) {
+          if (packetsCase_ == 7) {
+            return (edu.usfca.cs.dfs.StorageMessages.Ack) packets_;
+          }
+          return edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
+        } else {
+          if (packetsCase_ == 7) {
+            return ackBuilder_.getMessage();
+          }
+          return edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.Ack ack = 7;</code>
+       */
+      public Builder setAck(edu.usfca.cs.dfs.StorageMessages.Ack value) {
+        if (ackBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          packets_ = value;
+          onChanged();
+        } else {
+          ackBuilder_.setMessage(value);
+        }
+        packetsCase_ = 7;
+        return this;
+      }
+      /**
+       * <code>.Ack ack = 7;</code>
+       */
+      public Builder setAck(
+          edu.usfca.cs.dfs.StorageMessages.Ack.Builder builderForValue) {
+        if (ackBuilder_ == null) {
+          packets_ = builderForValue.build();
+          onChanged();
+        } else {
+          ackBuilder_.setMessage(builderForValue.build());
+        }
+        packetsCase_ = 7;
+        return this;
+      }
+      /**
+       * <code>.Ack ack = 7;</code>
+       */
+      public Builder mergeAck(edu.usfca.cs.dfs.StorageMessages.Ack value) {
+        if (ackBuilder_ == null) {
+          if (packetsCase_ == 7 &&
+              packets_ != edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance()) {
+            packets_ = edu.usfca.cs.dfs.StorageMessages.Ack.newBuilder((edu.usfca.cs.dfs.StorageMessages.Ack) packets_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            packets_ = value;
+          }
+          onChanged();
+        } else {
+          if (packetsCase_ == 7) {
+            ackBuilder_.mergeFrom(value);
+          }
+          ackBuilder_.setMessage(value);
+        }
+        packetsCase_ = 7;
+        return this;
+      }
+      /**
+       * <code>.Ack ack = 7;</code>
+       */
+      public Builder clearAck() {
+        if (ackBuilder_ == null) {
+          if (packetsCase_ == 7) {
+            packetsCase_ = 0;
+            packets_ = null;
+            onChanged();
+          }
+        } else {
+          if (packetsCase_ == 7) {
+            packetsCase_ = 0;
+            packets_ = null;
+          }
+          ackBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.Ack ack = 7;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.Ack.Builder getAckBuilder() {
+        return getAckFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.Ack ack = 7;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.AckOrBuilder getAckOrBuilder() {
+        if ((packetsCase_ == 7) && (ackBuilder_ != null)) {
+          return ackBuilder_.getMessageOrBuilder();
+        } else {
+          if (packetsCase_ == 7) {
+            return (edu.usfca.cs.dfs.StorageMessages.Ack) packets_;
+          }
+          return edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.Ack ack = 7;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.StorageMessages.Ack, edu.usfca.cs.dfs.StorageMessages.Ack.Builder, edu.usfca.cs.dfs.StorageMessages.AckOrBuilder> 
+          getAckFieldBuilder() {
+        if (ackBuilder_ == null) {
+          if (!(packetsCase_ == 7)) {
+            packets_ = edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
+          }
+          ackBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              edu.usfca.cs.dfs.StorageMessages.Ack, edu.usfca.cs.dfs.StorageMessages.Ack.Builder, edu.usfca.cs.dfs.StorageMessages.AckOrBuilder>(
+                  (edu.usfca.cs.dfs.StorageMessages.Ack) packets_,
+                  getParentForChildren(),
+                  isClean());
+          packets_ = null;
+        }
+        packetsCase_ = 7;
+        onChanged();;
+        return ackBuilder_;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -6542,6 +7364,11 @@ public final class StorageMessages {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_ListAllChunks_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_Ack_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_Ack_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_DataPacket_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -6561,22 +7388,24 @@ public final class StorageMessages {
       "Request.Op_code\022\021\n\tipaddress\030\006 \001(\t\022\014\n\004po" +
       "rt\030\007 \001(\005\"X\n\007Op_code\022\017\n\013store_chunk\020\000\022\r\n\t" +
       "get_chunk\020\001\022\014\n\010get_data\020\002\022\014\n\010get_list\020\003\022" +
-      "\021\n\rget_chunk_loc\020\004\"B\n\rHashRingEntry\022\020\n\010p" +
+      "\021\n\rget_chunk_loc\020\004\"O\n\rHashRingEntry\022\020\n\010p" +
       "osition\030\001 \001(\014\022\021\n\tipaddress\030\002 \001(\t\022\014\n\004port" +
-      "\030\003 \001(\005\"%\n\016NumberOfChunks\022\023\n\013chunkNumber\030" +
-      "\001 \001(\005\"s\n\013SingleChunk\022\020\n\010fileName\030\001 \001(\t\022\023" +
-      "\n\013chunkNumber\030\002 \001(\005\022\014\n\004data\030\003 \001(\014\022\021\n\tipa" +
-      "ddress\030\004 \001(\t\022\014\n\004port\030\005 \001(\005\022\016\n\006isLast\030\006 \001" +
-      "(\010\"<\n\tChunkLife\022!\n\013singleChunk\030\001 \001(\0132\014.S" +
-      "ingleChunk\022\014\n\004life\030\002 \001(\005\"2\n\rListAllChunk" +
-      "s\022!\n\013singlechunk\030\001 \003(\0132\014.SingleChunk\"\367\001\n" +
-      "\nDataPacket\022\033\n\007request\030\001 \001(\0132\010.RequestH\000" +
-      "\022\'\n\rhashringentry\030\002 \001(\0132\016.HashRingEntryH" +
-      "\000\022)\n\016numberofchunks\030\003 \001(\0132\017.NumberOfChun" +
-      "ksH\000\022\'\n\rlistallchunks\030\004 \001(\0132\016.ListAllChu" +
-      "nksH\000\022#\n\013singlechunk\030\005 \001(\0132\014.SingleChunk" +
-      "H\000\022\037\n\tchunklife\030\006 \001(\0132\n.ChunkLifeH\000B\t\n\007p" +
-      "acketsB\022\n\020edu.usfca.cs.dfsb\006proto3"
+      "\030\003 \001(\005\022\013\n\003add\030\004 \001(\010\"%\n\016NumberOfChunks\022\023\n" +
+      "\013chunkNumber\030\001 \001(\005\"\202\001\n\013SingleChunk\022\020\n\010fi" +
+      "leName\030\001 \001(\t\022\023\n\013chunkNumber\030\002 \001(\005\022\014\n\004dat" +
+      "a\030\003 \001(\014\022\021\n\tipaddress\030\004 \001(\t\022\014\n\004port\030\005 \001(\005" +
+      "\022\016\n\006isLast\030\006 \001(\010\022\r\n\005write\030\007 \001(\010\"<\n\tChunk" +
+      "Life\022!\n\013singleChunk\030\001 \001(\0132\014.SingleChunk\022" +
+      "\014\n\004life\030\002 \001(\005\"2\n\rListAllChunks\022!\n\013single" +
+      "chunk\030\001 \003(\0132\014.SingleChunk\"\022\n\003Ack\022\013\n\003ack\030" +
+      "\001 \001(\010\"\214\002\n\nDataPacket\022\033\n\007request\030\001 \001(\0132\010." +
+      "RequestH\000\022\'\n\rhashringentry\030\002 \001(\0132\016.HashR" +
+      "ingEntryH\000\022)\n\016numberofchunks\030\003 \001(\0132\017.Num" +
+      "berOfChunksH\000\022\'\n\rlistallchunks\030\004 \001(\0132\016.L" +
+      "istAllChunksH\000\022#\n\013singlechunk\030\005 \001(\0132\014.Si" +
+      "ngleChunkH\000\022\037\n\tchunklife\030\006 \001(\0132\n.ChunkLi" +
+      "feH\000\022\023\n\003ack\030\007 \001(\0132\004.AckH\000B\t\n\007packetsB\022\n\020" +
+      "edu.usfca.cs.dfsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6601,7 +7430,7 @@ public final class StorageMessages {
     internal_static_HashRingEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_HashRingEntry_descriptor,
-        new java.lang.String[] { "Position", "Ipaddress", "Port", });
+        new java.lang.String[] { "Position", "Ipaddress", "Port", "Add", });
     internal_static_NumberOfChunks_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_NumberOfChunks_fieldAccessorTable = new
@@ -6613,7 +7442,7 @@ public final class StorageMessages {
     internal_static_SingleChunk_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SingleChunk_descriptor,
-        new java.lang.String[] { "FileName", "ChunkNumber", "Data", "Ipaddress", "Port", "IsLast", });
+        new java.lang.String[] { "FileName", "ChunkNumber", "Data", "Ipaddress", "Port", "IsLast", "Write", });
     internal_static_ChunkLife_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_ChunkLife_fieldAccessorTable = new
@@ -6626,12 +7455,18 @@ public final class StorageMessages {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ListAllChunks_descriptor,
         new java.lang.String[] { "Singlechunk", });
-    internal_static_DataPacket_descriptor =
+    internal_static_Ack_descriptor =
       getDescriptor().getMessageTypes().get(6);
+    internal_static_Ack_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_Ack_descriptor,
+        new java.lang.String[] { "Ack", });
+    internal_static_DataPacket_descriptor =
+      getDescriptor().getMessageTypes().get(7);
     internal_static_DataPacket_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_DataPacket_descriptor,
-        new java.lang.String[] { "Request", "Hashringentry", "Numberofchunks", "Listallchunks", "Singlechunk", "Chunklife", "Packets", });
+        new java.lang.String[] { "Request", "Hashringentry", "Numberofchunks", "Listallchunks", "Singlechunk", "Chunklife", "Ack", "Packets", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

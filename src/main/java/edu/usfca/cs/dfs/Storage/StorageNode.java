@@ -9,14 +9,12 @@ import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
 import edu.usfca.cs.dfs.Coordinator.HashRing;
 import edu.usfca.cs.dfs.Data.Chunk;
 import edu.usfca.cs.dfs.DataSender.DataRequester;
+import edu.usfca.cs.dfs.DataSender.DataRequesterWithAck;
 import edu.usfca.cs.dfs.StorageMessages;
 
 import java.io.*;
 import java.math.BigInteger;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -85,6 +83,7 @@ public class StorageNode extends Thread{
             System.out.println(s.getInetAddress() + "  " + Integer.toString(s.getPort()));
             try {
                 InputStream instream = s.getInputStream();
+                OutputStream outputStream = s.getOutputStream();
                 StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.parseDelimitedFrom(instream);
 
                 if(dataPacket.hasRequest())
@@ -93,7 +92,13 @@ public class StorageNode extends Thread{
                     process_hre(dataPacket);
                 }else if(dataPacket.hasSinglechunk()){
                     process_single_chunk(dataPacket, s);
+                }else if(dataPacket.hasChunklife()){
+                    pipline_update(dataPacket);
                 }
+                StorageMessages.Ack ack = StorageMessages.Ack.newBuilder().setAck(true).build();
+                dataPacket = StorageMessages.DataPacket.newBuilder().setAck(ack).build();
+                dataPacket.writeDelimitedTo(outputStream);
+
                 s.close();
             }catch(IOException e) {
 
@@ -111,7 +116,12 @@ public class StorageNode extends Thread{
         System.out.println("adding node");
         StorageMessages.HashRingEntry hashRingEntry = dataPacket.getHashringentry();
         try {
-            hashRing.addNodePos(new BigInteger(hashRingEntry.getPosition().toByteArray()),hashRingEntry.getIpaddress(),hashRingEntry.getPort());
+            if(hashRingEntry.getAdd()) {
+                hashRing.addNodePos(new BigInteger(hashRingEntry.getPosition().toByteArray()), hashRingEntry.getIpaddress(), hashRingEntry.getPort());
+            }
+            else if(!hashRingEntry.getAdd()) {
+                hashRing.remove_node(new BigInteger(hashRingEntry.getPosition().toByteArray()));
+            }
         } catch (HashTopologyException e) {
             e.printStackTrace();
         }
@@ -141,6 +151,7 @@ public class StorageNode extends Thread{
 
             hashRing = new HashRing(sha1,response.getHashring());
             System.out.println(hashRing.toString());
+
             return true;
 
 
@@ -173,8 +184,6 @@ public class StorageNode extends Thread{
         else if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.get_chunk) {
             String key = key_gen(r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
             get_chunk(key, r_chunk.getIpaddress(),r_chunk.getPort());
-
-
         }
 
 
@@ -206,26 +215,81 @@ public class StorageNode extends Thread{
     public void store_chunk(StorageMessages.Request r_chunk) throws HashException {
         Chunk chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
         String key = key_gen(chunk.getFile_name(),chunk.getChunk_id(),chunk.getIs_last());
-        System.out.println(key);
-        System.out.println(hashRing.toString());
         BigInteger pos = hashRing.locate(key.getBytes());
         HashRingEntry node = hashRing.returnNode(pos);
-        System.out.println(pos);
-        if(node.inetaddress.equals(this.ipaddress) && node.port == this.port)
-            chunk_storage.put(key,chunk);
-        else {
-            System.out.println("Storing on external node " + chunk.getFile_name() + Integer.toString(chunk.getChunk_id()));
-            System.out.println(node.inetaddress + " " + Integer.toString(node.port));
+        if(node.inetaddress.equals(this.ipaddress) && node.port == this.port) {
+            chunk_storage.put(key, chunk);
 
-            StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
-                    .setRequest(r_chunk)
+            StorageMessages.ChunkLife chunkLife = StorageMessages.ChunkLife.newBuilder()
+                    .setSingleChunk(request_to_chunk(r_chunk))
+                    .setLife(2)
                     .build();
-            DataRequester dataRequester = new DataRequester(dataPacket,node.inetaddress,node.port);
+            StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                    .setChunklife(chunkLife)
+                    .build();
+            HashRingEntry hre = get_next_neighbor(key,2);
+            DataRequesterWithAck dataRequester = new DataRequesterWithAck(dataPacket, hre.inetaddress,hre.port);
             dataRequester.start();
+        }
+        else {
+           forward_chunk(chunk,node,r_chunk);
         }
     }
 
-    private void pipline_update(Chunk chunk){
+    private HashRingEntry get_next_neighbor(String key,int life) throws HashException {
+        BigInteger location = hashRing.locate(key.getBytes());
+        HashRingEntry hre = null;
+        for(int i = 1; i <= life; i++){
+            hre = hashRing.get_next_entry(location);
+            location = hre.position;
+        }
+        return hre;
+    }
+
+    private StorageMessages.SingleChunk request_to_chunk(StorageMessages.Request request)
+    {
+        return StorageMessages.SingleChunk.newBuilder()
+                .setData(request.getData())
+                .setWrite(true)
+                .setIsLast(request.getIslast())
+                .setFileName(request.getFileName())
+                .setChunkNumber(request.getChunkId())
+                .build();
+    }
+
+    private void forward_chunk(Chunk chunk, HashRingEntry node,StorageMessages.Request r_chunk) throws HashException{
+        System.out.println("Storing on external node " + chunk.getFile_name() + Integer.toString(chunk.getChunk_id()));
+        System.out.println(node.inetaddress + " " + Integer.toString(node.port));
+
+        StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                .setRequest(r_chunk)
+                .build();
+        DataRequester dataRequester = new DataRequester(dataPacket,node.inetaddress,node.port);
+        dataRequester.start();
+    }
+
+    private void pipline_update(StorageMessages.DataPacket dataPacket){
+        System.out.println("pipline updating chunk life : " + Integer.toString(dataPacket.getChunklife().getLife()));
+        StorageMessages.ChunkLife chunkLife = dataPacket.getChunklife();
+        chunkLife = StorageMessages.ChunkLife.newBuilder()
+                .setLife(chunkLife.getLife() - 1)
+                .setSingleChunk(chunkLife.getSingleChunk())
+                .build();
+        StorageMessages.SingleChunk singleChunk = chunkLife.getSingleChunk();
+        Chunk chunk = new Chunk(singleChunk.getData().toByteArray(),singleChunk.getFileName(),singleChunk.getChunkNumber(),singleChunk.getIsLast());
+        String key = key_gen(chunk.getFile_name(),chunk.getChunk_id(),chunk.getIs_last());
+        chunk_storage.put(key,chunk);
+        if(chunkLife.getLife() > 0) {
+            StorageMessages.DataPacket sendpacket = StorageMessages.DataPacket.newBuilder().setChunklife(chunkLife).build();
+            try {
+                HashRingEntry hre = get_next_neighbor(key, chunkLife.getLife());
+                DataRequesterWithAck dataRequester = new DataRequesterWithAck(sendpacket, hre.inetaddress, hre.port);
+                dataRequester.start();
+            } catch (HashException e) {
+                e.printStackTrace();
+            }
+        }
+
 
     }
 

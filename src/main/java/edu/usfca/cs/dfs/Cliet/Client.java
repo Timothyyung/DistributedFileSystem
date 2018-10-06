@@ -9,6 +9,7 @@ import edu.usfca.cs.dfs.Coordinator.HashRing;
 import edu.usfca.cs.dfs.Data.Chunk;
 import edu.usfca.cs.dfs.Data.Data;
 import edu.usfca.cs.dfs.DataSender.DataRequester;
+import edu.usfca.cs.dfs.DataSender.DataRequesterWithAck;
 import edu.usfca.cs.dfs.Storage.StorageNode;
 import edu.usfca.cs.dfs.StorageMessages;
 
@@ -55,8 +56,7 @@ Sharding allows for the user to input a file ( right now can only handle TXT fil
 different chunks to be sent to the storage nodes. We will allow the storage nodes to handle all storage operations
  */
 
-    public void shard(String ipaddress, int port, Data data)
-    {
+    public void shard(String ipaddress, int port, Data data) throws HashException {
         int chunk_size = 10000;
         byte[] data_chunk = new byte[chunk_size];
         int i = 0; int j = 1; int k = 0;
@@ -66,7 +66,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
             if(i % chunk_size == 0 & i != 0)
             {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -74,7 +74,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
                 b_val = b_val - chunk_size;
                 System.out.println( b_val);
                 data_chunk = new byte[check_size(chunk_size,b_val)];
-                send_chunk(ipaddress,port,chunk);
+                send_chunk_direct(ipaddress,port,chunk);
                 j += 1;
                 k = 0;
             }
@@ -83,15 +83,13 @@ different chunks to be sent to the storage nodes. We will allow the storage node
             k += 1;
         }
         try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         System.out.println(data_chunk.length);
         Chunk chunk = new Chunk(data_chunk, data.getFilename(), j,true);
-        send_chunk(ipaddress,port,chunk);
-
-
+        send_chunk_direct(ipaddress,port,chunk);
     }
 
     private int check_size(int chunk_size, int b_val)
@@ -116,39 +114,36 @@ different chunks to be sent to the storage nodes. We will allow the storage node
         StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
                 .setRequest(s_chunk)
                 .build();
+
+
         DataRequester requester = new DataRequester(dataPacket,ipaddress,port);
         requester.start();
         System.out.println("Chunk has been sent " + s_chunk.getChunkId() +s_chunk.getData());
    }
 
-   public void request_file_chunks(String ipaddress,int port, String filename)
-   {
+
+    public void send_chunk_direct(String ipaddress, int port, Chunk chunk) throws HashException {
+        ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
         StorageMessages.Request s_chunk = StorageMessages.Request.newBuilder()
-                .setFileName(filename)
-                .setOpcode(StorageMessages.Request.Op_code.get_chunk)
+                .setChunkId(chunk.getChunk_id())
+                .setData(bsval)
+                .setFileName(chunk.getFile_name())
+                .setOpcode(StorageMessages.Request.Op_code.store_chunk)
+                .setIslast(chunk.getIs_last())
+                .setIpaddress(ipaddress)
+                .setPort(port)
                 .build();
         StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
                 .setRequest(s_chunk)
                 .build();
-        DataRequester requester = new DataRequester(dataPacket,ipaddress,port);
-        requester.start();
-   }
+        String key = key_gen(chunk.getFile_name(),chunk.getChunk_id(),chunk.getIs_last());
+        BigInteger pos = hashRing.locate((key.getBytes()));
+        HashRingEntry node = hashRing.returnNode(pos);
 
-   public void request_data(String ipaddress, int port, String filename)
-   {
-       System.out.println("making requests");
-       StorageMessages.Request request = StorageMessages.Request.newBuilder()
-               .setFileName(filename)
-               .setIpaddress(this.ipaddress)
-               .setPort(this.port)
-               .setOpcode(StorageMessages.Request.Op_code.get_data)
-               .build();
-       StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
-               .setRequest(request)
-               .build();
-       DataRequester requester = new DataRequester(dataPacket,ipaddress,port);
-       requester.start();
-   }
+        DataRequesterWithAck requester = new DataRequesterWithAck(dataPacket,node.inetaddress,node.port);
+        requester.start();
+        System.out.println("Chunk has been sent " + s_chunk.getChunkId() +s_chunk.getData());
+    }
 
    public void request_data_mkII(String filename)
    {
@@ -211,6 +206,8 @@ different chunks to be sent to the storage nodes. We will allow the storage node
         dataRequester.start();
     }
 
+
+
     private String key_gen(String filename, int chunknumber, boolean islast){
         if(islast)
             return filename + "last";
@@ -237,7 +234,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
                        .build();
                dataPacket.writeDelimitedTo(outputStream);
 
-               CoordMessages.DataPacket response = CoordMessages.DataPacket.getDefaultInstance();
+               CoordMessages.DataPacket response;
                response = CoordMessages.DataPacket.parseDelimitedFrom(inputStream);
 
                hashRing = new HashRing(sha1,response.getHashring());
@@ -257,14 +254,14 @@ different chunks to be sent to the storage nodes. We will allow the storage node
         Data data = new Data("inputs/dennis.txt","a.txt");
         System.out.println(data.getData().length);
         Client client = new Client(7000);
-
+        client.request_hashring("localhost",6000);
         client.shard("localhost", 5050,data);
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        client.request_hashring("localhost",6000);
+
         System.out.println(client.find_max_chunks("a.txt"));
         client.request_data_mkII("a.txt");
     }

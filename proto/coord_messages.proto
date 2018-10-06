@@ -10,6 +10,7 @@ message HashRingEntry{
     bytes position = 1;
     string ipaddress = 2;
     int32 port = 3;
+    bool add = 4;
 }
 
 message HashRing{
@@ -26,12 +27,18 @@ message Heartbeat{
     bool map_correct = 2;
 }
 
+message RemoveNode{
+    string key = 1;
+}
+
 message DataPacket{
     oneof responses{
         RequestEntry requestentry = 1;
         HashRing hashring = 2;
         HashRingEntry hashringentry = 3;
         RequestMap requestmap = 4;
+        Heartbeat heartbeat = 5;
+        RemoveNode removenode = 6;
     }
 }
 

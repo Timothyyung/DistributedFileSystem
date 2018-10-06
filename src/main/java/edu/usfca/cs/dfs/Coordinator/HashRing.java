@@ -252,7 +252,11 @@ public class HashRing<T> {
     public HashRingEntry get_next_entry(BigInteger pos)
     {
         pos = pos.add(BigInteger.ONE);
-        return entryMap.ceilingEntry(pos).getValue();
+        BigInteger node = entryMap.ceilingKey(pos);
+        if(node == null)
+            return entryMap.ceilingEntry(BigInteger.ZERO).getValue();
+        else
+            return entryMap.ceilingEntry(pos).getValue();
     }
 
     @Override
@@ -297,6 +301,11 @@ public class HashRing<T> {
         prevEntry.neighbor = firstEntry;
     }
 
+    public int get_size()
+    {
+        return entryMap.size();
+    }
+
     public void sendUpdate(String ipaddress, int port,CoordMessages.HashRingEntry hre){
         for(Map.Entry<BigInteger,HashRingEntry> entry: entryMap.entrySet()) {
             if(entry.getValue().inetaddress != ipaddress && entry.getValue().port != port){
@@ -304,6 +313,7 @@ public class HashRing<T> {
                         .setPosition(hre.getPosition())
                         .setIpaddress(hre.getIpaddress())
                         .setPort(hre.getPort())
+                        .setAdd(hre.getAdd())
                         .build();
                 StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
                         .setHashringentry(hashRingEntry)

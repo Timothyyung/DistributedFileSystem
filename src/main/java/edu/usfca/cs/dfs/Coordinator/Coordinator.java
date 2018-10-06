@@ -114,6 +114,7 @@ public class Coordinator extends Thread{
                     .setPosition(bsval)
                     .setIpaddress(entryRequest.getIpaddress())
                     .setPort(entryRequest.getPort())
+                    .setAdd(true)
                     .build();
 
             return hashRingEntry;
