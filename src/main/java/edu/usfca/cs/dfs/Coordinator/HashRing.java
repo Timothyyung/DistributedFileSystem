@@ -164,54 +164,6 @@ public class HashRing<T> {
     }
 
 
-    public BigInteger addNode(T data) throws HashTopologyException, HashException{
-        if (entryMap.values().size() == 0) {
-            BigInteger pos;
-
-            if (randomize) {
-                /* Find a random location to start with */
-                pos = function.randomHash();
-            } else {
-                pos = BigInteger.ZERO;
-            }
-
-            HashRingEntry firstEntry = new HashRingEntry(pos);
-            entryMap.put(pos, firstEntry);
-
-            return pos;
-        }
-
-        if(entryMap.values().size() == 1) {
-            HashRingEntry firstEntry = entryMap.values().iterator().next();
-            BigInteger halfSize = maxHash.divide(BigInteger.valueOf(2));
-            BigInteger secondPos = firstEntry.position.add(halfSize);
-            if (secondPos.compareTo(maxHash) > 0) {
-                secondPos = secondPos.subtract(maxHash);
-            }
-            HashRingEntry secondEntry = new HashRingEntry(secondPos, firstEntry);
-            firstEntry.neighbor = secondEntry;
-            entryMap.put(secondPos, secondEntry);
-            return secondPos;
-        }
-
-        BigInteger largestSpan = BigInteger.ZERO;
-        HashRingEntry largestEntry = null;
-        for (HashRingEntry entry : entryMap.values()){
-            BigInteger len = lengthBetween(entry,entry.neighbor);
-            if(len.compareTo(largestSpan) > 0){
-                largestSpan = len;
-                largestEntry = entry;
-            }
-        }
-
-        if(largestEntry == null){
-            return  BigInteger.ONE.negate();
-        }
-
-        BigInteger half = half(largestEntry,largestEntry.neighbor);
-        addRingEntry(half,largestEntry);
-        return half;
-    }
 
     private BigInteger half(HashRingEntry start, HashRingEntry end){
         BigInteger length = lengthBetween(start, end);

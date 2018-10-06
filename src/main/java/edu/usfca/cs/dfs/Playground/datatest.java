@@ -16,7 +16,10 @@ import java.util.TreeMap;
 
 
 public class datatest {
-    public static void main(String[] args) throws HashException, HashTopologyException {
+    public static void main(String[] args) throws HashException, HashTopologyException, InterruptedException {
+
+
+
         SHA1 sha1 = new SHA1();
         System.out.println(sha1.maxValue());
         Data data = new Data("inputs/Mytestdoc.txt","a.txt");

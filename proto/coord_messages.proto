@@ -25,10 +25,12 @@ message RequestMap{
 message Heartbeat{
     int32 map_size = 1;
     bool map_correct = 2;
+    string node_key = 3;
 }
 
 message RemoveNode{
     string key = 1;
+    bytes position = 2;
 }
 
 message DataPacket{

@@ -12,11 +12,9 @@ import java.util.HashMap;
 
 public class Heartbeat extends Thread{
     private int mapsize;
-    private HashMap<String, BigInteger> node_map;
     boolean running = true;
     public Heartbeat (HashMap<String,BigInteger> node_map, int mapsize){
         this.mapsize = mapsize;
-        this.node_map = node_map;
     }
 
     @Override
@@ -24,21 +22,22 @@ public class Heartbeat extends Thread{
         while(running) {
             try {
                 Thread.sleep(5000);
-                //are_u_alive();
-            } catch (InterruptedException e) {
+                i_am_alive("localhost",6000);
+            } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
 
         }
     }
 
-    private void are_u_alive(String ipaddress, int port) throws IOException {
+    private void i_am_alive(String ipaddress, int port) throws IOException {
 
         Socket s = new Socket(ipaddress,port);
         OutputStream outputStream = s.getOutputStream();
         InputStream inputStream = s.getInputStream();
         CoordMessages.Heartbeat heartbeat = CoordMessages.Heartbeat.newBuilder()
                 .setMapSize(mapsize)
+                .setNodeKey(ipaddress +Integer.toString(port))
                 .build();
         CoordMessages.DataPacket dataPacket = CoordMessages.DataPacket.newBuilder()
                 .setHeartbeat(heartbeat)
@@ -46,15 +45,13 @@ public class Heartbeat extends Thread{
         dataPacket.writeDelimitedTo(outputStream);
 
         dataPacket = dataPacket.parseDelimitedFrom(inputStream);
-        if(!dataPacket.hasHeartbeat())
-            kill_node(ipaddress,port);
+        heartbeat = dataPacket.getHeartbeat();
+        heartbeat.getMapSize();
+
 
     }
 
-    private void kill_node(String ipadress, int port)
-    {
-        
-    }
+
 
     public void set_map_size(int mapsize)
     {

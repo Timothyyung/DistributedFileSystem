@@ -2718,6 +2718,16 @@ public final class CoordMessages {
      * <code>bool map_correct = 2;</code>
      */
     boolean getMapCorrect();
+
+    /**
+     * <code>string node_key = 3;</code>
+     */
+    java.lang.String getNodeKey();
+    /**
+     * <code>string node_key = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getNodeKeyBytes();
   }
   /**
    * Protobuf type {@code Heartbeat}
@@ -2734,6 +2744,7 @@ public final class CoordMessages {
     private Heartbeat() {
       mapSize_ = 0;
       mapCorrect_ = false;
+      nodeKey_ = "";
     }
 
     @java.lang.Override
@@ -2768,6 +2779,12 @@ public final class CoordMessages {
             case 16: {
 
               mapCorrect_ = input.readBool();
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              nodeKey_ = s;
               break;
             }
             default: {
@@ -2820,6 +2837,40 @@ public final class CoordMessages {
       return mapCorrect_;
     }
 
+    public static final int NODE_KEY_FIELD_NUMBER = 3;
+    private volatile java.lang.Object nodeKey_;
+    /**
+     * <code>string node_key = 3;</code>
+     */
+    public java.lang.String getNodeKey() {
+      java.lang.Object ref = nodeKey_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        nodeKey_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string node_key = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNodeKeyBytes() {
+      java.lang.Object ref = nodeKey_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nodeKey_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -2840,6 +2891,9 @@ public final class CoordMessages {
       if (mapCorrect_ != false) {
         output.writeBool(2, mapCorrect_);
       }
+      if (!getNodeKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, nodeKey_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -2856,6 +2910,9 @@ public final class CoordMessages {
       if (mapCorrect_ != false) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(2, mapCorrect_);
+      }
+      if (!getNodeKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, nodeKey_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2877,6 +2934,8 @@ public final class CoordMessages {
           == other.getMapSize());
       result = result && (getMapCorrect()
           == other.getMapCorrect());
+      result = result && getNodeKey()
+          .equals(other.getNodeKey());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -2893,6 +2952,8 @@ public final class CoordMessages {
       hash = (37 * hash) + MAP_CORRECT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getMapCorrect());
+      hash = (37 * hash) + NODE_KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getNodeKey().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3030,6 +3091,8 @@ public final class CoordMessages {
 
         mapCorrect_ = false;
 
+        nodeKey_ = "";
+
         return this;
       }
 
@@ -3058,6 +3121,7 @@ public final class CoordMessages {
         edu.usfca.cs.dfs.CoordMessages.Heartbeat result = new edu.usfca.cs.dfs.CoordMessages.Heartbeat(this);
         result.mapSize_ = mapSize_;
         result.mapCorrect_ = mapCorrect_;
+        result.nodeKey_ = nodeKey_;
         onBuilt();
         return result;
       }
@@ -3111,6 +3175,10 @@ public final class CoordMessages {
         }
         if (other.getMapCorrect() != false) {
           setMapCorrect(other.getMapCorrect());
+        }
+        if (!other.getNodeKey().isEmpty()) {
+          nodeKey_ = other.nodeKey_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3192,6 +3260,75 @@ public final class CoordMessages {
         onChanged();
         return this;
       }
+
+      private java.lang.Object nodeKey_ = "";
+      /**
+       * <code>string node_key = 3;</code>
+       */
+      public java.lang.String getNodeKey() {
+        java.lang.Object ref = nodeKey_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          nodeKey_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string node_key = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNodeKeyBytes() {
+        java.lang.Object ref = nodeKey_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nodeKey_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string node_key = 3;</code>
+       */
+      public Builder setNodeKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        nodeKey_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string node_key = 3;</code>
+       */
+      public Builder clearNodeKey() {
+        
+        nodeKey_ = getDefaultInstance().getNodeKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string node_key = 3;</code>
+       */
+      public Builder setNodeKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        nodeKey_ = value;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -3240,6 +3377,622 @@ public final class CoordMessages {
 
     @java.lang.Override
     public edu.usfca.cs.dfs.CoordMessages.Heartbeat getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface RemoveNodeOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RemoveNode)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string key = 1;</code>
+     */
+    java.lang.String getKey();
+    /**
+     * <code>string key = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getKeyBytes();
+
+    /**
+     * <code>bytes position = 2;</code>
+     */
+    com.google.protobuf.ByteString getPosition();
+  }
+  /**
+   * Protobuf type {@code RemoveNode}
+   */
+  public  static final class RemoveNode extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:RemoveNode)
+      RemoveNodeOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RemoveNode.newBuilder() to construct.
+    private RemoveNode(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RemoveNode() {
+      key_ = "";
+      position_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RemoveNode(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              key_ = s;
+              break;
+            }
+            case 18: {
+
+              position_ = input.readBytes();
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.usfca.cs.dfs.CoordMessages.internal_static_RemoveNode_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.usfca.cs.dfs.CoordMessages.internal_static_RemoveNode_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.usfca.cs.dfs.CoordMessages.RemoveNode.class, edu.usfca.cs.dfs.CoordMessages.RemoveNode.Builder.class);
+    }
+
+    public static final int KEY_FIELD_NUMBER = 1;
+    private volatile java.lang.Object key_;
+    /**
+     * <code>string key = 1;</code>
+     */
+    public java.lang.String getKey() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        key_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string key = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getKeyBytes() {
+      java.lang.Object ref = key_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        key_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int POSITION_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString position_;
+    /**
+     * <code>bytes position = 2;</code>
+     */
+    public com.google.protobuf.ByteString getPosition() {
+      return position_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getKeyBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, key_);
+      }
+      if (!position_.isEmpty()) {
+        output.writeBytes(2, position_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getKeyBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, key_);
+      }
+      if (!position_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, position_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof edu.usfca.cs.dfs.CoordMessages.RemoveNode)) {
+        return super.equals(obj);
+      }
+      edu.usfca.cs.dfs.CoordMessages.RemoveNode other = (edu.usfca.cs.dfs.CoordMessages.RemoveNode) obj;
+
+      boolean result = true;
+      result = result && getKey()
+          .equals(other.getKey());
+      result = result && getPosition()
+          .equals(other.getPosition());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getKey().hashCode();
+      hash = (37 * hash) + POSITION_FIELD_NUMBER;
+      hash = (53 * hash) + getPosition().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(edu.usfca.cs.dfs.CoordMessages.RemoveNode prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RemoveNode}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RemoveNode)
+        edu.usfca.cs.dfs.CoordMessages.RemoveNodeOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.usfca.cs.dfs.CoordMessages.internal_static_RemoveNode_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.usfca.cs.dfs.CoordMessages.internal_static_RemoveNode_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.usfca.cs.dfs.CoordMessages.RemoveNode.class, edu.usfca.cs.dfs.CoordMessages.RemoveNode.Builder.class);
+      }
+
+      // Construct using edu.usfca.cs.dfs.CoordMessages.RemoveNode.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        key_ = "";
+
+        position_ = com.google.protobuf.ByteString.EMPTY;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.usfca.cs.dfs.CoordMessages.internal_static_RemoveNode_descriptor;
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.CoordMessages.RemoveNode getDefaultInstanceForType() {
+        return edu.usfca.cs.dfs.CoordMessages.RemoveNode.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.CoordMessages.RemoveNode build() {
+        edu.usfca.cs.dfs.CoordMessages.RemoveNode result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.CoordMessages.RemoveNode buildPartial() {
+        edu.usfca.cs.dfs.CoordMessages.RemoveNode result = new edu.usfca.cs.dfs.CoordMessages.RemoveNode(this);
+        result.key_ = key_;
+        result.position_ = position_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.usfca.cs.dfs.CoordMessages.RemoveNode) {
+          return mergeFrom((edu.usfca.cs.dfs.CoordMessages.RemoveNode)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.usfca.cs.dfs.CoordMessages.RemoveNode other) {
+        if (other == edu.usfca.cs.dfs.CoordMessages.RemoveNode.getDefaultInstance()) return this;
+        if (!other.getKey().isEmpty()) {
+          key_ = other.key_;
+          onChanged();
+        }
+        if (other.getPosition() != com.google.protobuf.ByteString.EMPTY) {
+          setPosition(other.getPosition());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.usfca.cs.dfs.CoordMessages.RemoveNode parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.usfca.cs.dfs.CoordMessages.RemoveNode) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object key_ = "";
+      /**
+       * <code>string key = 1;</code>
+       */
+      public java.lang.String getKey() {
+        java.lang.Object ref = key_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          key_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string key = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getKeyBytes() {
+        java.lang.Object ref = key_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          key_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string key = 1;</code>
+       */
+      public Builder setKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        key_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string key = 1;</code>
+       */
+      public Builder clearKey() {
+        
+        key_ = getDefaultInstance().getKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string key = 1;</code>
+       */
+      public Builder setKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        key_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString position_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes position = 2;</code>
+       */
+      public com.google.protobuf.ByteString getPosition() {
+        return position_;
+      }
+      /**
+       * <code>bytes position = 2;</code>
+       */
+      public Builder setPosition(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        position_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bytes position = 2;</code>
+       */
+      public Builder clearPosition() {
+        
+        position_ = getDefaultInstance().getPosition();
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:RemoveNode)
+    }
+
+    // @@protoc_insertion_point(class_scope:RemoveNode)
+    private static final edu.usfca.cs.dfs.CoordMessages.RemoveNode DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new edu.usfca.cs.dfs.CoordMessages.RemoveNode();
+    }
+
+    public static edu.usfca.cs.dfs.CoordMessages.RemoveNode getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RemoveNode>
+        PARSER = new com.google.protobuf.AbstractParser<RemoveNode>() {
+      @java.lang.Override
+      public RemoveNode parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RemoveNode(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RemoveNode> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RemoveNode> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public edu.usfca.cs.dfs.CoordMessages.RemoveNode getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -3313,6 +4066,19 @@ public final class CoordMessages {
      * <code>.Heartbeat heartbeat = 5;</code>
      */
     edu.usfca.cs.dfs.CoordMessages.HeartbeatOrBuilder getHeartbeatOrBuilder();
+
+    /**
+     * <code>.RemoveNode removenode = 6;</code>
+     */
+    boolean hasRemovenode();
+    /**
+     * <code>.RemoveNode removenode = 6;</code>
+     */
+    edu.usfca.cs.dfs.CoordMessages.RemoveNode getRemovenode();
+    /**
+     * <code>.RemoveNode removenode = 6;</code>
+     */
+    edu.usfca.cs.dfs.CoordMessages.RemoveNodeOrBuilder getRemovenodeOrBuilder();
 
     public edu.usfca.cs.dfs.CoordMessages.DataPacket.ResponsesCase getResponsesCase();
   }
@@ -3425,6 +4191,20 @@ public final class CoordMessages {
               responsesCase_ = 5;
               break;
             }
+            case 50: {
+              edu.usfca.cs.dfs.CoordMessages.RemoveNode.Builder subBuilder = null;
+              if (responsesCase_ == 6) {
+                subBuilder = ((edu.usfca.cs.dfs.CoordMessages.RemoveNode) responses_).toBuilder();
+              }
+              responses_ =
+                  input.readMessage(edu.usfca.cs.dfs.CoordMessages.RemoveNode.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((edu.usfca.cs.dfs.CoordMessages.RemoveNode) responses_);
+                responses_ = subBuilder.buildPartial();
+              }
+              responsesCase_ = 6;
+              break;
+            }
             default: {
               if (!parseUnknownFieldProto3(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -3466,6 +4246,7 @@ public final class CoordMessages {
       HASHRINGENTRY(3),
       REQUESTMAP(4),
       HEARTBEAT(5),
+      REMOVENODE(6),
       RESPONSES_NOT_SET(0);
       private final int value;
       private ResponsesCase(int value) {
@@ -3486,6 +4267,7 @@ public final class CoordMessages {
           case 3: return HASHRINGENTRY;
           case 4: return REQUESTMAP;
           case 5: return HEARTBEAT;
+          case 6: return REMOVENODE;
           case 0: return RESPONSES_NOT_SET;
           default: return null;
         }
@@ -3631,6 +4413,32 @@ public final class CoordMessages {
       return edu.usfca.cs.dfs.CoordMessages.Heartbeat.getDefaultInstance();
     }
 
+    public static final int REMOVENODE_FIELD_NUMBER = 6;
+    /**
+     * <code>.RemoveNode removenode = 6;</code>
+     */
+    public boolean hasRemovenode() {
+      return responsesCase_ == 6;
+    }
+    /**
+     * <code>.RemoveNode removenode = 6;</code>
+     */
+    public edu.usfca.cs.dfs.CoordMessages.RemoveNode getRemovenode() {
+      if (responsesCase_ == 6) {
+         return (edu.usfca.cs.dfs.CoordMessages.RemoveNode) responses_;
+      }
+      return edu.usfca.cs.dfs.CoordMessages.RemoveNode.getDefaultInstance();
+    }
+    /**
+     * <code>.RemoveNode removenode = 6;</code>
+     */
+    public edu.usfca.cs.dfs.CoordMessages.RemoveNodeOrBuilder getRemovenodeOrBuilder() {
+      if (responsesCase_ == 6) {
+         return (edu.usfca.cs.dfs.CoordMessages.RemoveNode) responses_;
+      }
+      return edu.usfca.cs.dfs.CoordMessages.RemoveNode.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -3660,6 +4468,9 @@ public final class CoordMessages {
       if (responsesCase_ == 5) {
         output.writeMessage(5, (edu.usfca.cs.dfs.CoordMessages.Heartbeat) responses_);
       }
+      if (responsesCase_ == 6) {
+        output.writeMessage(6, (edu.usfca.cs.dfs.CoordMessages.RemoveNode) responses_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -3688,6 +4499,10 @@ public final class CoordMessages {
       if (responsesCase_ == 5) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, (edu.usfca.cs.dfs.CoordMessages.Heartbeat) responses_);
+      }
+      if (responsesCase_ == 6) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, (edu.usfca.cs.dfs.CoordMessages.RemoveNode) responses_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3729,6 +4544,10 @@ public final class CoordMessages {
           result = result && getHeartbeat()
               .equals(other.getHeartbeat());
           break;
+        case 6:
+          result = result && getRemovenode()
+              .equals(other.getRemovenode());
+          break;
         case 0:
         default:
       }
@@ -3763,6 +4582,10 @@ public final class CoordMessages {
         case 5:
           hash = (37 * hash) + HEARTBEAT_FIELD_NUMBER;
           hash = (53 * hash) + getHeartbeat().hashCode();
+          break;
+        case 6:
+          hash = (37 * hash) + REMOVENODE_FIELD_NUMBER;
+          hash = (53 * hash) + getRemovenode().hashCode();
           break;
         case 0:
         default:
@@ -3963,6 +4786,13 @@ public final class CoordMessages {
             result.responses_ = heartbeatBuilder_.build();
           }
         }
+        if (responsesCase_ == 6) {
+          if (removenodeBuilder_ == null) {
+            result.responses_ = responses_;
+          } else {
+            result.responses_ = removenodeBuilder_.build();
+          }
+        }
         result.responsesCase_ = responsesCase_;
         onBuilt();
         return result;
@@ -4031,6 +4861,10 @@ public final class CoordMessages {
           }
           case HEARTBEAT: {
             mergeHeartbeat(other.getHeartbeat());
+            break;
+          }
+          case REMOVENODE: {
+            mergeRemovenode(other.getRemovenode());
             break;
           }
           case RESPONSES_NOT_SET: {
@@ -4760,6 +5594,142 @@ public final class CoordMessages {
         onChanged();;
         return heartbeatBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.CoordMessages.RemoveNode, edu.usfca.cs.dfs.CoordMessages.RemoveNode.Builder, edu.usfca.cs.dfs.CoordMessages.RemoveNodeOrBuilder> removenodeBuilder_;
+      /**
+       * <code>.RemoveNode removenode = 6;</code>
+       */
+      public boolean hasRemovenode() {
+        return responsesCase_ == 6;
+      }
+      /**
+       * <code>.RemoveNode removenode = 6;</code>
+       */
+      public edu.usfca.cs.dfs.CoordMessages.RemoveNode getRemovenode() {
+        if (removenodeBuilder_ == null) {
+          if (responsesCase_ == 6) {
+            return (edu.usfca.cs.dfs.CoordMessages.RemoveNode) responses_;
+          }
+          return edu.usfca.cs.dfs.CoordMessages.RemoveNode.getDefaultInstance();
+        } else {
+          if (responsesCase_ == 6) {
+            return removenodeBuilder_.getMessage();
+          }
+          return edu.usfca.cs.dfs.CoordMessages.RemoveNode.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.RemoveNode removenode = 6;</code>
+       */
+      public Builder setRemovenode(edu.usfca.cs.dfs.CoordMessages.RemoveNode value) {
+        if (removenodeBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          responses_ = value;
+          onChanged();
+        } else {
+          removenodeBuilder_.setMessage(value);
+        }
+        responsesCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.RemoveNode removenode = 6;</code>
+       */
+      public Builder setRemovenode(
+          edu.usfca.cs.dfs.CoordMessages.RemoveNode.Builder builderForValue) {
+        if (removenodeBuilder_ == null) {
+          responses_ = builderForValue.build();
+          onChanged();
+        } else {
+          removenodeBuilder_.setMessage(builderForValue.build());
+        }
+        responsesCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.RemoveNode removenode = 6;</code>
+       */
+      public Builder mergeRemovenode(edu.usfca.cs.dfs.CoordMessages.RemoveNode value) {
+        if (removenodeBuilder_ == null) {
+          if (responsesCase_ == 6 &&
+              responses_ != edu.usfca.cs.dfs.CoordMessages.RemoveNode.getDefaultInstance()) {
+            responses_ = edu.usfca.cs.dfs.CoordMessages.RemoveNode.newBuilder((edu.usfca.cs.dfs.CoordMessages.RemoveNode) responses_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            responses_ = value;
+          }
+          onChanged();
+        } else {
+          if (responsesCase_ == 6) {
+            removenodeBuilder_.mergeFrom(value);
+          }
+          removenodeBuilder_.setMessage(value);
+        }
+        responsesCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.RemoveNode removenode = 6;</code>
+       */
+      public Builder clearRemovenode() {
+        if (removenodeBuilder_ == null) {
+          if (responsesCase_ == 6) {
+            responsesCase_ = 0;
+            responses_ = null;
+            onChanged();
+          }
+        } else {
+          if (responsesCase_ == 6) {
+            responsesCase_ = 0;
+            responses_ = null;
+          }
+          removenodeBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.RemoveNode removenode = 6;</code>
+       */
+      public edu.usfca.cs.dfs.CoordMessages.RemoveNode.Builder getRemovenodeBuilder() {
+        return getRemovenodeFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.RemoveNode removenode = 6;</code>
+       */
+      public edu.usfca.cs.dfs.CoordMessages.RemoveNodeOrBuilder getRemovenodeOrBuilder() {
+        if ((responsesCase_ == 6) && (removenodeBuilder_ != null)) {
+          return removenodeBuilder_.getMessageOrBuilder();
+        } else {
+          if (responsesCase_ == 6) {
+            return (edu.usfca.cs.dfs.CoordMessages.RemoveNode) responses_;
+          }
+          return edu.usfca.cs.dfs.CoordMessages.RemoveNode.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.RemoveNode removenode = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.CoordMessages.RemoveNode, edu.usfca.cs.dfs.CoordMessages.RemoveNode.Builder, edu.usfca.cs.dfs.CoordMessages.RemoveNodeOrBuilder> 
+          getRemovenodeFieldBuilder() {
+        if (removenodeBuilder_ == null) {
+          if (!(responsesCase_ == 6)) {
+            responses_ = edu.usfca.cs.dfs.CoordMessages.RemoveNode.getDefaultInstance();
+          }
+          removenodeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              edu.usfca.cs.dfs.CoordMessages.RemoveNode, edu.usfca.cs.dfs.CoordMessages.RemoveNode.Builder, edu.usfca.cs.dfs.CoordMessages.RemoveNodeOrBuilder>(
+                  (edu.usfca.cs.dfs.CoordMessages.RemoveNode) responses_,
+                  getParentForChildren(),
+                  isClean());
+          responses_ = null;
+        }
+        responsesCase_ = 6;
+        onChanged();;
+        return removenodeBuilder_;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -4844,6 +5814,11 @@ public final class CoordMessages {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Heartbeat_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_RemoveNode_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_RemoveNode_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_DataPacket_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -4865,14 +5840,16 @@ public final class CoordMessages {
       "ingsEntry\032@\n\016HashRingsEntry\022\013\n\003key\030\001 \001(\t" +
       "\022\035\n\005value\030\002 \001(\0132\016.HashRingEntry:\0028\001\"-\n\nR" +
       "equestMap\022\021\n\tipaddress\030\001 \001(\t\022\014\n\004port\030\002 \001" +
-      "(\005\"2\n\tHeartbeat\022\020\n\010map_size\030\001 \001(\005\022\023\n\013map" +
-      "_correct\030\002 \001(\010\"\314\001\n\nDataPacket\022%\n\014request" +
-      "entry\030\001 \001(\0132\r.RequestEntryH\000\022\035\n\010hashring" +
-      "\030\002 \001(\0132\t.HashRingH\000\022\'\n\rhashringentry\030\003 \001" +
-      "(\0132\016.HashRingEntryH\000\022!\n\nrequestmap\030\004 \001(\013" +
-      "2\013.RequestMapH\000\022\037\n\theartbeat\030\005 \001(\0132\n.Hea" +
-      "rtbeatH\000B\013\n\tresponsesB\022\n\020edu.usfca.cs.df" +
-      "sb\006proto3"
+      "(\005\"D\n\tHeartbeat\022\020\n\010map_size\030\001 \001(\005\022\023\n\013map" +
+      "_correct\030\002 \001(\010\022\020\n\010node_key\030\003 \001(\t\"+\n\nRemo" +
+      "veNode\022\013\n\003key\030\001 \001(\t\022\020\n\010position\030\002 \001(\014\"\357\001" +
+      "\n\nDataPacket\022%\n\014requestentry\030\001 \001(\0132\r.Req" +
+      "uestEntryH\000\022\035\n\010hashring\030\002 \001(\0132\t.HashRing" +
+      "H\000\022\'\n\rhashringentry\030\003 \001(\0132\016.HashRingEntr" +
+      "yH\000\022!\n\nrequestmap\030\004 \001(\0132\013.RequestMapH\000\022\037" +
+      "\n\theartbeat\030\005 \001(\0132\n.HeartbeatH\000\022!\n\nremov" +
+      "enode\030\006 \001(\0132\013.RemoveNodeH\000B\013\n\tresponsesB" +
+      "\022\n\020edu.usfca.cs.dfsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4921,13 +5898,19 @@ public final class CoordMessages {
     internal_static_Heartbeat_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Heartbeat_descriptor,
-        new java.lang.String[] { "MapSize", "MapCorrect", });
-    internal_static_DataPacket_descriptor =
+        new java.lang.String[] { "MapSize", "MapCorrect", "NodeKey", });
+    internal_static_RemoveNode_descriptor =
       getDescriptor().getMessageTypes().get(5);
+    internal_static_RemoveNode_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_RemoveNode_descriptor,
+        new java.lang.String[] { "Key", "Position", });
+    internal_static_DataPacket_descriptor =
+      getDescriptor().getMessageTypes().get(6);
     internal_static_DataPacket_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_DataPacket_descriptor,
-        new java.lang.String[] { "Requestentry", "Hashring", "Hashringentry", "Requestmap", "Heartbeat", "Responses", });
+        new java.lang.String[] { "Requestentry", "Hashring", "Hashringentry", "Requestmap", "Heartbeat", "Removenode", "Responses", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
