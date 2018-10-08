@@ -44,7 +44,6 @@ public class HashRing<T> {
 
     private void map_to_treemap(CoordMessages.HashRing map)
     {
-        System.out.println("MAKING MAP TO TREEMAP");
         for(Map.Entry<String, CoordMessages.HashRingEntry> entry: map.getHashRings().entrySet()){
             BigInteger pos = new BigInteger(entry.getValue().getPosition().toByteArray());
             BigInteger key = new BigInteger(entry.getKey());

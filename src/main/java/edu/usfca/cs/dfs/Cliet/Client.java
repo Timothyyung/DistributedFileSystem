@@ -24,7 +24,7 @@ import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Client{
+public class Client extends Thread{
 
     private String ipaddress;
     private int port;
@@ -60,6 +60,52 @@ Sharding allows for the user to input a file ( right now can only handle TXT fil
 different chunks to be sent to the storage nodes. We will allow the storage nodes to handle all storage operations
  */
 
+
+    public void run(Data data) {
+        try {
+            shard(data);
+        } catch (HashException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void shard(Data data) throws HashException {
+        int chunk_size = 10000;
+        byte[] data_chunk = new byte[chunk_size];
+        int i = 0; int j = 1; int k = 0;
+        int b_val = data.getData().length - chunk_size;
+        while(i < data.getData().length)
+        {
+            if(i % chunk_size == 0 & i != 0)
+            {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Chunk chunk = new Chunk(data_chunk,data.getFilename(),j,false);
+                b_val = b_val - chunk_size;
+                System.out.println( b_val);
+                data_chunk = new byte[check_size(chunk_size,b_val)];
+                send_chunk_direct(chunk);
+                j += 1;
+                k = 0;
+            }
+            data_chunk[k] = data.getData()[i];
+            i += 1;
+            k += 1;
+        }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(data_chunk.length);
+        Chunk chunk = new Chunk(data_chunk, data.getFilename(), j,true);
+        send_chunk_direct(chunk);
+    }
+
+
     public void shard(String ipaddress, int port, Data data) throws HashException {
         int chunk_size = 10000;
         byte[] data_chunk = new byte[chunk_size];
@@ -78,7 +124,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
                 b_val = b_val - chunk_size;
                 System.out.println( b_val);
                 data_chunk = new byte[check_size(chunk_size,b_val)];
-                send_chunk_direct(ipaddress,port,chunk);
+                send_chunk(ipaddress,port,chunk);
                 j += 1;
                 k = 0;
             }
@@ -93,7 +139,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
         }
         System.out.println(data_chunk.length);
         Chunk chunk = new Chunk(data_chunk, data.getFilename(), j,true);
-        send_chunk_direct(ipaddress,port,chunk);
+        send_chunk(ipaddress,port,chunk);
     }
 
     private int check_size(int chunk_size, int b_val)
@@ -104,10 +150,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
             return chunk_size;
     }
 
-
-
-
-    public void send_chunk_direct(String ipaddress, int port, Chunk chunk) throws HashException {
+    public void send_chunk(String ipaddress, int port, Chunk chunk){
         ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
         StorageMessages.Request s_chunk = StorageMessages.Request.newBuilder()
                 .setChunkId(chunk.getChunk_id())
@@ -117,6 +160,25 @@ different chunks to be sent to the storage nodes. We will allow the storage node
                 .setIslast(chunk.getIs_last())
                 .setIpaddress(ipaddress)
                 .setPort(port)
+                .build();
+        StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                .setRequest(s_chunk)
+                .build();
+        DataRequester requester = new DataRequester(dataPacket,ipaddress,port);
+        requester.start();
+        System.out.println("Chunk has been sent " + s_chunk.getChunkId() +s_chunk.getData());
+    }
+
+
+
+    public void send_chunk_direct(Chunk chunk) throws HashException {
+        ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
+        StorageMessages.Request s_chunk = StorageMessages.Request.newBuilder()
+                .setChunkId(chunk.getChunk_id())
+                .setData(bsval)
+                .setFileName(chunk.getFile_name())
+                .setOpcode(StorageMessages.Request.Op_code.store_chunk)
+                .setIslast(chunk.getIs_last())
                 .build();
         StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
                 .setRequest(s_chunk)
@@ -135,12 +197,15 @@ different chunks to be sent to the storage nodes. We will allow the storage node
    {
        try {
        int max_chunk = find_max_chunks(filename);
-       for(int i = 1; i < max_chunk; i++){
-               request_from_storage(filename,i,ipaddress,port,false);
+       boolean last  = false;
+       for(int i = 1; i <= max_chunk; i++){
+                if( i == max_chunk)
+                    last = true;
+               request_from_storage(filename,i,ipaddress,port,last);
                Thread.sleep(1000);
            }
            System.out.println(max_chunk);
-            request_from_storage(filename,max_chunk,ipaddress,port,true);
+
        } catch (HashException | InterruptedException e) {
            e.printStackTrace();
        }
@@ -199,13 +264,13 @@ different chunks to be sent to the storage nodes. We will allow the storage node
             return filename + "last";
         else
             return filename + Integer.toString(chunknumber);
-
     }
+
+
     public void request_hashring(String ipaddress,int port)
    {
        boolean sent = false;
        while(!sent){
-           System.out.println("requesting hashring");
            try(
                    Socket s = new Socket(ipaddress,port);
                    OutputStream outputStream = s.getOutputStream();
@@ -224,7 +289,6 @@ different chunks to be sent to the storage nodes. We will allow the storage node
                response = CoordMessages.DataPacket.parseDelimitedFrom(inputStream);
 
                hashRing = new HashRing(sha1,response.getHashring());
-               System.out.println(hashRing.toString());
 
 
                sent = true;
@@ -234,6 +298,10 @@ different chunks to be sent to the storage nodes. We will allow the storage node
        }
    }
 
+    public String hashring_toString()
+    {
+        return hashRing.toString();
+    }
 
     public static void main(String[] args) throws HashException {
 
@@ -241,7 +309,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
         System.out.println(data.getData().length);
         Client client = new Client(7000);
         client.request_hashring("localhost",6000);
-        client.shard("localhost", 5000,data);
+        client.shard(data);
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {

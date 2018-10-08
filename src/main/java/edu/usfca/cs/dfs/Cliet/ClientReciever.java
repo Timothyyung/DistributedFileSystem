@@ -20,6 +20,7 @@ public class ClientReciever extends Thread {
 
     public ClientReciever(int port){
         this.running = true;
+
         try {
             ipaddress = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
@@ -31,12 +32,10 @@ public class ClientReciever extends Thread {
 
     @Override
     public void run() {
-        System.out.println("Very exited to recieve some Chunks");
         while (this.running){
             try(
                     ServerSocket serverSocket = new ServerSocket(this.port);
             ){
-                System.out.println("data recieved ");
                 Client_reciever cr = new Client_reciever(serverSocket.accept());
                 cr.start();
             } catch (IOException e) {
@@ -102,14 +101,14 @@ public class ClientReciever extends Thread {
         }
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream("outputs");
+            fos = new FileOutputStream(filename);
             fos.write(toByteArray(file));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch ( IOException ie){
             ie.getStackTrace();
         }
-        System.out.println("WOW WE DID IT");
+        System.out.println("Written to outputs");
     }
 
     private static byte[] toByteArray(List<Byte> in){

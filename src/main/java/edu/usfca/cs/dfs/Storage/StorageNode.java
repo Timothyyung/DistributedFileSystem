@@ -154,17 +154,12 @@ public class StorageNode extends Thread{
             CoordMessages.DataPacket dataPacket = CoordMessages.DataPacket.newBuilder()
                     .setRequestentry(requestEntry)
                     .build();
-
             dataPacket.writeDelimitedTo(outputStream);
             CoordMessages.DataPacket response = CoordMessages.DataPacket.getDefaultInstance();
             response = response.parseDelimitedFrom(inputStream);
-
             hashRing = new HashRing(sha1,response.getHashring());
             System.out.println(hashRing.toString());
-
             return true;
-
-
 
         }catch (IOException ioe){
             ioe.printStackTrace();
@@ -316,7 +311,6 @@ public class StorageNode extends Thread{
 
     private void process_single_chunk(StorageMessages.DataPacket dataPacket, Socket s){
         StorageMessages.SingleChunk singleChunk = dataPacket.getSinglechunk();
-
         try (
                 OutputStream outputStream = s.getOutputStream();
         ) {

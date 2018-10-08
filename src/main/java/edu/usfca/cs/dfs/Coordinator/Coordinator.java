@@ -85,8 +85,9 @@ public class Coordinator{
                     remove_node(request.getRemovenode().getKey());
                     System.out.println(hashRing.toString());
                 }else if(request.hasHeartbeat()) {
-                    System.out.println("heartbeat recieved");
-                    node_map.get(request.getHeartbeat().getNodeKey()).resetTime();
+                    System.out.println("heartbeat recieved: " + request.getHeartbeat().getNodeKey());
+                    if(node_map.containsKey(request.getHeartbeat().getNodeKey()))
+                        node_map.get(request.getHeartbeat().getNodeKey()).resetTime();
                 }
                 s.close();
             }catch(IOException | HashTopologyException | HashException e)
@@ -126,9 +127,6 @@ public class Coordinator{
         private void process_entry(CoordMessages.DataPacket dataPacket, OutputStream outputStream) throws HashTopologyException, HashException, IOException {
             CoordMessages.RequestEntry entryRequest = dataPacket.getRequestentry();
             CoordMessages.HashRingEntry hashRingEntry = put_in_map(entryRequest);
-
-
-
             CoordMessages.DataPacket response = CoordMessages.DataPacket.newBuilder()
                     .setHashring(hashRing.treemap_to_map())
                     .build();
