@@ -15,6 +15,9 @@ import edu.usfca.cs.dfs.StorageMessages;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -28,6 +31,7 @@ public class StorageNode extends Thread{
     private int port;
     private boolean run;
     private Heartbeat heartbeat;
+    private File dir;
 
     public StorageNode(int port,String coordip,int coordport){
         try {
@@ -36,6 +40,8 @@ public class StorageNode extends Thread{
             e.printStackTrace();
         }
         this.port = port;
+        dir = new File("bigdata/"+ Integer.toString(port) +"/tyung");
+        dir.mkdirs();
         this.run = request_access(coordip,coordport);
         heartbeat = new Heartbeat(hashRing.get_size(),ipaddress+Integer.toString(port),coordip,coordport);
         heartbeat.start();
@@ -173,18 +179,17 @@ public class StorageNode extends Thread{
     -   Storage packets
     -   Get requests
      */
-    private void process_request(StorageMessages.Request r_chunk,Socket s) throws InterruptedException {
+    private void process_request(StorageMessages.Request r_chunk,Socket s) throws InterruptedException, IOException {
         Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
         System.out.println(chunk_storage.toString());
         if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.store_chunk) {
             try {
                 store_chunk(r_chunk);
-            } catch (HashException e) {
+            } catch (HashException | IOException e) {
                 e.printStackTrace();
             }
             System.out.println(s_chunk.getChunk_id());
             System.out.println(s_chunk.getFile_name());
-            System.out.println(s_chunk.getData_chunk().length);
         }
         else if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.get_chunk) {
             String key = key_gen(r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
@@ -196,11 +201,14 @@ public class StorageNode extends Thread{
     /*
     processes a single chunk to send back to cliet
      */
-    public void get_chunk(String key,String ipaddress,int port){
+    public void get_chunk(String key,String ipaddress,int port) throws IOException {
         if(chunk_storage.containsKey(key))
         {
             Chunk chunk = chunk_storage.get(key);
-            ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
+            Path file = Paths.get(dir + "/" + key);
+            byte[] c_bytes = Files.readAllBytes(file);
+
+            ByteString bsval = ByteString.copyFrom(c_bytes, 0, c_bytes.length);
 
             StorageMessages.SingleChunk singleChunk = StorageMessages.SingleChunk.newBuilder()
                     .setChunkNumber(chunk.getChunk_id())
@@ -217,13 +225,16 @@ public class StorageNode extends Thread{
     }
 
 
-    public void store_chunk(StorageMessages.Request r_chunk) throws HashException {
+    public void store_chunk(StorageMessages.Request r_chunk) throws HashException, IOException {
         Chunk chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
         String key = key_gen(chunk.getFile_name(),chunk.getChunk_id(),chunk.getIs_last());
         BigInteger pos = hashRing.locate(key.getBytes());
         HashRingEntry node = hashRing.returnNode(pos);
         if(node.inetaddress.equals(this.ipaddress) && node.port == this.port) {
             chunk_storage.put(key, chunk);
+
+            Path path = Paths.get(dir + "/" + key);
+            Files.write(path, r_chunk.getData().toByteArray());
 
             StorageMessages.ChunkLife chunkLife = StorageMessages.ChunkLife.newBuilder()
                     .setSingleChunk(request_to_chunk(r_chunk))
@@ -275,7 +286,7 @@ public class StorageNode extends Thread{
         dataRequester.start();
     }
 
-    private void pipline_update(StorageMessages.DataPacket dataPacket){
+    private void pipline_update(StorageMessages.DataPacket dataPacket) throws IOException {
         System.out.println("pipline updating chunk life : " + Integer.toString(dataPacket.getChunklife().getLife()));
         StorageMessages.ChunkLife chunkLife = dataPacket.getChunklife();
         chunkLife = StorageMessages.ChunkLife.newBuilder()
@@ -287,6 +298,9 @@ public class StorageNode extends Thread{
         String key = key_gen(chunk.getFile_name(),chunk.getChunk_id(),chunk.getIs_last());
         if(!chunk_storage.containsKey(key)) {
             chunk_storage.put(key, chunk);
+            Path path = Paths.get(dir + "/" + key);
+            Files.write(path, singleChunk.getData().toByteArray());
+
             if (chunkLife.getLife() > 0) {
                 StorageMessages.DataPacket sendpacket = StorageMessages.DataPacket.newBuilder().setChunklife(chunkLife).build();
                 try {
@@ -314,8 +328,13 @@ public class StorageNode extends Thread{
         try (
                 OutputStream outputStream = s.getOutputStream();
         ) {
-            Chunk chunk = chunk_storage.get(singleChunk.getFileName()+"last");
-            ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
+
+            String key = key_gen(singleChunk.getFileName(),singleChunk.getChunkNumber(),singleChunk.getIsLast());
+            Chunk chunk = chunk_storage.get(key);
+
+            Path file = Paths.get(dir + "/" + key);
+            byte[] c_bytes = Files.readAllBytes(file);
+            ByteString bsval = ByteString.copyFrom(c_bytes, 0, c_bytes.length);
             System.out.println("sending file: " + chunk.getFile_name());
             singleChunk = StorageMessages.SingleChunk.newBuilder()
                     .setChunkNumber(chunk.getChunk_id())
@@ -339,7 +358,7 @@ public class StorageNode extends Thread{
             throws Exception {
         String hostname = getHostname();
         System.out.println("Starting storage node on " + hostname + "...");
-        StorageNode storageNode = new StorageNode(5000,"localhost",6000);
+        StorageNode storageNode = new StorageNode(5003,"localhost",6000);
         storageNode.startNode();
 
     }

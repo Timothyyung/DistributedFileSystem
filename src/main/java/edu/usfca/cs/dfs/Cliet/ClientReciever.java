@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientReciever extends Thread {
     private boolean running;
-    private ConcurrentHashMap<String, Chunk> chunkmap;
+    private ConcurrentHashMap<String, byte[]> chunkmap;
     private String ipaddress;
     private int port;
 
@@ -61,10 +61,13 @@ public class ClientReciever extends Thread {
                 System.out.println(dataPacket.toString());
                 Chunk chunk = new Chunk(dataPacket);
                 System.out.println("Recieving chunk" + Integer.toString(chunk.getChunk_id()));
-                chunkmap.put(chunk.getFile_name() + Integer.toString(chunk.getChunk_id()),chunk);
+                String key = key_gen(chunk.getFile_name(),chunk.getChunk_id(),chunk.getIs_last());
+                if(dataPacket.hasSinglechunk())
+                    chunkmap.put(key, dataPacket.getSinglechunk().getData().toByteArray());
+
                 if(chunk.getIs_last()){
                     System.out.println(dataPacket.toString());
-                    reassemble(dataPacket.getSinglechunk().getFileName(),dataPacket.getSinglechunk().getIpaddress(), dataPacket.getSinglechunk().getPort());
+                    reassemble(dataPacket.getSinglechunk().getFileName(),dataPacket.getSinglechunk().getIpaddress(), dataPacket.getSinglechunk().getPort(),chunk.getChunk_id());
                 }
 
             }catch(IOException e) {
@@ -74,20 +77,32 @@ public class ClientReciever extends Thread {
         }
 
     }
+    private String key_gen(String filename, int chunkid, boolean islast){
+        if(islast)
+            return filename + "last";
+        else
+            return filename + Integer.toString(chunkid);
+    }
 
-    private void reassemble(String filename, String ipaddress, int port)
+
+    private void reassemble(String filename, String ipaddress, int port, int max_chunk)
     {
         List<Byte> file = new ArrayList<>();
         boolean finished = false;
         int i = 1;
+        boolean last = false;
         byte[] chunk_bytes;
         while(!finished)
         {
-            String key = filename + Integer.toString(i);
+            if(max_chunk == i){
+                last = true;
+            }
+            String key = key_gen(filename,i,last);
             if(chunkmap.containsKey(key))
-                chunk_bytes = chunkmap.get(key).getData_chunk();
+                chunk_bytes = chunkmap.get(key);
             else{
-                chunk_bytes = request_chunk(filename, i, ipaddress,port);
+
+                chunk_bytes = request_chunk(filename, i, ipaddress,port,last);
                 if(chunk_bytes == null)
                     return;
             }
@@ -95,7 +110,7 @@ public class ClientReciever extends Thread {
                 file.add(chunk_bytes[j]);
 
             i += 1;
-            if(chunkmap.get(key).getIs_last()){
+            if(last){
                 finished = true;
             }
         }
@@ -120,7 +135,7 @@ public class ClientReciever extends Thread {
         return ret;
     }
 
-    private byte[] request_chunk(String filename, int chunkid, String ipaddress, int port){
+    private byte[] request_chunk(String filename, int chunkid, String ipaddress, int port, boolean isLast){
         int attempt = 10;
         while(attempt > 0) {
             try (
@@ -131,6 +146,7 @@ public class ClientReciever extends Thread {
                 StorageMessages.SingleChunk singleChunk = StorageMessages.SingleChunk.newBuilder()
                         .setFileName(filename)
                         .setChunkNumber(chunkid)
+                        .setIsLast(isLast)
                         .setIpaddress(this.ipaddress)
                         .setPort(this.port)
                         .build();
@@ -141,7 +157,7 @@ public class ClientReciever extends Thread {
 
                 dataPacket = StorageMessages.DataPacket.parseDelimitedFrom(inputStream);
                 Chunk chunk = new Chunk(dataPacket);
-                return chunk.getData_chunk();
+                return dataPacket.getSinglechunk().getData().toByteArray();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -86,8 +86,9 @@ different chunks to be sent to the storage nodes. We will allow the storage node
                 Chunk chunk = new Chunk(data_chunk,data.getFilename(),j,false);
                 b_val = b_val - chunk_size;
                 System.out.println( b_val);
+                send_chunk_direct(chunk,data_chunk);
                 data_chunk = new byte[check_size(chunk_size,b_val)];
-                send_chunk_direct(chunk);
+
                 j += 1;
                 k = 0;
             }
@@ -102,7 +103,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
         }
         System.out.println(data_chunk.length);
         Chunk chunk = new Chunk(data_chunk, data.getFilename(), j,true);
-        send_chunk_direct(chunk);
+        send_chunk_direct(chunk,data_chunk);
     }
 
 
@@ -123,8 +124,9 @@ different chunks to be sent to the storage nodes. We will allow the storage node
                 Chunk chunk = new Chunk(data_chunk,data.getFilename(),j,false);
                 b_val = b_val - chunk_size;
                 System.out.println( b_val);
+                send_chunk(ipaddress,port,chunk, data_chunk);
                 data_chunk = new byte[check_size(chunk_size,b_val)];
-                send_chunk(ipaddress,port,chunk);
+
                 j += 1;
                 k = 0;
             }
@@ -139,7 +141,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
         }
         System.out.println(data_chunk.length);
         Chunk chunk = new Chunk(data_chunk, data.getFilename(), j,true);
-        send_chunk(ipaddress,port,chunk);
+        send_chunk(ipaddress,port,chunk,data_chunk);
     }
 
     private int check_size(int chunk_size, int b_val)
@@ -150,8 +152,8 @@ different chunks to be sent to the storage nodes. We will allow the storage node
             return chunk_size;
     }
 
-    public void send_chunk(String ipaddress, int port, Chunk chunk){
-        ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
+    public void send_chunk(String ipaddress, int port, Chunk chunk, byte[] datachunk){
+        ByteString bsval = ByteString.copyFrom(datachunk, 0, datachunk.length);
         StorageMessages.Request s_chunk = StorageMessages.Request.newBuilder()
                 .setChunkId(chunk.getChunk_id())
                 .setData(bsval)
@@ -171,8 +173,8 @@ different chunks to be sent to the storage nodes. We will allow the storage node
 
 
 
-    public void send_chunk_direct(Chunk chunk) throws HashException {
-        ByteString bsval = ByteString.copyFrom(chunk.getData_chunk(), 0, chunk.getData_chunk().length);
+    public void send_chunk_direct(Chunk chunk, byte[] datachunk) throws HashException {
+        ByteString bsval = ByteString.copyFrom(datachunk, 0, datachunk.length);
         StorageMessages.Request s_chunk = StorageMessages.Request.newBuilder()
                 .setChunkId(chunk.getChunk_id())
                 .setData(bsval)
