@@ -1176,6 +1176,961 @@ public final class StorageMessages {
 
   }
 
+  public interface DiskSpaceOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:DiskSpace)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>double diskspace = 1;</code>
+     */
+    double getDiskspace();
+  }
+  /**
+   * Protobuf type {@code DiskSpace}
+   */
+  public  static final class DiskSpace extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:DiskSpace)
+      DiskSpaceOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use DiskSpace.newBuilder() to construct.
+    private DiskSpace(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private DiskSpace() {
+      diskspace_ = 0D;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private DiskSpace(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 9: {
+
+              diskspace_ = input.readDouble();
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.usfca.cs.dfs.StorageMessages.internal_static_DiskSpace_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.usfca.cs.dfs.StorageMessages.internal_static_DiskSpace_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.usfca.cs.dfs.StorageMessages.DiskSpace.class, edu.usfca.cs.dfs.StorageMessages.DiskSpace.Builder.class);
+    }
+
+    public static final int DISKSPACE_FIELD_NUMBER = 1;
+    private double diskspace_;
+    /**
+     * <code>double diskspace = 1;</code>
+     */
+    public double getDiskspace() {
+      return diskspace_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (diskspace_ != 0D) {
+        output.writeDouble(1, diskspace_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (diskspace_ != 0D) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(1, diskspace_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof edu.usfca.cs.dfs.StorageMessages.DiskSpace)) {
+        return super.equals(obj);
+      }
+      edu.usfca.cs.dfs.StorageMessages.DiskSpace other = (edu.usfca.cs.dfs.StorageMessages.DiskSpace) obj;
+
+      boolean result = true;
+      result = result && (
+          java.lang.Double.doubleToLongBits(getDiskspace())
+          == java.lang.Double.doubleToLongBits(
+              other.getDiskspace()));
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + DISKSPACE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          java.lang.Double.doubleToLongBits(getDiskspace()));
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(edu.usfca.cs.dfs.StorageMessages.DiskSpace prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code DiskSpace}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:DiskSpace)
+        edu.usfca.cs.dfs.StorageMessages.DiskSpaceOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_DiskSpace_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_DiskSpace_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.usfca.cs.dfs.StorageMessages.DiskSpace.class, edu.usfca.cs.dfs.StorageMessages.DiskSpace.Builder.class);
+      }
+
+      // Construct using edu.usfca.cs.dfs.StorageMessages.DiskSpace.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        diskspace_ = 0D;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_DiskSpace_descriptor;
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.StorageMessages.DiskSpace getDefaultInstanceForType() {
+        return edu.usfca.cs.dfs.StorageMessages.DiskSpace.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.StorageMessages.DiskSpace build() {
+        edu.usfca.cs.dfs.StorageMessages.DiskSpace result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.StorageMessages.DiskSpace buildPartial() {
+        edu.usfca.cs.dfs.StorageMessages.DiskSpace result = new edu.usfca.cs.dfs.StorageMessages.DiskSpace(this);
+        result.diskspace_ = diskspace_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.usfca.cs.dfs.StorageMessages.DiskSpace) {
+          return mergeFrom((edu.usfca.cs.dfs.StorageMessages.DiskSpace)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.usfca.cs.dfs.StorageMessages.DiskSpace other) {
+        if (other == edu.usfca.cs.dfs.StorageMessages.DiskSpace.getDefaultInstance()) return this;
+        if (other.getDiskspace() != 0D) {
+          setDiskspace(other.getDiskspace());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.usfca.cs.dfs.StorageMessages.DiskSpace parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.usfca.cs.dfs.StorageMessages.DiskSpace) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private double diskspace_ ;
+      /**
+       * <code>double diskspace = 1;</code>
+       */
+      public double getDiskspace() {
+        return diskspace_;
+      }
+      /**
+       * <code>double diskspace = 1;</code>
+       */
+      public Builder setDiskspace(double value) {
+        
+        diskspace_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>double diskspace = 1;</code>
+       */
+      public Builder clearDiskspace() {
+        
+        diskspace_ = 0D;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:DiskSpace)
+    }
+
+    // @@protoc_insertion_point(class_scope:DiskSpace)
+    private static final edu.usfca.cs.dfs.StorageMessages.DiskSpace DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new edu.usfca.cs.dfs.StorageMessages.DiskSpace();
+    }
+
+    public static edu.usfca.cs.dfs.StorageMessages.DiskSpace getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<DiskSpace>
+        PARSER = new com.google.protobuf.AbstractParser<DiskSpace>() {
+      @java.lang.Override
+      public DiskSpace parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new DiskSpace(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<DiskSpace> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<DiskSpace> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public edu.usfca.cs.dfs.StorageMessages.DiskSpace getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface NumberOfRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:NumberOfRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int32 number = 1;</code>
+     */
+    int getNumber();
+  }
+  /**
+   * Protobuf type {@code NumberOfRequest}
+   */
+  public  static final class NumberOfRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:NumberOfRequest)
+      NumberOfRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use NumberOfRequest.newBuilder() to construct.
+    private NumberOfRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private NumberOfRequest() {
+      number_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private NumberOfRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              number_ = input.readInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.usfca.cs.dfs.StorageMessages.internal_static_NumberOfRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.usfca.cs.dfs.StorageMessages.internal_static_NumberOfRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.class, edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.Builder.class);
+    }
+
+    public static final int NUMBER_FIELD_NUMBER = 1;
+    private int number_;
+    /**
+     * <code>int32 number = 1;</code>
+     */
+    public int getNumber() {
+      return number_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (number_ != 0) {
+        output.writeInt32(1, number_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (number_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, number_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof edu.usfca.cs.dfs.StorageMessages.NumberOfRequest)) {
+        return super.equals(obj);
+      }
+      edu.usfca.cs.dfs.StorageMessages.NumberOfRequest other = (edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) obj;
+
+      boolean result = true;
+      result = result && (getNumber()
+          == other.getNumber());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + NUMBER_FIELD_NUMBER;
+      hash = (53 * hash) + getNumber();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(edu.usfca.cs.dfs.StorageMessages.NumberOfRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code NumberOfRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:NumberOfRequest)
+        edu.usfca.cs.dfs.StorageMessages.NumberOfRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_NumberOfRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_NumberOfRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.class, edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.Builder.class);
+      }
+
+      // Construct using edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        number_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_NumberOfRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.StorageMessages.NumberOfRequest getDefaultInstanceForType() {
+        return edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.StorageMessages.NumberOfRequest build() {
+        edu.usfca.cs.dfs.StorageMessages.NumberOfRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.StorageMessages.NumberOfRequest buildPartial() {
+        edu.usfca.cs.dfs.StorageMessages.NumberOfRequest result = new edu.usfca.cs.dfs.StorageMessages.NumberOfRequest(this);
+        result.number_ = number_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) {
+          return mergeFrom((edu.usfca.cs.dfs.StorageMessages.NumberOfRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.usfca.cs.dfs.StorageMessages.NumberOfRequest other) {
+        if (other == edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.getDefaultInstance()) return this;
+        if (other.getNumber() != 0) {
+          setNumber(other.getNumber());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.usfca.cs.dfs.StorageMessages.NumberOfRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int number_ ;
+      /**
+       * <code>int32 number = 1;</code>
+       */
+      public int getNumber() {
+        return number_;
+      }
+      /**
+       * <code>int32 number = 1;</code>
+       */
+      public Builder setNumber(int value) {
+        
+        number_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 number = 1;</code>
+       */
+      public Builder clearNumber() {
+        
+        number_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:NumberOfRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:NumberOfRequest)
+    private static final edu.usfca.cs.dfs.StorageMessages.NumberOfRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new edu.usfca.cs.dfs.StorageMessages.NumberOfRequest();
+    }
+
+    public static edu.usfca.cs.dfs.StorageMessages.NumberOfRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<NumberOfRequest>
+        PARSER = new com.google.protobuf.AbstractParser<NumberOfRequest>() {
+      @java.lang.Override
+      public NumberOfRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new NumberOfRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<NumberOfRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<NumberOfRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public edu.usfca.cs.dfs.StorageMessages.NumberOfRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface HashRingEntryOrBuilder extends
       // @@protoc_insertion_point(interface_extends:HashRingEntry)
       com.google.protobuf.MessageOrBuilder {
@@ -1914,6 +2869,925 @@ public final class StorageMessages {
 
     @java.lang.Override
     public edu.usfca.cs.dfs.StorageMessages.HashRingEntry getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface HashRingOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:HashRing)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+     */
+    int getHashRingsCount();
+    /**
+     * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+     */
+    boolean containsHashRings(
+        java.lang.String key);
+    /**
+     * Use {@link #getHashRingsMap()} instead.
+     */
+    @java.lang.Deprecated
+    java.util.Map<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry>
+    getHashRings();
+    /**
+     * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+     */
+    java.util.Map<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry>
+    getHashRingsMap();
+    /**
+     * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+     */
+
+    edu.usfca.cs.dfs.StorageMessages.HashRingEntry getHashRingsOrDefault(
+        java.lang.String key,
+        edu.usfca.cs.dfs.StorageMessages.HashRingEntry defaultValue);
+    /**
+     * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+     */
+
+    edu.usfca.cs.dfs.StorageMessages.HashRingEntry getHashRingsOrThrow(
+        java.lang.String key);
+
+    /**
+     * <code>.HashRingEntry hre = 2;</code>
+     */
+    boolean hasHre();
+    /**
+     * <code>.HashRingEntry hre = 2;</code>
+     */
+    edu.usfca.cs.dfs.StorageMessages.HashRingEntry getHre();
+    /**
+     * <code>.HashRingEntry hre = 2;</code>
+     */
+    edu.usfca.cs.dfs.StorageMessages.HashRingEntryOrBuilder getHreOrBuilder();
+  }
+  /**
+   * Protobuf type {@code HashRing}
+   */
+  public  static final class HashRing extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:HashRing)
+      HashRingOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use HashRing.newBuilder() to construct.
+    private HashRing(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private HashRing() {
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HashRing(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                hashRings_ = com.google.protobuf.MapField.newMapField(
+                    HashRingsDefaultEntryHolder.defaultEntry);
+                mutable_bitField0_ |= 0x00000001;
+              }
+              com.google.protobuf.MapEntry<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry>
+              hashRings__ = input.readMessage(
+                  HashRingsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+              hashRings_.getMutableMap().put(
+                  hashRings__.getKey(), hashRings__.getValue());
+              break;
+            }
+            case 18: {
+              edu.usfca.cs.dfs.StorageMessages.HashRingEntry.Builder subBuilder = null;
+              if (hre_ != null) {
+                subBuilder = hre_.toBuilder();
+              }
+              hre_ = input.readMessage(edu.usfca.cs.dfs.StorageMessages.HashRingEntry.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(hre_);
+                hre_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.usfca.cs.dfs.StorageMessages.internal_static_HashRing_descriptor;
+    }
+
+    @SuppressWarnings({"rawtypes"})
+    @java.lang.Override
+    protected com.google.protobuf.MapField internalGetMapField(
+        int number) {
+      switch (number) {
+        case 1:
+          return internalGetHashRings();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.usfca.cs.dfs.StorageMessages.internal_static_HashRing_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.usfca.cs.dfs.StorageMessages.HashRing.class, edu.usfca.cs.dfs.StorageMessages.HashRing.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int HASHRINGS_FIELD_NUMBER = 1;
+    private static final class HashRingsDefaultEntryHolder {
+      static final com.google.protobuf.MapEntry<
+          java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> defaultEntry =
+              com.google.protobuf.MapEntry
+              .<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry>newDefaultInstance(
+                  edu.usfca.cs.dfs.StorageMessages.internal_static_HashRing_HashRingsEntry_descriptor, 
+                  com.google.protobuf.WireFormat.FieldType.STRING,
+                  "",
+                  com.google.protobuf.WireFormat.FieldType.MESSAGE,
+                  edu.usfca.cs.dfs.StorageMessages.HashRingEntry.getDefaultInstance());
+    }
+    private com.google.protobuf.MapField<
+        java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> hashRings_;
+    private com.google.protobuf.MapField<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry>
+    internalGetHashRings() {
+      if (hashRings_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            HashRingsDefaultEntryHolder.defaultEntry);
+      }
+      return hashRings_;
+    }
+
+    public int getHashRingsCount() {
+      return internalGetHashRings().getMap().size();
+    }
+    /**
+     * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+     */
+
+    public boolean containsHashRings(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      return internalGetHashRings().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getHashRingsMap()} instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> getHashRings() {
+      return getHashRingsMap();
+    }
+    /**
+     * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+     */
+
+    public java.util.Map<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> getHashRingsMap() {
+      return internalGetHashRings().getMap();
+    }
+    /**
+     * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+     */
+
+    public edu.usfca.cs.dfs.StorageMessages.HashRingEntry getHashRingsOrDefault(
+        java.lang.String key,
+        edu.usfca.cs.dfs.StorageMessages.HashRingEntry defaultValue) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> map =
+          internalGetHashRings().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+     */
+
+    public edu.usfca.cs.dfs.StorageMessages.HashRingEntry getHashRingsOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> map =
+          internalGetHashRings().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+
+    public static final int HRE_FIELD_NUMBER = 2;
+    private edu.usfca.cs.dfs.StorageMessages.HashRingEntry hre_;
+    /**
+     * <code>.HashRingEntry hre = 2;</code>
+     */
+    public boolean hasHre() {
+      return hre_ != null;
+    }
+    /**
+     * <code>.HashRingEntry hre = 2;</code>
+     */
+    public edu.usfca.cs.dfs.StorageMessages.HashRingEntry getHre() {
+      return hre_ == null ? edu.usfca.cs.dfs.StorageMessages.HashRingEntry.getDefaultInstance() : hre_;
+    }
+    /**
+     * <code>.HashRingEntry hre = 2;</code>
+     */
+    public edu.usfca.cs.dfs.StorageMessages.HashRingEntryOrBuilder getHreOrBuilder() {
+      return getHre();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      com.google.protobuf.GeneratedMessageV3
+        .serializeStringMapTo(
+          output,
+          internalGetHashRings(),
+          HashRingsDefaultEntryHolder.defaultEntry,
+          1);
+      if (hre_ != null) {
+        output.writeMessage(2, getHre());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (java.util.Map.Entry<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> entry
+           : internalGetHashRings().getMap().entrySet()) {
+        com.google.protobuf.MapEntry<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry>
+        hashRings__ = HashRingsDefaultEntryHolder.defaultEntry.newBuilderForType()
+            .setKey(entry.getKey())
+            .setValue(entry.getValue())
+            .build();
+        size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(1, hashRings__);
+      }
+      if (hre_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getHre());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof edu.usfca.cs.dfs.StorageMessages.HashRing)) {
+        return super.equals(obj);
+      }
+      edu.usfca.cs.dfs.StorageMessages.HashRing other = (edu.usfca.cs.dfs.StorageMessages.HashRing) obj;
+
+      boolean result = true;
+      result = result && internalGetHashRings().equals(
+          other.internalGetHashRings());
+      result = result && (hasHre() == other.hasHre());
+      if (hasHre()) {
+        result = result && getHre()
+            .equals(other.getHre());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (!internalGetHashRings().getMap().isEmpty()) {
+        hash = (37 * hash) + HASHRINGS_FIELD_NUMBER;
+        hash = (53 * hash) + internalGetHashRings().hashCode();
+      }
+      if (hasHre()) {
+        hash = (37 * hash) + HRE_FIELD_NUMBER;
+        hash = (53 * hash) + getHre().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(edu.usfca.cs.dfs.StorageMessages.HashRing prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code HashRing}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:HashRing)
+        edu.usfca.cs.dfs.StorageMessages.HashRingOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_HashRing_descriptor;
+      }
+
+      @SuppressWarnings({"rawtypes"})
+      protected com.google.protobuf.MapField internalGetMapField(
+          int number) {
+        switch (number) {
+          case 1:
+            return internalGetHashRings();
+          default:
+            throw new RuntimeException(
+                "Invalid map field number: " + number);
+        }
+      }
+      @SuppressWarnings({"rawtypes"})
+      protected com.google.protobuf.MapField internalGetMutableMapField(
+          int number) {
+        switch (number) {
+          case 1:
+            return internalGetMutableHashRings();
+          default:
+            throw new RuntimeException(
+                "Invalid map field number: " + number);
+        }
+      }
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_HashRing_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.usfca.cs.dfs.StorageMessages.HashRing.class, edu.usfca.cs.dfs.StorageMessages.HashRing.Builder.class);
+      }
+
+      // Construct using edu.usfca.cs.dfs.StorageMessages.HashRing.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        internalGetMutableHashRings().clear();
+        if (hreBuilder_ == null) {
+          hre_ = null;
+        } else {
+          hre_ = null;
+          hreBuilder_ = null;
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_HashRing_descriptor;
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.StorageMessages.HashRing getDefaultInstanceForType() {
+        return edu.usfca.cs.dfs.StorageMessages.HashRing.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.StorageMessages.HashRing build() {
+        edu.usfca.cs.dfs.StorageMessages.HashRing result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public edu.usfca.cs.dfs.StorageMessages.HashRing buildPartial() {
+        edu.usfca.cs.dfs.StorageMessages.HashRing result = new edu.usfca.cs.dfs.StorageMessages.HashRing(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        result.hashRings_ = internalGetHashRings();
+        result.hashRings_.makeImmutable();
+        if (hreBuilder_ == null) {
+          result.hre_ = hre_;
+        } else {
+          result.hre_ = hreBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.usfca.cs.dfs.StorageMessages.HashRing) {
+          return mergeFrom((edu.usfca.cs.dfs.StorageMessages.HashRing)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.usfca.cs.dfs.StorageMessages.HashRing other) {
+        if (other == edu.usfca.cs.dfs.StorageMessages.HashRing.getDefaultInstance()) return this;
+        internalGetMutableHashRings().mergeFrom(
+            other.internalGetHashRings());
+        if (other.hasHre()) {
+          mergeHre(other.getHre());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.usfca.cs.dfs.StorageMessages.HashRing parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.usfca.cs.dfs.StorageMessages.HashRing) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.google.protobuf.MapField<
+          java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> hashRings_;
+      private com.google.protobuf.MapField<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry>
+      internalGetHashRings() {
+        if (hashRings_ == null) {
+          return com.google.protobuf.MapField.emptyMapField(
+              HashRingsDefaultEntryHolder.defaultEntry);
+        }
+        return hashRings_;
+      }
+      private com.google.protobuf.MapField<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry>
+      internalGetMutableHashRings() {
+        onChanged();;
+        if (hashRings_ == null) {
+          hashRings_ = com.google.protobuf.MapField.newMapField(
+              HashRingsDefaultEntryHolder.defaultEntry);
+        }
+        if (!hashRings_.isMutable()) {
+          hashRings_ = hashRings_.copy();
+        }
+        return hashRings_;
+      }
+
+      public int getHashRingsCount() {
+        return internalGetHashRings().getMap().size();
+      }
+      /**
+       * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+       */
+
+      public boolean containsHashRings(
+          java.lang.String key) {
+        if (key == null) { throw new java.lang.NullPointerException(); }
+        return internalGetHashRings().getMap().containsKey(key);
+      }
+      /**
+       * Use {@link #getHashRingsMap()} instead.
+       */
+      @java.lang.Deprecated
+      public java.util.Map<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> getHashRings() {
+        return getHashRingsMap();
+      }
+      /**
+       * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+       */
+
+      public java.util.Map<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> getHashRingsMap() {
+        return internalGetHashRings().getMap();
+      }
+      /**
+       * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+       */
+
+      public edu.usfca.cs.dfs.StorageMessages.HashRingEntry getHashRingsOrDefault(
+          java.lang.String key,
+          edu.usfca.cs.dfs.StorageMessages.HashRingEntry defaultValue) {
+        if (key == null) { throw new java.lang.NullPointerException(); }
+        java.util.Map<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> map =
+            internalGetHashRings().getMap();
+        return map.containsKey(key) ? map.get(key) : defaultValue;
+      }
+      /**
+       * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+       */
+
+      public edu.usfca.cs.dfs.StorageMessages.HashRingEntry getHashRingsOrThrow(
+          java.lang.String key) {
+        if (key == null) { throw new java.lang.NullPointerException(); }
+        java.util.Map<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> map =
+            internalGetHashRings().getMap();
+        if (!map.containsKey(key)) {
+          throw new java.lang.IllegalArgumentException();
+        }
+        return map.get(key);
+      }
+
+      public Builder clearHashRings() {
+        internalGetMutableHashRings().getMutableMap()
+            .clear();
+        return this;
+      }
+      /**
+       * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+       */
+
+      public Builder removeHashRings(
+          java.lang.String key) {
+        if (key == null) { throw new java.lang.NullPointerException(); }
+        internalGetMutableHashRings().getMutableMap()
+            .remove(key);
+        return this;
+      }
+      /**
+       * Use alternate mutation accessors instead.
+       */
+      @java.lang.Deprecated
+      public java.util.Map<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry>
+      getMutableHashRings() {
+        return internalGetMutableHashRings().getMutableMap();
+      }
+      /**
+       * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+       */
+      public Builder putHashRings(
+          java.lang.String key,
+          edu.usfca.cs.dfs.StorageMessages.HashRingEntry value) {
+        if (key == null) { throw new java.lang.NullPointerException(); }
+        if (value == null) { throw new java.lang.NullPointerException(); }
+        internalGetMutableHashRings().getMutableMap()
+            .put(key, value);
+        return this;
+      }
+      /**
+       * <code>map&lt;string, .HashRingEntry&gt; hashRings = 1;</code>
+       */
+
+      public Builder putAllHashRings(
+          java.util.Map<java.lang.String, edu.usfca.cs.dfs.StorageMessages.HashRingEntry> values) {
+        internalGetMutableHashRings().getMutableMap()
+            .putAll(values);
+        return this;
+      }
+
+      private edu.usfca.cs.dfs.StorageMessages.HashRingEntry hre_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.StorageMessages.HashRingEntry, edu.usfca.cs.dfs.StorageMessages.HashRingEntry.Builder, edu.usfca.cs.dfs.StorageMessages.HashRingEntryOrBuilder> hreBuilder_;
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public boolean hasHre() {
+        return hreBuilder_ != null || hre_ != null;
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.HashRingEntry getHre() {
+        if (hreBuilder_ == null) {
+          return hre_ == null ? edu.usfca.cs.dfs.StorageMessages.HashRingEntry.getDefaultInstance() : hre_;
+        } else {
+          return hreBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public Builder setHre(edu.usfca.cs.dfs.StorageMessages.HashRingEntry value) {
+        if (hreBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          hre_ = value;
+          onChanged();
+        } else {
+          hreBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public Builder setHre(
+          edu.usfca.cs.dfs.StorageMessages.HashRingEntry.Builder builderForValue) {
+        if (hreBuilder_ == null) {
+          hre_ = builderForValue.build();
+          onChanged();
+        } else {
+          hreBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public Builder mergeHre(edu.usfca.cs.dfs.StorageMessages.HashRingEntry value) {
+        if (hreBuilder_ == null) {
+          if (hre_ != null) {
+            hre_ =
+              edu.usfca.cs.dfs.StorageMessages.HashRingEntry.newBuilder(hre_).mergeFrom(value).buildPartial();
+          } else {
+            hre_ = value;
+          }
+          onChanged();
+        } else {
+          hreBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public Builder clearHre() {
+        if (hreBuilder_ == null) {
+          hre_ = null;
+          onChanged();
+        } else {
+          hre_ = null;
+          hreBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.HashRingEntry.Builder getHreBuilder() {
+        
+        onChanged();
+        return getHreFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.HashRingEntryOrBuilder getHreOrBuilder() {
+        if (hreBuilder_ != null) {
+          return hreBuilder_.getMessageOrBuilder();
+        } else {
+          return hre_ == null ?
+              edu.usfca.cs.dfs.StorageMessages.HashRingEntry.getDefaultInstance() : hre_;
+        }
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.StorageMessages.HashRingEntry, edu.usfca.cs.dfs.StorageMessages.HashRingEntry.Builder, edu.usfca.cs.dfs.StorageMessages.HashRingEntryOrBuilder> 
+          getHreFieldBuilder() {
+        if (hreBuilder_ == null) {
+          hreBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              edu.usfca.cs.dfs.StorageMessages.HashRingEntry, edu.usfca.cs.dfs.StorageMessages.HashRingEntry.Builder, edu.usfca.cs.dfs.StorageMessages.HashRingEntryOrBuilder>(
+                  getHre(),
+                  getParentForChildren(),
+                  isClean());
+          hre_ = null;
+        }
+        return hreBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:HashRing)
+    }
+
+    // @@protoc_insertion_point(class_scope:HashRing)
+    private static final edu.usfca.cs.dfs.StorageMessages.HashRing DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new edu.usfca.cs.dfs.StorageMessages.HashRing();
+    }
+
+    public static edu.usfca.cs.dfs.StorageMessages.HashRing getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<HashRing>
+        PARSER = new com.google.protobuf.AbstractParser<HashRing>() {
+      @java.lang.Override
+      public HashRing parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HashRing(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<HashRing> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HashRing> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public edu.usfca.cs.dfs.StorageMessages.HashRing getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -5763,17 +7637,56 @@ public final class StorageMessages {
     edu.usfca.cs.dfs.StorageMessages.ChunkLifeOrBuilder getChunklifeOrBuilder();
 
     /**
-     * <code>.Ack ack = 7;</code>
+     * <code>.DiskSpace diskspace = 7;</code>
+     */
+    boolean hasDiskspace();
+    /**
+     * <code>.DiskSpace diskspace = 7;</code>
+     */
+    edu.usfca.cs.dfs.StorageMessages.DiskSpace getDiskspace();
+    /**
+     * <code>.DiskSpace diskspace = 7;</code>
+     */
+    edu.usfca.cs.dfs.StorageMessages.DiskSpaceOrBuilder getDiskspaceOrBuilder();
+
+    /**
+     * <code>.NumberOfRequest numberofrequest = 8;</code>
+     */
+    boolean hasNumberofrequest();
+    /**
+     * <code>.NumberOfRequest numberofrequest = 8;</code>
+     */
+    edu.usfca.cs.dfs.StorageMessages.NumberOfRequest getNumberofrequest();
+    /**
+     * <code>.NumberOfRequest numberofrequest = 8;</code>
+     */
+    edu.usfca.cs.dfs.StorageMessages.NumberOfRequestOrBuilder getNumberofrequestOrBuilder();
+
+    /**
+     * <code>.Ack ack = 9;</code>
      */
     boolean hasAck();
     /**
-     * <code>.Ack ack = 7;</code>
+     * <code>.Ack ack = 9;</code>
      */
     edu.usfca.cs.dfs.StorageMessages.Ack getAck();
     /**
-     * <code>.Ack ack = 7;</code>
+     * <code>.Ack ack = 9;</code>
      */
     edu.usfca.cs.dfs.StorageMessages.AckOrBuilder getAckOrBuilder();
+
+    /**
+     * <code>.HashRing hashring = 10;</code>
+     */
+    boolean hasHashring();
+    /**
+     * <code>.HashRing hashring = 10;</code>
+     */
+    edu.usfca.cs.dfs.StorageMessages.HashRing getHashring();
+    /**
+     * <code>.HashRing hashring = 10;</code>
+     */
+    edu.usfca.cs.dfs.StorageMessages.HashRingOrBuilder getHashringOrBuilder();
 
     public edu.usfca.cs.dfs.StorageMessages.DataPacket.PacketsCase getPacketsCase();
   }
@@ -5901,8 +7814,36 @@ public final class StorageMessages {
               break;
             }
             case 58: {
-              edu.usfca.cs.dfs.StorageMessages.Ack.Builder subBuilder = null;
+              edu.usfca.cs.dfs.StorageMessages.DiskSpace.Builder subBuilder = null;
               if (packetsCase_ == 7) {
+                subBuilder = ((edu.usfca.cs.dfs.StorageMessages.DiskSpace) packets_).toBuilder();
+              }
+              packets_ =
+                  input.readMessage(edu.usfca.cs.dfs.StorageMessages.DiskSpace.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((edu.usfca.cs.dfs.StorageMessages.DiskSpace) packets_);
+                packets_ = subBuilder.buildPartial();
+              }
+              packetsCase_ = 7;
+              break;
+            }
+            case 66: {
+              edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.Builder subBuilder = null;
+              if (packetsCase_ == 8) {
+                subBuilder = ((edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) packets_).toBuilder();
+              }
+              packets_ =
+                  input.readMessage(edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) packets_);
+                packets_ = subBuilder.buildPartial();
+              }
+              packetsCase_ = 8;
+              break;
+            }
+            case 74: {
+              edu.usfca.cs.dfs.StorageMessages.Ack.Builder subBuilder = null;
+              if (packetsCase_ == 9) {
                 subBuilder = ((edu.usfca.cs.dfs.StorageMessages.Ack) packets_).toBuilder();
               }
               packets_ =
@@ -5911,7 +7852,21 @@ public final class StorageMessages {
                 subBuilder.mergeFrom((edu.usfca.cs.dfs.StorageMessages.Ack) packets_);
                 packets_ = subBuilder.buildPartial();
               }
-              packetsCase_ = 7;
+              packetsCase_ = 9;
+              break;
+            }
+            case 82: {
+              edu.usfca.cs.dfs.StorageMessages.HashRing.Builder subBuilder = null;
+              if (packetsCase_ == 10) {
+                subBuilder = ((edu.usfca.cs.dfs.StorageMessages.HashRing) packets_).toBuilder();
+              }
+              packets_ =
+                  input.readMessage(edu.usfca.cs.dfs.StorageMessages.HashRing.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((edu.usfca.cs.dfs.StorageMessages.HashRing) packets_);
+                packets_ = subBuilder.buildPartial();
+              }
+              packetsCase_ = 10;
               break;
             }
             default: {
@@ -5956,7 +7911,10 @@ public final class StorageMessages {
       ALLCHUNKS(4),
       SINGLECHUNK(5),
       CHUNKLIFE(6),
-      ACK(7),
+      DISKSPACE(7),
+      NUMBEROFREQUEST(8),
+      ACK(9),
+      HASHRING(10),
       PACKETS_NOT_SET(0);
       private final int value;
       private PacketsCase(int value) {
@@ -5978,7 +7936,10 @@ public final class StorageMessages {
           case 4: return ALLCHUNKS;
           case 5: return SINGLECHUNK;
           case 6: return CHUNKLIFE;
-          case 7: return ACK;
+          case 7: return DISKSPACE;
+          case 8: return NUMBEROFREQUEST;
+          case 9: return ACK;
+          case 10: return HASHRING;
           case 0: return PACKETS_NOT_SET;
           default: return null;
         }
@@ -6150,30 +8111,108 @@ public final class StorageMessages {
       return edu.usfca.cs.dfs.StorageMessages.ChunkLife.getDefaultInstance();
     }
 
-    public static final int ACK_FIELD_NUMBER = 7;
+    public static final int DISKSPACE_FIELD_NUMBER = 7;
     /**
-     * <code>.Ack ack = 7;</code>
+     * <code>.DiskSpace diskspace = 7;</code>
      */
-    public boolean hasAck() {
+    public boolean hasDiskspace() {
       return packetsCase_ == 7;
     }
     /**
-     * <code>.Ack ack = 7;</code>
+     * <code>.DiskSpace diskspace = 7;</code>
+     */
+    public edu.usfca.cs.dfs.StorageMessages.DiskSpace getDiskspace() {
+      if (packetsCase_ == 7) {
+         return (edu.usfca.cs.dfs.StorageMessages.DiskSpace) packets_;
+      }
+      return edu.usfca.cs.dfs.StorageMessages.DiskSpace.getDefaultInstance();
+    }
+    /**
+     * <code>.DiskSpace diskspace = 7;</code>
+     */
+    public edu.usfca.cs.dfs.StorageMessages.DiskSpaceOrBuilder getDiskspaceOrBuilder() {
+      if (packetsCase_ == 7) {
+         return (edu.usfca.cs.dfs.StorageMessages.DiskSpace) packets_;
+      }
+      return edu.usfca.cs.dfs.StorageMessages.DiskSpace.getDefaultInstance();
+    }
+
+    public static final int NUMBEROFREQUEST_FIELD_NUMBER = 8;
+    /**
+     * <code>.NumberOfRequest numberofrequest = 8;</code>
+     */
+    public boolean hasNumberofrequest() {
+      return packetsCase_ == 8;
+    }
+    /**
+     * <code>.NumberOfRequest numberofrequest = 8;</code>
+     */
+    public edu.usfca.cs.dfs.StorageMessages.NumberOfRequest getNumberofrequest() {
+      if (packetsCase_ == 8) {
+         return (edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) packets_;
+      }
+      return edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.getDefaultInstance();
+    }
+    /**
+     * <code>.NumberOfRequest numberofrequest = 8;</code>
+     */
+    public edu.usfca.cs.dfs.StorageMessages.NumberOfRequestOrBuilder getNumberofrequestOrBuilder() {
+      if (packetsCase_ == 8) {
+         return (edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) packets_;
+      }
+      return edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.getDefaultInstance();
+    }
+
+    public static final int ACK_FIELD_NUMBER = 9;
+    /**
+     * <code>.Ack ack = 9;</code>
+     */
+    public boolean hasAck() {
+      return packetsCase_ == 9;
+    }
+    /**
+     * <code>.Ack ack = 9;</code>
      */
     public edu.usfca.cs.dfs.StorageMessages.Ack getAck() {
-      if (packetsCase_ == 7) {
+      if (packetsCase_ == 9) {
          return (edu.usfca.cs.dfs.StorageMessages.Ack) packets_;
       }
       return edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
     }
     /**
-     * <code>.Ack ack = 7;</code>
+     * <code>.Ack ack = 9;</code>
      */
     public edu.usfca.cs.dfs.StorageMessages.AckOrBuilder getAckOrBuilder() {
-      if (packetsCase_ == 7) {
+      if (packetsCase_ == 9) {
          return (edu.usfca.cs.dfs.StorageMessages.Ack) packets_;
       }
       return edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
+    }
+
+    public static final int HASHRING_FIELD_NUMBER = 10;
+    /**
+     * <code>.HashRing hashring = 10;</code>
+     */
+    public boolean hasHashring() {
+      return packetsCase_ == 10;
+    }
+    /**
+     * <code>.HashRing hashring = 10;</code>
+     */
+    public edu.usfca.cs.dfs.StorageMessages.HashRing getHashring() {
+      if (packetsCase_ == 10) {
+         return (edu.usfca.cs.dfs.StorageMessages.HashRing) packets_;
+      }
+      return edu.usfca.cs.dfs.StorageMessages.HashRing.getDefaultInstance();
+    }
+    /**
+     * <code>.HashRing hashring = 10;</code>
+     */
+    public edu.usfca.cs.dfs.StorageMessages.HashRingOrBuilder getHashringOrBuilder() {
+      if (packetsCase_ == 10) {
+         return (edu.usfca.cs.dfs.StorageMessages.HashRing) packets_;
+      }
+      return edu.usfca.cs.dfs.StorageMessages.HashRing.getDefaultInstance();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -6209,7 +8248,16 @@ public final class StorageMessages {
         output.writeMessage(6, (edu.usfca.cs.dfs.StorageMessages.ChunkLife) packets_);
       }
       if (packetsCase_ == 7) {
-        output.writeMessage(7, (edu.usfca.cs.dfs.StorageMessages.Ack) packets_);
+        output.writeMessage(7, (edu.usfca.cs.dfs.StorageMessages.DiskSpace) packets_);
+      }
+      if (packetsCase_ == 8) {
+        output.writeMessage(8, (edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) packets_);
+      }
+      if (packetsCase_ == 9) {
+        output.writeMessage(9, (edu.usfca.cs.dfs.StorageMessages.Ack) packets_);
+      }
+      if (packetsCase_ == 10) {
+        output.writeMessage(10, (edu.usfca.cs.dfs.StorageMessages.HashRing) packets_);
       }
       unknownFields.writeTo(output);
     }
@@ -6246,7 +8294,19 @@ public final class StorageMessages {
       }
       if (packetsCase_ == 7) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, (edu.usfca.cs.dfs.StorageMessages.Ack) packets_);
+          .computeMessageSize(7, (edu.usfca.cs.dfs.StorageMessages.DiskSpace) packets_);
+      }
+      if (packetsCase_ == 8) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, (edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) packets_);
+      }
+      if (packetsCase_ == 9) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(9, (edu.usfca.cs.dfs.StorageMessages.Ack) packets_);
+      }
+      if (packetsCase_ == 10) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, (edu.usfca.cs.dfs.StorageMessages.HashRing) packets_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -6293,8 +8353,20 @@ public final class StorageMessages {
               .equals(other.getChunklife());
           break;
         case 7:
+          result = result && getDiskspace()
+              .equals(other.getDiskspace());
+          break;
+        case 8:
+          result = result && getNumberofrequest()
+              .equals(other.getNumberofrequest());
+          break;
+        case 9:
           result = result && getAck()
               .equals(other.getAck());
+          break;
+        case 10:
+          result = result && getHashring()
+              .equals(other.getHashring());
           break;
         case 0:
         default:
@@ -6336,8 +8408,20 @@ public final class StorageMessages {
           hash = (53 * hash) + getChunklife().hashCode();
           break;
         case 7:
+          hash = (37 * hash) + DISKSPACE_FIELD_NUMBER;
+          hash = (53 * hash) + getDiskspace().hashCode();
+          break;
+        case 8:
+          hash = (37 * hash) + NUMBEROFREQUEST_FIELD_NUMBER;
+          hash = (53 * hash) + getNumberofrequest().hashCode();
+          break;
+        case 9:
           hash = (37 * hash) + ACK_FIELD_NUMBER;
           hash = (53 * hash) + getAck().hashCode();
+          break;
+        case 10:
+          hash = (37 * hash) + HASHRING_FIELD_NUMBER;
+          hash = (53 * hash) + getHashring().hashCode();
           break;
         case 0:
         default:
@@ -6546,10 +8630,31 @@ public final class StorageMessages {
           }
         }
         if (packetsCase_ == 7) {
+          if (diskspaceBuilder_ == null) {
+            result.packets_ = packets_;
+          } else {
+            result.packets_ = diskspaceBuilder_.build();
+          }
+        }
+        if (packetsCase_ == 8) {
+          if (numberofrequestBuilder_ == null) {
+            result.packets_ = packets_;
+          } else {
+            result.packets_ = numberofrequestBuilder_.build();
+          }
+        }
+        if (packetsCase_ == 9) {
           if (ackBuilder_ == null) {
             result.packets_ = packets_;
           } else {
             result.packets_ = ackBuilder_.build();
+          }
+        }
+        if (packetsCase_ == 10) {
+          if (hashringBuilder_ == null) {
+            result.packets_ = packets_;
+          } else {
+            result.packets_ = hashringBuilder_.build();
           }
         }
         result.packetsCase_ = packetsCase_;
@@ -6626,8 +8731,20 @@ public final class StorageMessages {
             mergeChunklife(other.getChunklife());
             break;
           }
+          case DISKSPACE: {
+            mergeDiskspace(other.getDiskspace());
+            break;
+          }
+          case NUMBEROFREQUEST: {
+            mergeNumberofrequest(other.getNumberofrequest());
+            break;
+          }
           case ACK: {
             mergeAck(other.getAck());
+            break;
+          }
+          case HASHRING: {
+            mergeHashring(other.getHashring());
             break;
           }
           case PACKETS_NOT_SET: {
@@ -7495,31 +9612,303 @@ public final class StorageMessages {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          edu.usfca.cs.dfs.StorageMessages.Ack, edu.usfca.cs.dfs.StorageMessages.Ack.Builder, edu.usfca.cs.dfs.StorageMessages.AckOrBuilder> ackBuilder_;
+          edu.usfca.cs.dfs.StorageMessages.DiskSpace, edu.usfca.cs.dfs.StorageMessages.DiskSpace.Builder, edu.usfca.cs.dfs.StorageMessages.DiskSpaceOrBuilder> diskspaceBuilder_;
       /**
-       * <code>.Ack ack = 7;</code>
+       * <code>.DiskSpace diskspace = 7;</code>
        */
-      public boolean hasAck() {
+      public boolean hasDiskspace() {
         return packetsCase_ == 7;
       }
       /**
-       * <code>.Ack ack = 7;</code>
+       * <code>.DiskSpace diskspace = 7;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.DiskSpace getDiskspace() {
+        if (diskspaceBuilder_ == null) {
+          if (packetsCase_ == 7) {
+            return (edu.usfca.cs.dfs.StorageMessages.DiskSpace) packets_;
+          }
+          return edu.usfca.cs.dfs.StorageMessages.DiskSpace.getDefaultInstance();
+        } else {
+          if (packetsCase_ == 7) {
+            return diskspaceBuilder_.getMessage();
+          }
+          return edu.usfca.cs.dfs.StorageMessages.DiskSpace.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.DiskSpace diskspace = 7;</code>
+       */
+      public Builder setDiskspace(edu.usfca.cs.dfs.StorageMessages.DiskSpace value) {
+        if (diskspaceBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          packets_ = value;
+          onChanged();
+        } else {
+          diskspaceBuilder_.setMessage(value);
+        }
+        packetsCase_ = 7;
+        return this;
+      }
+      /**
+       * <code>.DiskSpace diskspace = 7;</code>
+       */
+      public Builder setDiskspace(
+          edu.usfca.cs.dfs.StorageMessages.DiskSpace.Builder builderForValue) {
+        if (diskspaceBuilder_ == null) {
+          packets_ = builderForValue.build();
+          onChanged();
+        } else {
+          diskspaceBuilder_.setMessage(builderForValue.build());
+        }
+        packetsCase_ = 7;
+        return this;
+      }
+      /**
+       * <code>.DiskSpace diskspace = 7;</code>
+       */
+      public Builder mergeDiskspace(edu.usfca.cs.dfs.StorageMessages.DiskSpace value) {
+        if (diskspaceBuilder_ == null) {
+          if (packetsCase_ == 7 &&
+              packets_ != edu.usfca.cs.dfs.StorageMessages.DiskSpace.getDefaultInstance()) {
+            packets_ = edu.usfca.cs.dfs.StorageMessages.DiskSpace.newBuilder((edu.usfca.cs.dfs.StorageMessages.DiskSpace) packets_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            packets_ = value;
+          }
+          onChanged();
+        } else {
+          if (packetsCase_ == 7) {
+            diskspaceBuilder_.mergeFrom(value);
+          }
+          diskspaceBuilder_.setMessage(value);
+        }
+        packetsCase_ = 7;
+        return this;
+      }
+      /**
+       * <code>.DiskSpace diskspace = 7;</code>
+       */
+      public Builder clearDiskspace() {
+        if (diskspaceBuilder_ == null) {
+          if (packetsCase_ == 7) {
+            packetsCase_ = 0;
+            packets_ = null;
+            onChanged();
+          }
+        } else {
+          if (packetsCase_ == 7) {
+            packetsCase_ = 0;
+            packets_ = null;
+          }
+          diskspaceBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.DiskSpace diskspace = 7;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.DiskSpace.Builder getDiskspaceBuilder() {
+        return getDiskspaceFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.DiskSpace diskspace = 7;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.DiskSpaceOrBuilder getDiskspaceOrBuilder() {
+        if ((packetsCase_ == 7) && (diskspaceBuilder_ != null)) {
+          return diskspaceBuilder_.getMessageOrBuilder();
+        } else {
+          if (packetsCase_ == 7) {
+            return (edu.usfca.cs.dfs.StorageMessages.DiskSpace) packets_;
+          }
+          return edu.usfca.cs.dfs.StorageMessages.DiskSpace.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.DiskSpace diskspace = 7;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.StorageMessages.DiskSpace, edu.usfca.cs.dfs.StorageMessages.DiskSpace.Builder, edu.usfca.cs.dfs.StorageMessages.DiskSpaceOrBuilder> 
+          getDiskspaceFieldBuilder() {
+        if (diskspaceBuilder_ == null) {
+          if (!(packetsCase_ == 7)) {
+            packets_ = edu.usfca.cs.dfs.StorageMessages.DiskSpace.getDefaultInstance();
+          }
+          diskspaceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              edu.usfca.cs.dfs.StorageMessages.DiskSpace, edu.usfca.cs.dfs.StorageMessages.DiskSpace.Builder, edu.usfca.cs.dfs.StorageMessages.DiskSpaceOrBuilder>(
+                  (edu.usfca.cs.dfs.StorageMessages.DiskSpace) packets_,
+                  getParentForChildren(),
+                  isClean());
+          packets_ = null;
+        }
+        packetsCase_ = 7;
+        onChanged();;
+        return diskspaceBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.StorageMessages.NumberOfRequest, edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.Builder, edu.usfca.cs.dfs.StorageMessages.NumberOfRequestOrBuilder> numberofrequestBuilder_;
+      /**
+       * <code>.NumberOfRequest numberofrequest = 8;</code>
+       */
+      public boolean hasNumberofrequest() {
+        return packetsCase_ == 8;
+      }
+      /**
+       * <code>.NumberOfRequest numberofrequest = 8;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.NumberOfRequest getNumberofrequest() {
+        if (numberofrequestBuilder_ == null) {
+          if (packetsCase_ == 8) {
+            return (edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) packets_;
+          }
+          return edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.getDefaultInstance();
+        } else {
+          if (packetsCase_ == 8) {
+            return numberofrequestBuilder_.getMessage();
+          }
+          return edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.NumberOfRequest numberofrequest = 8;</code>
+       */
+      public Builder setNumberofrequest(edu.usfca.cs.dfs.StorageMessages.NumberOfRequest value) {
+        if (numberofrequestBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          packets_ = value;
+          onChanged();
+        } else {
+          numberofrequestBuilder_.setMessage(value);
+        }
+        packetsCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.NumberOfRequest numberofrequest = 8;</code>
+       */
+      public Builder setNumberofrequest(
+          edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.Builder builderForValue) {
+        if (numberofrequestBuilder_ == null) {
+          packets_ = builderForValue.build();
+          onChanged();
+        } else {
+          numberofrequestBuilder_.setMessage(builderForValue.build());
+        }
+        packetsCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.NumberOfRequest numberofrequest = 8;</code>
+       */
+      public Builder mergeNumberofrequest(edu.usfca.cs.dfs.StorageMessages.NumberOfRequest value) {
+        if (numberofrequestBuilder_ == null) {
+          if (packetsCase_ == 8 &&
+              packets_ != edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.getDefaultInstance()) {
+            packets_ = edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.newBuilder((edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) packets_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            packets_ = value;
+          }
+          onChanged();
+        } else {
+          if (packetsCase_ == 8) {
+            numberofrequestBuilder_.mergeFrom(value);
+          }
+          numberofrequestBuilder_.setMessage(value);
+        }
+        packetsCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.NumberOfRequest numberofrequest = 8;</code>
+       */
+      public Builder clearNumberofrequest() {
+        if (numberofrequestBuilder_ == null) {
+          if (packetsCase_ == 8) {
+            packetsCase_ = 0;
+            packets_ = null;
+            onChanged();
+          }
+        } else {
+          if (packetsCase_ == 8) {
+            packetsCase_ = 0;
+            packets_ = null;
+          }
+          numberofrequestBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.NumberOfRequest numberofrequest = 8;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.Builder getNumberofrequestBuilder() {
+        return getNumberofrequestFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.NumberOfRequest numberofrequest = 8;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.NumberOfRequestOrBuilder getNumberofrequestOrBuilder() {
+        if ((packetsCase_ == 8) && (numberofrequestBuilder_ != null)) {
+          return numberofrequestBuilder_.getMessageOrBuilder();
+        } else {
+          if (packetsCase_ == 8) {
+            return (edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) packets_;
+          }
+          return edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.NumberOfRequest numberofrequest = 8;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.StorageMessages.NumberOfRequest, edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.Builder, edu.usfca.cs.dfs.StorageMessages.NumberOfRequestOrBuilder> 
+          getNumberofrequestFieldBuilder() {
+        if (numberofrequestBuilder_ == null) {
+          if (!(packetsCase_ == 8)) {
+            packets_ = edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.getDefaultInstance();
+          }
+          numberofrequestBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              edu.usfca.cs.dfs.StorageMessages.NumberOfRequest, edu.usfca.cs.dfs.StorageMessages.NumberOfRequest.Builder, edu.usfca.cs.dfs.StorageMessages.NumberOfRequestOrBuilder>(
+                  (edu.usfca.cs.dfs.StorageMessages.NumberOfRequest) packets_,
+                  getParentForChildren(),
+                  isClean());
+          packets_ = null;
+        }
+        packetsCase_ = 8;
+        onChanged();;
+        return numberofrequestBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.StorageMessages.Ack, edu.usfca.cs.dfs.StorageMessages.Ack.Builder, edu.usfca.cs.dfs.StorageMessages.AckOrBuilder> ackBuilder_;
+      /**
+       * <code>.Ack ack = 9;</code>
+       */
+      public boolean hasAck() {
+        return packetsCase_ == 9;
+      }
+      /**
+       * <code>.Ack ack = 9;</code>
        */
       public edu.usfca.cs.dfs.StorageMessages.Ack getAck() {
         if (ackBuilder_ == null) {
-          if (packetsCase_ == 7) {
+          if (packetsCase_ == 9) {
             return (edu.usfca.cs.dfs.StorageMessages.Ack) packets_;
           }
           return edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
         } else {
-          if (packetsCase_ == 7) {
+          if (packetsCase_ == 9) {
             return ackBuilder_.getMessage();
           }
           return edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
         }
       }
       /**
-       * <code>.Ack ack = 7;</code>
+       * <code>.Ack ack = 9;</code>
        */
       public Builder setAck(edu.usfca.cs.dfs.StorageMessages.Ack value) {
         if (ackBuilder_ == null) {
@@ -7531,11 +9920,11 @@ public final class StorageMessages {
         } else {
           ackBuilder_.setMessage(value);
         }
-        packetsCase_ = 7;
+        packetsCase_ = 9;
         return this;
       }
       /**
-       * <code>.Ack ack = 7;</code>
+       * <code>.Ack ack = 9;</code>
        */
       public Builder setAck(
           edu.usfca.cs.dfs.StorageMessages.Ack.Builder builderForValue) {
@@ -7545,15 +9934,15 @@ public final class StorageMessages {
         } else {
           ackBuilder_.setMessage(builderForValue.build());
         }
-        packetsCase_ = 7;
+        packetsCase_ = 9;
         return this;
       }
       /**
-       * <code>.Ack ack = 7;</code>
+       * <code>.Ack ack = 9;</code>
        */
       public Builder mergeAck(edu.usfca.cs.dfs.StorageMessages.Ack value) {
         if (ackBuilder_ == null) {
-          if (packetsCase_ == 7 &&
+          if (packetsCase_ == 9 &&
               packets_ != edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance()) {
             packets_ = edu.usfca.cs.dfs.StorageMessages.Ack.newBuilder((edu.usfca.cs.dfs.StorageMessages.Ack) packets_)
                 .mergeFrom(value).buildPartial();
@@ -7562,26 +9951,26 @@ public final class StorageMessages {
           }
           onChanged();
         } else {
-          if (packetsCase_ == 7) {
+          if (packetsCase_ == 9) {
             ackBuilder_.mergeFrom(value);
           }
           ackBuilder_.setMessage(value);
         }
-        packetsCase_ = 7;
+        packetsCase_ = 9;
         return this;
       }
       /**
-       * <code>.Ack ack = 7;</code>
+       * <code>.Ack ack = 9;</code>
        */
       public Builder clearAck() {
         if (ackBuilder_ == null) {
-          if (packetsCase_ == 7) {
+          if (packetsCase_ == 9) {
             packetsCase_ = 0;
             packets_ = null;
             onChanged();
           }
         } else {
-          if (packetsCase_ == 7) {
+          if (packetsCase_ == 9) {
             packetsCase_ = 0;
             packets_ = null;
           }
@@ -7590,32 +9979,32 @@ public final class StorageMessages {
         return this;
       }
       /**
-       * <code>.Ack ack = 7;</code>
+       * <code>.Ack ack = 9;</code>
        */
       public edu.usfca.cs.dfs.StorageMessages.Ack.Builder getAckBuilder() {
         return getAckFieldBuilder().getBuilder();
       }
       /**
-       * <code>.Ack ack = 7;</code>
+       * <code>.Ack ack = 9;</code>
        */
       public edu.usfca.cs.dfs.StorageMessages.AckOrBuilder getAckOrBuilder() {
-        if ((packetsCase_ == 7) && (ackBuilder_ != null)) {
+        if ((packetsCase_ == 9) && (ackBuilder_ != null)) {
           return ackBuilder_.getMessageOrBuilder();
         } else {
-          if (packetsCase_ == 7) {
+          if (packetsCase_ == 9) {
             return (edu.usfca.cs.dfs.StorageMessages.Ack) packets_;
           }
           return edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
         }
       }
       /**
-       * <code>.Ack ack = 7;</code>
+       * <code>.Ack ack = 9;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           edu.usfca.cs.dfs.StorageMessages.Ack, edu.usfca.cs.dfs.StorageMessages.Ack.Builder, edu.usfca.cs.dfs.StorageMessages.AckOrBuilder> 
           getAckFieldBuilder() {
         if (ackBuilder_ == null) {
-          if (!(packetsCase_ == 7)) {
+          if (!(packetsCase_ == 9)) {
             packets_ = edu.usfca.cs.dfs.StorageMessages.Ack.getDefaultInstance();
           }
           ackBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -7625,9 +10014,145 @@ public final class StorageMessages {
                   isClean());
           packets_ = null;
         }
-        packetsCase_ = 7;
+        packetsCase_ = 9;
         onChanged();;
         return ackBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.StorageMessages.HashRing, edu.usfca.cs.dfs.StorageMessages.HashRing.Builder, edu.usfca.cs.dfs.StorageMessages.HashRingOrBuilder> hashringBuilder_;
+      /**
+       * <code>.HashRing hashring = 10;</code>
+       */
+      public boolean hasHashring() {
+        return packetsCase_ == 10;
+      }
+      /**
+       * <code>.HashRing hashring = 10;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.HashRing getHashring() {
+        if (hashringBuilder_ == null) {
+          if (packetsCase_ == 10) {
+            return (edu.usfca.cs.dfs.StorageMessages.HashRing) packets_;
+          }
+          return edu.usfca.cs.dfs.StorageMessages.HashRing.getDefaultInstance();
+        } else {
+          if (packetsCase_ == 10) {
+            return hashringBuilder_.getMessage();
+          }
+          return edu.usfca.cs.dfs.StorageMessages.HashRing.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.HashRing hashring = 10;</code>
+       */
+      public Builder setHashring(edu.usfca.cs.dfs.StorageMessages.HashRing value) {
+        if (hashringBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          packets_ = value;
+          onChanged();
+        } else {
+          hashringBuilder_.setMessage(value);
+        }
+        packetsCase_ = 10;
+        return this;
+      }
+      /**
+       * <code>.HashRing hashring = 10;</code>
+       */
+      public Builder setHashring(
+          edu.usfca.cs.dfs.StorageMessages.HashRing.Builder builderForValue) {
+        if (hashringBuilder_ == null) {
+          packets_ = builderForValue.build();
+          onChanged();
+        } else {
+          hashringBuilder_.setMessage(builderForValue.build());
+        }
+        packetsCase_ = 10;
+        return this;
+      }
+      /**
+       * <code>.HashRing hashring = 10;</code>
+       */
+      public Builder mergeHashring(edu.usfca.cs.dfs.StorageMessages.HashRing value) {
+        if (hashringBuilder_ == null) {
+          if (packetsCase_ == 10 &&
+              packets_ != edu.usfca.cs.dfs.StorageMessages.HashRing.getDefaultInstance()) {
+            packets_ = edu.usfca.cs.dfs.StorageMessages.HashRing.newBuilder((edu.usfca.cs.dfs.StorageMessages.HashRing) packets_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            packets_ = value;
+          }
+          onChanged();
+        } else {
+          if (packetsCase_ == 10) {
+            hashringBuilder_.mergeFrom(value);
+          }
+          hashringBuilder_.setMessage(value);
+        }
+        packetsCase_ = 10;
+        return this;
+      }
+      /**
+       * <code>.HashRing hashring = 10;</code>
+       */
+      public Builder clearHashring() {
+        if (hashringBuilder_ == null) {
+          if (packetsCase_ == 10) {
+            packetsCase_ = 0;
+            packets_ = null;
+            onChanged();
+          }
+        } else {
+          if (packetsCase_ == 10) {
+            packetsCase_ = 0;
+            packets_ = null;
+          }
+          hashringBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.HashRing hashring = 10;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.HashRing.Builder getHashringBuilder() {
+        return getHashringFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.HashRing hashring = 10;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.HashRingOrBuilder getHashringOrBuilder() {
+        if ((packetsCase_ == 10) && (hashringBuilder_ != null)) {
+          return hashringBuilder_.getMessageOrBuilder();
+        } else {
+          if (packetsCase_ == 10) {
+            return (edu.usfca.cs.dfs.StorageMessages.HashRing) packets_;
+          }
+          return edu.usfca.cs.dfs.StorageMessages.HashRing.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.HashRing hashring = 10;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.StorageMessages.HashRing, edu.usfca.cs.dfs.StorageMessages.HashRing.Builder, edu.usfca.cs.dfs.StorageMessages.HashRingOrBuilder> 
+          getHashringFieldBuilder() {
+        if (hashringBuilder_ == null) {
+          if (!(packetsCase_ == 10)) {
+            packets_ = edu.usfca.cs.dfs.StorageMessages.HashRing.getDefaultInstance();
+          }
+          hashringBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              edu.usfca.cs.dfs.StorageMessages.HashRing, edu.usfca.cs.dfs.StorageMessages.HashRing.Builder, edu.usfca.cs.dfs.StorageMessages.HashRingOrBuilder>(
+                  (edu.usfca.cs.dfs.StorageMessages.HashRing) packets_,
+                  getParentForChildren(),
+                  isClean());
+          packets_ = null;
+        }
+        packetsCase_ = 10;
+        onChanged();;
+        return hashringBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -7688,10 +10213,30 @@ public final class StorageMessages {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Request_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_DiskSpace_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_DiskSpace_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_NumberOfRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_NumberOfRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_HashRingEntry_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_HashRingEntry_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_HashRing_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_HashRing_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_HashRing_HashRingsEntry_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_HashRing_HashRingsEntry_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_NumberOfChunks_descriptor;
   private static final 
@@ -7747,29 +10292,37 @@ public final class StorageMessages {
       "Request.Op_code\022\021\n\tipaddress\030\006 \001(\t\022\014\n\004po" +
       "rt\030\007 \001(\005\"X\n\007Op_code\022\017\n\013store_chunk\020\000\022\r\n\t" +
       "get_chunk\020\001\022\014\n\010get_data\020\002\022\014\n\010get_list\020\003\022" +
-      "\021\n\rget_chunk_loc\020\004\"O\n\rHashRingEntry\022\020\n\010p" +
-      "osition\030\001 \001(\014\022\021\n\tipaddress\030\002 \001(\t\022\014\n\004port" +
-      "\030\003 \001(\005\022\013\n\003add\030\004 \001(\010\"%\n\016NumberOfChunks\022\023\n" +
-      "\013chunkNumber\030\001 \001(\005\"\224\001\n\013SingleChunk\022\020\n\010fi" +
-      "leName\030\001 \001(\t\022\023\n\013chunkNumber\030\002 \001(\005\022\014\n\004dat" +
-      "a\030\003 \001(\014\022\021\n\tipaddress\030\004 \001(\t\022\020\n\010checksum\030\005" +
-      " \001(\005\022\014\n\004port\030\006 \001(\005\022\016\n\006isLast\030\007 \001(\010\022\r\n\005wr" +
-      "ite\030\010 \001(\010\"<\n\tChunkLife\022!\n\013singleChunk\030\001 " +
-      "\001(\0132\014.SingleChunk\022\014\n\004life\030\002 \001(\005\"\330\001\n\tAllC" +
-      "hunks\022$\n\005files\030\001 \003(\0132\025.AllChunks.FilesEn" +
-      "try\022+\n\tchunk_map\030\002 \003(\0132\030.AllChunks.Chunk" +
-      "MapEntry\022\013\n\003get\030\003 \001(\010\032,\n\nFilesEntry\022\013\n\003k" +
-      "ey\030\001 \001(\t\022\r\n\005value\030\002 \001(\014:\0028\001\032=\n\rChunkMapE" +
-      "ntry\022\013\n\003key\030\001 \001(\t\022\033\n\005value\030\002 \001(\0132\014.Singl" +
-      "eChunk:\0028\001\"\022\n\003Ack\022\013\n\003ack\030\001 \001(\010\"\204\002\n\nDataP" +
-      "acket\022\033\n\007request\030\001 \001(\0132\010.RequestH\000\022\'\n\rha" +
-      "shringentry\030\002 \001(\0132\016.HashRingEntryH\000\022)\n\016n" +
-      "umberofchunks\030\003 \001(\0132\017.NumberOfChunksH\000\022\037" +
-      "\n\tallchunks\030\004 \001(\0132\n.AllChunksH\000\022#\n\013singl" +
-      "echunk\030\005 \001(\0132\014.SingleChunkH\000\022\037\n\tchunklif" +
-      "e\030\006 \001(\0132\n.ChunkLifeH\000\022\023\n\003ack\030\007 \001(\0132\004.Ack" +
-      "H\000B\t\n\007packetsB\022\n\020edu.usfca.cs.dfsb\006proto" +
-      "3"
+      "\021\n\rget_chunk_loc\020\004\"\036\n\tDiskSpace\022\021\n\tdisks" +
+      "pace\030\001 \001(\001\"!\n\017NumberOfRequest\022\016\n\006number\030" +
+      "\001 \001(\005\"O\n\rHashRingEntry\022\020\n\010position\030\001 \001(\014" +
+      "\022\021\n\tipaddress\030\002 \001(\t\022\014\n\004port\030\003 \001(\005\022\013\n\003add" +
+      "\030\004 \001(\010\"\226\001\n\010HashRing\022+\n\thashRings\030\001 \003(\0132\030" +
+      ".HashRing.HashRingsEntry\022\033\n\003hre\030\002 \001(\0132\016." +
+      "HashRingEntry\032@\n\016HashRingsEntry\022\013\n\003key\030\001" +
+      " \001(\t\022\035\n\005value\030\002 \001(\0132\016.HashRingEntry:\0028\001\"" +
+      "%\n\016NumberOfChunks\022\023\n\013chunkNumber\030\001 \001(\005\"\224" +
+      "\001\n\013SingleChunk\022\020\n\010fileName\030\001 \001(\t\022\023\n\013chun" +
+      "kNumber\030\002 \001(\005\022\014\n\004data\030\003 \001(\014\022\021\n\tipaddress" +
+      "\030\004 \001(\t\022\020\n\010checksum\030\005 \001(\005\022\014\n\004port\030\006 \001(\005\022\016" +
+      "\n\006isLast\030\007 \001(\010\022\r\n\005write\030\010 \001(\010\"<\n\tChunkLi" +
+      "fe\022!\n\013singleChunk\030\001 \001(\0132\014.SingleChunk\022\014\n" +
+      "\004life\030\002 \001(\005\"\330\001\n\tAllChunks\022$\n\005files\030\001 \003(\013" +
+      "2\025.AllChunks.FilesEntry\022+\n\tchunk_map\030\002 \003" +
+      "(\0132\030.AllChunks.ChunkMapEntry\022\013\n\003get\030\003 \001(" +
+      "\010\032,\n\nFilesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 " +
+      "\001(\014:\0028\001\032=\n\rChunkMapEntry\022\013\n\003key\030\001 \001(\t\022\033\n" +
+      "\005value\030\002 \001(\0132\014.SingleChunk:\0028\001\"\022\n\003Ack\022\013\n" +
+      "\003ack\030\001 \001(\010\"\361\002\n\nDataPacket\022\033\n\007request\030\001 \001" +
+      "(\0132\010.RequestH\000\022\'\n\rhashringentry\030\002 \001(\0132\016." +
+      "HashRingEntryH\000\022)\n\016numberofchunks\030\003 \001(\0132" +
+      "\017.NumberOfChunksH\000\022\037\n\tallchunks\030\004 \001(\0132\n." +
+      "AllChunksH\000\022#\n\013singlechunk\030\005 \001(\0132\014.Singl" +
+      "eChunkH\000\022\037\n\tchunklife\030\006 \001(\0132\n.ChunkLifeH" +
+      "\000\022\037\n\tdiskspace\030\007 \001(\0132\n.DiskSpaceH\000\022+\n\017nu" +
+      "mberofrequest\030\010 \001(\0132\020.NumberOfRequestH\000\022" +
+      "\023\n\003ack\030\t \001(\0132\004.AckH\000\022\035\n\010hashring\030\n \001(\0132\t" +
+      ".HashRingH\000B\t\n\007packetsB\022\n\020edu.usfca.cs.d" +
+      "fsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -7789,32 +10342,56 @@ public final class StorageMessages {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Request_descriptor,
         new java.lang.String[] { "FileName", "ChunkId", "Data", "Islast", "Opcode", "Ipaddress", "Port", });
-    internal_static_HashRingEntry_descriptor =
+    internal_static_DiskSpace_descriptor =
       getDescriptor().getMessageTypes().get(1);
+    internal_static_DiskSpace_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_DiskSpace_descriptor,
+        new java.lang.String[] { "Diskspace", });
+    internal_static_NumberOfRequest_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_NumberOfRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_NumberOfRequest_descriptor,
+        new java.lang.String[] { "Number", });
+    internal_static_HashRingEntry_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_HashRingEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_HashRingEntry_descriptor,
         new java.lang.String[] { "Position", "Ipaddress", "Port", "Add", });
+    internal_static_HashRing_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_HashRing_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_HashRing_descriptor,
+        new java.lang.String[] { "HashRings", "Hre", });
+    internal_static_HashRing_HashRingsEntry_descriptor =
+      internal_static_HashRing_descriptor.getNestedTypes().get(0);
+    internal_static_HashRing_HashRingsEntry_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_HashRing_HashRingsEntry_descriptor,
+        new java.lang.String[] { "Key", "Value", });
     internal_static_NumberOfChunks_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_NumberOfChunks_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_NumberOfChunks_descriptor,
         new java.lang.String[] { "ChunkNumber", });
     internal_static_SingleChunk_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_SingleChunk_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SingleChunk_descriptor,
         new java.lang.String[] { "FileName", "ChunkNumber", "Data", "Ipaddress", "Checksum", "Port", "IsLast", "Write", });
     internal_static_ChunkLife_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_ChunkLife_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ChunkLife_descriptor,
         new java.lang.String[] { "SingleChunk", "Life", });
     internal_static_AllChunks_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_AllChunks_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AllChunks_descriptor,
@@ -7832,17 +10409,17 @@ public final class StorageMessages {
         internal_static_AllChunks_ChunkMapEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_Ack_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_Ack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Ack_descriptor,
         new java.lang.String[] { "Ack", });
     internal_static_DataPacket_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_DataPacket_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_DataPacket_descriptor,
-        new java.lang.String[] { "Request", "Hashringentry", "Numberofchunks", "Allchunks", "Singlechunk", "Chunklife", "Ack", "Packets", });
+        new java.lang.String[] { "Request", "Hashringentry", "Numberofchunks", "Allchunks", "Singlechunk", "Chunklife", "Diskspace", "Numberofrequest", "Ack", "Hashring", "Packets", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

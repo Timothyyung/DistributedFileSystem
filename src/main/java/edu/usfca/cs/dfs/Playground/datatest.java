@@ -9,6 +9,7 @@ import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
 import edu.usfca.cs.dfs.Data.Data;
 import edu.usfca.cs.dfs.Coordinator.*;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +67,10 @@ public class datatest {
                 }
             }.start();
         }
-
+        System.out.println("space left");
+        long byte_len = new File("/").getFreeSpace();
+        double gb = byte_len/ 1e+9;
+        System.out.println(gb);
 /*
         hashRing.unneighbor();
         System.out.println(hashRing.toString());

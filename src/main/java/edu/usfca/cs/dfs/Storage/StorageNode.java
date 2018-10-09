@@ -35,6 +35,7 @@ public class StorageNode extends Thread{
     private File dir;
     private BigInteger mypos;
     private String path;
+    private int number_request_handled;
 
     public StorageNode(int port,String coordip,int coordport){
         try {
@@ -43,6 +44,7 @@ public class StorageNode extends Thread{
             e.printStackTrace();
         }
         this.port = port;
+        this.number_request_handled = 0;
         path = "bigdata/"+ Integer.toString(port) +"/tyung";
         dir = new File(path);
         dir.mkdirs();
@@ -151,9 +153,14 @@ public class StorageNode extends Thread{
                 }else if(dataPacket.hasAllchunks()){
                     System.out.println("proccessing all chunks");
                     process_allchunks(dataPacket.getAllchunks(), s.getOutputStream());
+                }else if(dataPacket.hasDiskspace()){
+                    System.out.println("proccessing disk space");
+                    process_disk_space(outputStream);
+                }else if(dataPacket.hasNumberofrequest()){
+                    process_requests_handled(outputStream);
                 }
-
-                System.out.println("\n\n\n______________________\n\n\n");
+                number_request_handled += 1;
+                System.out.println("______________________\n\n\n");
                 s.close();
             }catch(IOException | HashException e) {
 
@@ -177,6 +184,25 @@ public class StorageNode extends Thread{
         }else
             get_chunk_map(outputStream);
 
+    }
+
+    private void process_disk_space(OutputStream outputStream) throws IOException {
+        long byte_len = new File("/").getFreeSpace();
+        double gb = byte_len/1e+9;
+        StorageMessages.DiskSpace diskSpace = StorageMessages.DiskSpace.newBuilder().setDiskspace(gb).build();
+        StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder().setDiskspace(diskSpace).build();
+        dataPacket.writeDelimitedTo(outputStream);
+
+    }
+
+    private void process_requests_handled(OutputStream outputStream) throws IOException {
+        StorageMessages.NumberOfRequest numberOfRequest = StorageMessages.NumberOfRequest.newBuilder()
+                .setNumber(number_request_handled)
+                .build();
+        StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                .setNumberofrequest(numberOfRequest)
+                .build();
+        dataPacket.writeDelimitedTo(outputStream);
     }
 
     private void send_files(OutputStream outputStream) throws IOException {

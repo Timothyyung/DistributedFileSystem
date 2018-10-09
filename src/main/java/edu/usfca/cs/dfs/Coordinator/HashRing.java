@@ -35,23 +35,28 @@ public class HashRing<T> {
     {
         this(function,false);
         map_to_treemap(map);
-        remap_hashring();
+
     }
+
 
     public HashRingEntry returnNode(BigInteger pos){
         return entryMap.get(pos);
     }
 
-    private void map_to_treemap(CoordMessages.HashRing map)
+    public void map_to_treemap(CoordMessages.HashRing map)
     {
-
         for(Map.Entry<String, CoordMessages.HashRingEntry> entry: map.getHashRings().entrySet()){
             BigInteger pos = new BigInteger(entry.getValue().getPosition().toByteArray());
             BigInteger key = new BigInteger(entry.getKey());
-            HashRingEntry hashRingEntry = new HashRingEntry(pos,entry.getValue().getIpaddress(),entry.getValue().getPort());
-            entryMap.put(key,hashRingEntry);
+            if(!entryMap.containsKey(key)) {
+                HashRingEntry hashRingEntry = new HashRingEntry(pos, entry.getValue().getIpaddress(), entry.getValue().getPort());
+                entryMap.put(key, hashRingEntry);
+            }
         }
+        remap_hashring();
     }
+
+
 
     public CoordMessages.HashRing treemap_to_map()
     {

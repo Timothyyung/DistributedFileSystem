@@ -205,7 +205,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
                 if( i == max_chunk)
                     last = true;
                request_from_storage(filename,i,ipaddress,port,last);
-               Thread.sleep(8);
+               Thread.sleep(20);
            }
            System.out.println(max_chunk);
 
@@ -234,18 +234,63 @@ different chunks to be sent to the storage nodes. We will allow the storage node
 
            allChunks = response.getAllchunks();
 
-           System.out.println("Listing all chunks \n\n");
+           System.out.println("Listing all chunks \n");
            for(Map.Entry<String, StorageMessages.SingleChunk> entry : allChunks.getChunkMap().entrySet())
            {
-               System.out.println("\n_________________________________________");
+               System.out.println("_________________________________________");
                System.out.println(entry.getValue().getFileName() + " : " + entry.getValue().getChunkNumber());
-               System.out.println("\n_________________________________________");
            }
            System.out.println("_______________________________________");
-
-
        }catch(IOException ioe){
 
+       }
+   }
+
+   public void request_disk_space(String ipaddress, int port){
+       try(
+               Socket s = new Socket(ipaddress,port);
+               OutputStream outputStream = s.getOutputStream();
+               InputStream inputStream = s.getInputStream()
+       ) {
+           StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                   .setDiskspace(StorageMessages.DiskSpace.getDefaultInstance())
+                   .build();
+           dataPacket.writeDelimitedTo(outputStream);
+
+           StorageMessages.DataPacket response = StorageMessages.DataPacket.getDefaultInstance();
+           response = response.parseDelimitedFrom(inputStream);
+
+           StorageMessages.DiskSpace diskSpace = response.getDiskspace();
+           System.out.println("__________________________");
+           System.out.println("Disk space left: " + Double.toString(diskSpace.getDiskspace()));
+           System.out.println("__________________________");
+       }catch(IOException ie)
+       {
+           ie.printStackTrace();
+       }
+   }
+
+   public void request_handled(String ipaddress, int port){
+       try(
+               Socket s = new Socket(ipaddress,port);
+               OutputStream outputStream = s.getOutputStream();
+               InputStream inputStream = s.getInputStream()
+       ) {
+           StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                   .setNumberofrequest(StorageMessages.NumberOfRequest.getDefaultInstance())
+                   .build();
+           dataPacket.writeDelimitedTo(outputStream);
+
+           StorageMessages.DataPacket response = StorageMessages.DataPacket.getDefaultInstance();
+           response = response.parseDelimitedFrom(inputStream);
+
+           StorageMessages.NumberOfRequest numberOfRequest = response.getNumberofrequest();
+           System.out.println("_________________________________");
+           System.out.println("Number of requested handled: " + Integer.toString(numberOfRequest.getNumber()));
+           System.out.println("_________________________________");
+       }catch(IOException ie)
+       {
+           ie.printStackTrace();
        }
    }
 

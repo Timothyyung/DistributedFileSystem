@@ -18,12 +18,22 @@ message Request {
     }
 }
 
+message DiskSpace{
+    double diskspace = 1;
+}
+
+message NumberOfRequest{
+    int32 number = 1;
+}
+
 message HashRingEntry{
     bytes position = 1;
     string ipaddress = 2;
     int32 port = 3;
     bool add = 4;
 }
+
+
 
 message NumberOfChunks{
     int32 chunkNumber = 1;
@@ -64,7 +74,9 @@ message DataPacket {
         AllChunks allchunks = 4;
         SingleChunk singlechunk = 5;
         ChunkLife chunklife = 6;
-        Ack ack = 7;
+        DiskSpace diskspace = 7;
+        NumberOfRequest numberofrequest = 8;
+        Ack ack = 9;
     }
 }
 

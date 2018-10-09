@@ -2,6 +2,7 @@ package edu.usfca.cs.dfs.Coordinator;
 
 
 import com.google.protobuf.ByteString;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import edu.usfca.cs.dfs.CoordMessages;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashRingEntry;
@@ -27,14 +28,13 @@ public class Coordinator{
     private HashMap<String,NodeTimer> node_map;
     private String ipaddress;
     private int port;
+    private  SHA1 sha1 = new SHA1();
+    public Coordinator() {
 
-    public Coordinator() throws HashTopologyException, HashException, InterruptedException {
-        SHA1 sha1 = new SHA1();
         hashRing = new HashRing<>(sha1);
         node_map = new HashMap<>();
         this.ipaddress = "localhost";
         this.port = 6000;
-        //make_hash();
     }
 
     public void startCoord()
@@ -88,6 +88,9 @@ public class Coordinator{
                     System.out.println("heartbeat recieved: " + request.getHeartbeat().getNodeKey());
                     if(node_map.containsKey(request.getHeartbeat().getNodeKey()))
                         node_map.get(request.getHeartbeat().getNodeKey()).resetTime();
+                    else{
+
+                    }
                 }
                 s.close();
             }catch(IOException | HashTopologyException | HashException e)
@@ -95,6 +98,24 @@ public class Coordinator{
                 e.printStackTrace();
             }
         }
+
+        private void get_node_map() throws IOException {
+            Socket s = new Socket();
+            OutputStream outputStream = s.getOutputStream();
+            InputStream inputStream = s.getInputStream();
+
+            StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                    .setHashring(StorageMessages.HashRing.getDefaultInstance())
+                    .build();
+            dataPacket.writeDelimitedTo(outputStream);
+
+            CoordMessages.DataPacket response = CoordMessages.DataPacket.getDefaultInstance();
+            response = response.parseDelimitedFrom(inputStream);
+
+            hashRing.map_to_treemap(response.getHashring());
+
+        }
+
 
         private void process_map_request(OutputStream outputStream) throws IOException {
             CoordMessages.DataPacket response = CoordMessages.DataPacket.newBuilder()
@@ -167,36 +188,14 @@ public class Coordinator{
 
     }
 
-    private void make_hash() throws HashException, HashTopologyException, InterruptedException {
-
-        node_map.put("localhost2020",new NodeTimer (hashRing.addNode("localhost", 2020),"localhost2020",ipaddress,port));
-        node_map.put("localhost2030",new NodeTimer (hashRing.addNode("localhost", 2030),"localhost2030",ipaddress,port));
-        node_map.put("localhost2040",new NodeTimer (hashRing.addNode("localhost", 2040),"localhost2040",ipaddress,port));
-        node_map.put("localhost2050",new NodeTimer (hashRing.addNode("localhost", 2050),"localhost2050",ipaddress,port));
-        node_map.get("localhost2020").start();
-        Thread.sleep(1000);
-        node_map.get("localhost2030").start();
-        Thread.sleep(1000);
-
-        node_map.get("localhost2050").start();
-
-    }
-
-
 
     public static void main(String[] args) {
 
         System.out.println("Starting coordinator on localhost");
-        try {
-            Coordinator coordinator = new Coordinator();
-            coordinator.startCoord();
-        } catch (HashTopologyException e) {
-            e.printStackTrace();
-        } catch (HashException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        Coordinator coordinator = new Coordinator();
+        coordinator.startCoord();
+
 
 
     }

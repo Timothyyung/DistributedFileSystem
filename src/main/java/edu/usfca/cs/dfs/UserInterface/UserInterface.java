@@ -18,48 +18,101 @@ public class UserInterface {
         client = new Client(port);
     }
 
-    public void main_menu() throws IOException, HashException {
+    public void main_menu() throws HashException {
         System.out.println("Enter Command Here: For help type help?");
         boolean running = true;
         while(running){
             String cmd;
-            cmd = br.readLine();
-            switch (cmd){
-                case "help":
-                    help();
-                    break;
-                case "send_file_direct":
-                    send_file_direct();
-                    break;
-                case "send_file":
-                    send_file();
-                    break;
-                case "request_file":
-                    request_file();
-                    break;
-                case "request_map":
-                    request_map();
-                    break;
-                case "request_max_chunks":
-                    request_max();
-                    break;
-                case "request_chunk_map":
-                    request_chunk_map();
-                    break;
+            System.out.println("Please enter a command: ");
+            try {
+                cmd = br.readLine();
+                switch (cmd) {
+                    case "help":
+                        help();
+                        break;
+                    case "send_file_direct":
+                        send_file_direct();
+                        break;
+                    case "send_file":
+                        send_file();
+                        break;
+                    case "request_file":
+                        request_file();
+                        break;
+                    case "request_map":
+                        request_map();
+                        break;
+                    case "request_max_chunks":
+                        request_max();
+                        break;
+                    case "request_chunk_map":
+                        request_chunk_map();
+                        break;
+                    case "request_disk_space":
+                        request_disk_space();
+                        break;
+                    case "request_load":
+                        request_requests_load();
+                        break;
 
+                }
+            }catch(IOException ie){
+                System.out.println("Something went wrong? Bad file name?");
             }
         }
     }
 
     private void help(){
-
+        System.out.println("_______");
+        System.out.println("Send Files directly to nodes using hashmap retrieved from coordinator: send_file_direct ");
+        System.out.println("Send Files to Storage nodes (Storage node will handle distribution):   send_file ");
+        System.out.println("Request_file uses hashmap to retrieve from coordinator:                request_file");
+        System.out.println("Request map from coordinator:                                          request_map");
+        System.out.println("Request the number of chunks in a file                                 request_max");
+        System.out.println("Request a list of chunks that a storage node has                       request_chunk_map");
+        System.out.println("Request the available disk space                                       request_disk_space");
+        System.out.println("Request request load from storage node                                 request_load");
+        System.out.println("_______");
     }
+
+    private void request_disk_space() throws IOException {
+        System.out.println("Ipaddress of storage node?");
+        String ipaddress = br.readLine();
+        System.out.println("Port of storage node");
+        int port = 0;
+        try {
+            port = Integer.parseInt(br.readLine());
+        }catch(NumberFormatException ne){
+            System.out.println("You need to put a number down");
+        }
+        client.request_disk_space(ipaddress,port);
+    }
+
+    private void request_requests_load() throws IOException{
+        System.out.println("Ipaddress of storage node?");
+        String ipaddress = br.readLine();
+        System.out.println("Port of storage node");
+        int port = 0;
+        try {
+            port = Integer.parseInt(br.readLine());
+        }catch(NumberFormatException ne){
+            System.out.println("You need to put a number down");
+        }
+        client.request_handled(ipaddress,port);
+    }
+
 
     private void request_chunk_map() throws IOException {
         System.out.println("Ipaddress of storage node?");
         String ipaddress = br.readLine();
         System.out.println("Port of storage node");
-        int port = Integer.parseInt(br.readLine());
+        int port = 0;
+        try {
+            port = Integer.parseInt(br.readLine());
+        }catch(NumberFormatException ne){
+            System.out.println("You need to put a number down");
+        }
+        System.out.println("Requesting chunk map from " + ipaddress + ":" + Integer.toString(port));
         client.request_chunk_map(ipaddress,port);
     }
 
