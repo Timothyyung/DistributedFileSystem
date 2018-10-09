@@ -1407,6 +1407,19 @@ public final class CoordMessages {
 
     edu.usfca.cs.dfs.CoordMessages.HashRingEntry getHashRingsOrThrow(
         java.lang.String key);
+
+    /**
+     * <code>.HashRingEntry hre = 2;</code>
+     */
+    boolean hasHre();
+    /**
+     * <code>.HashRingEntry hre = 2;</code>
+     */
+    edu.usfca.cs.dfs.CoordMessages.HashRingEntry getHre();
+    /**
+     * <code>.HashRingEntry hre = 2;</code>
+     */
+    edu.usfca.cs.dfs.CoordMessages.HashRingEntryOrBuilder getHreOrBuilder();
   }
   /**
    * Protobuf type {@code HashRing}
@@ -1460,6 +1473,19 @@ public final class CoordMessages {
                   hashRings__.getKey(), hashRings__.getValue());
               break;
             }
+            case 18: {
+              edu.usfca.cs.dfs.CoordMessages.HashRingEntry.Builder subBuilder = null;
+              if (hre_ != null) {
+                subBuilder = hre_.toBuilder();
+              }
+              hre_ = input.readMessage(edu.usfca.cs.dfs.CoordMessages.HashRingEntry.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(hre_);
+                hre_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
             default: {
               if (!parseUnknownFieldProto3(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -1504,6 +1530,7 @@ public final class CoordMessages {
               edu.usfca.cs.dfs.CoordMessages.HashRing.class, edu.usfca.cs.dfs.CoordMessages.HashRing.Builder.class);
     }
 
+    private int bitField0_;
     public static final int HASHRINGS_FIELD_NUMBER = 1;
     private static final class HashRingsDefaultEntryHolder {
       static final com.google.protobuf.MapEntry<
@@ -1580,6 +1607,27 @@ public final class CoordMessages {
       return map.get(key);
     }
 
+    public static final int HRE_FIELD_NUMBER = 2;
+    private edu.usfca.cs.dfs.CoordMessages.HashRingEntry hre_;
+    /**
+     * <code>.HashRingEntry hre = 2;</code>
+     */
+    public boolean hasHre() {
+      return hre_ != null;
+    }
+    /**
+     * <code>.HashRingEntry hre = 2;</code>
+     */
+    public edu.usfca.cs.dfs.CoordMessages.HashRingEntry getHre() {
+      return hre_ == null ? edu.usfca.cs.dfs.CoordMessages.HashRingEntry.getDefaultInstance() : hre_;
+    }
+    /**
+     * <code>.HashRingEntry hre = 2;</code>
+     */
+    public edu.usfca.cs.dfs.CoordMessages.HashRingEntryOrBuilder getHreOrBuilder() {
+      return getHre();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1600,6 +1648,9 @@ public final class CoordMessages {
           internalGetHashRings(),
           HashRingsDefaultEntryHolder.defaultEntry,
           1);
+      if (hre_ != null) {
+        output.writeMessage(2, getHre());
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1619,6 +1670,10 @@ public final class CoordMessages {
         size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(1, hashRings__);
       }
+      if (hre_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getHre());
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -1637,6 +1692,11 @@ public final class CoordMessages {
       boolean result = true;
       result = result && internalGetHashRings().equals(
           other.internalGetHashRings());
+      result = result && (hasHre() == other.hasHre());
+      if (hasHre()) {
+        result = result && getHre()
+            .equals(other.getHre());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1651,6 +1711,10 @@ public final class CoordMessages {
       if (!internalGetHashRings().getMap().isEmpty()) {
         hash = (37 * hash) + HASHRINGS_FIELD_NUMBER;
         hash = (53 * hash) + internalGetHashRings().hashCode();
+      }
+      if (hasHre()) {
+        hash = (37 * hash) + HRE_FIELD_NUMBER;
+        hash = (53 * hash) + getHre().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1808,6 +1872,12 @@ public final class CoordMessages {
       public Builder clear() {
         super.clear();
         internalGetMutableHashRings().clear();
+        if (hreBuilder_ == null) {
+          hre_ = null;
+        } else {
+          hre_ = null;
+          hreBuilder_ = null;
+        }
         return this;
       }
 
@@ -1835,8 +1905,15 @@ public final class CoordMessages {
       public edu.usfca.cs.dfs.CoordMessages.HashRing buildPartial() {
         edu.usfca.cs.dfs.CoordMessages.HashRing result = new edu.usfca.cs.dfs.CoordMessages.HashRing(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         result.hashRings_ = internalGetHashRings();
         result.hashRings_.makeImmutable();
+        if (hreBuilder_ == null) {
+          result.hre_ = hre_;
+        } else {
+          result.hre_ = hreBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1887,6 +1964,9 @@ public final class CoordMessages {
         if (other == edu.usfca.cs.dfs.CoordMessages.HashRing.getDefaultInstance()) return this;
         internalGetMutableHashRings().mergeFrom(
             other.internalGetHashRings());
+        if (other.hasHre()) {
+          mergeHre(other.getHre());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -2038,6 +2118,123 @@ public final class CoordMessages {
         internalGetMutableHashRings().getMutableMap()
             .putAll(values);
         return this;
+      }
+
+      private edu.usfca.cs.dfs.CoordMessages.HashRingEntry hre_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.CoordMessages.HashRingEntry, edu.usfca.cs.dfs.CoordMessages.HashRingEntry.Builder, edu.usfca.cs.dfs.CoordMessages.HashRingEntryOrBuilder> hreBuilder_;
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public boolean hasHre() {
+        return hreBuilder_ != null || hre_ != null;
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public edu.usfca.cs.dfs.CoordMessages.HashRingEntry getHre() {
+        if (hreBuilder_ == null) {
+          return hre_ == null ? edu.usfca.cs.dfs.CoordMessages.HashRingEntry.getDefaultInstance() : hre_;
+        } else {
+          return hreBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public Builder setHre(edu.usfca.cs.dfs.CoordMessages.HashRingEntry value) {
+        if (hreBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          hre_ = value;
+          onChanged();
+        } else {
+          hreBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public Builder setHre(
+          edu.usfca.cs.dfs.CoordMessages.HashRingEntry.Builder builderForValue) {
+        if (hreBuilder_ == null) {
+          hre_ = builderForValue.build();
+          onChanged();
+        } else {
+          hreBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public Builder mergeHre(edu.usfca.cs.dfs.CoordMessages.HashRingEntry value) {
+        if (hreBuilder_ == null) {
+          if (hre_ != null) {
+            hre_ =
+              edu.usfca.cs.dfs.CoordMessages.HashRingEntry.newBuilder(hre_).mergeFrom(value).buildPartial();
+          } else {
+            hre_ = value;
+          }
+          onChanged();
+        } else {
+          hreBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public Builder clearHre() {
+        if (hreBuilder_ == null) {
+          hre_ = null;
+          onChanged();
+        } else {
+          hre_ = null;
+          hreBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public edu.usfca.cs.dfs.CoordMessages.HashRingEntry.Builder getHreBuilder() {
+        
+        onChanged();
+        return getHreFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      public edu.usfca.cs.dfs.CoordMessages.HashRingEntryOrBuilder getHreOrBuilder() {
+        if (hreBuilder_ != null) {
+          return hreBuilder_.getMessageOrBuilder();
+        } else {
+          return hre_ == null ?
+              edu.usfca.cs.dfs.CoordMessages.HashRingEntry.getDefaultInstance() : hre_;
+        }
+      }
+      /**
+       * <code>.HashRingEntry hre = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.CoordMessages.HashRingEntry, edu.usfca.cs.dfs.CoordMessages.HashRingEntry.Builder, edu.usfca.cs.dfs.CoordMessages.HashRingEntryOrBuilder> 
+          getHreFieldBuilder() {
+        if (hreBuilder_ == null) {
+          hreBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              edu.usfca.cs.dfs.CoordMessages.HashRingEntry, edu.usfca.cs.dfs.CoordMessages.HashRingEntry.Builder, edu.usfca.cs.dfs.CoordMessages.HashRingEntryOrBuilder>(
+                  getHre(),
+                  getParentForChildren(),
+                  isClean());
+          hre_ = null;
+        }
+        return hreBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -5835,21 +6032,22 @@ public final class CoordMessages {
       "\n\024coord_messages.proto\"/\n\014RequestEntry\022\021" +
       "\n\tipaddress\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\"O\n\rHashR" +
       "ingEntry\022\020\n\010position\030\001 \001(\014\022\021\n\tipaddress\030" +
-      "\002 \001(\t\022\014\n\004port\030\003 \001(\005\022\013\n\003add\030\004 \001(\010\"y\n\010Hash" +
-      "Ring\022+\n\thashRings\030\001 \003(\0132\030.HashRing.HashR" +
-      "ingsEntry\032@\n\016HashRingsEntry\022\013\n\003key\030\001 \001(\t" +
-      "\022\035\n\005value\030\002 \001(\0132\016.HashRingEntry:\0028\001\"-\n\nR" +
-      "equestMap\022\021\n\tipaddress\030\001 \001(\t\022\014\n\004port\030\002 \001" +
-      "(\005\"D\n\tHeartbeat\022\020\n\010map_size\030\001 \001(\005\022\023\n\013map" +
-      "_correct\030\002 \001(\010\022\020\n\010node_key\030\003 \001(\t\"+\n\nRemo" +
-      "veNode\022\013\n\003key\030\001 \001(\t\022\020\n\010position\030\002 \001(\014\"\357\001" +
-      "\n\nDataPacket\022%\n\014requestentry\030\001 \001(\0132\r.Req" +
-      "uestEntryH\000\022\035\n\010hashring\030\002 \001(\0132\t.HashRing" +
-      "H\000\022\'\n\rhashringentry\030\003 \001(\0132\016.HashRingEntr" +
-      "yH\000\022!\n\nrequestmap\030\004 \001(\0132\013.RequestMapH\000\022\037" +
-      "\n\theartbeat\030\005 \001(\0132\n.HeartbeatH\000\022!\n\nremov" +
-      "enode\030\006 \001(\0132\013.RemoveNodeH\000B\013\n\tresponsesB" +
-      "\022\n\020edu.usfca.cs.dfsb\006proto3"
+      "\002 \001(\t\022\014\n\004port\030\003 \001(\005\022\013\n\003add\030\004 \001(\010\"\226\001\n\010Has" +
+      "hRing\022+\n\thashRings\030\001 \003(\0132\030.HashRing.Hash" +
+      "RingsEntry\022\033\n\003hre\030\002 \001(\0132\016.HashRingEntry\032" +
+      "@\n\016HashRingsEntry\022\013\n\003key\030\001 \001(\t\022\035\n\005value\030" +
+      "\002 \001(\0132\016.HashRingEntry:\0028\001\"-\n\nRequestMap\022" +
+      "\021\n\tipaddress\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\"D\n\tHear" +
+      "tbeat\022\020\n\010map_size\030\001 \001(\005\022\023\n\013map_correct\030\002" +
+      " \001(\010\022\020\n\010node_key\030\003 \001(\t\"+\n\nRemoveNode\022\013\n\003" +
+      "key\030\001 \001(\t\022\020\n\010position\030\002 \001(\014\"\357\001\n\nDataPack" +
+      "et\022%\n\014requestentry\030\001 \001(\0132\r.RequestEntryH" +
+      "\000\022\035\n\010hashring\030\002 \001(\0132\t.HashRingH\000\022\'\n\rhash" +
+      "ringentry\030\003 \001(\0132\016.HashRingEntryH\000\022!\n\nreq" +
+      "uestmap\030\004 \001(\0132\013.RequestMapH\000\022\037\n\theartbea" +
+      "t\030\005 \001(\0132\n.HeartbeatH\000\022!\n\nremovenode\030\006 \001(" +
+      "\0132\013.RemoveNodeH\000B\013\n\tresponsesB\022\n\020edu.usf" +
+      "ca.cs.dfsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5880,7 +6078,7 @@ public final class CoordMessages {
     internal_static_HashRing_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_HashRing_descriptor,
-        new java.lang.String[] { "HashRings", });
+        new java.lang.String[] { "HashRings", "Hre", });
     internal_static_HashRing_HashRingsEntry_descriptor =
       internal_static_HashRing_descriptor.getNestedTypes().get(0);
     internal_static_HashRing_HashRingsEntry_fieldAccessorTable = new

@@ -44,6 +44,7 @@ public class HashRing<T> {
 
     private void map_to_treemap(CoordMessages.HashRing map)
     {
+
         for(Map.Entry<String, CoordMessages.HashRingEntry> entry: map.getHashRings().entrySet()){
             BigInteger pos = new BigInteger(entry.getValue().getPosition().toByteArray());
             BigInteger key = new BigInteger(entry.getKey());
@@ -66,7 +67,28 @@ public class HashRing<T> {
                     .build();
             hashRing.put(key,coord_hre);
         }
+
         return CoordMessages.HashRing.newBuilder().putAllHashRings(hashRing).build();
+
+    }
+
+
+    public CoordMessages.HashRing treemap_to_map(CoordMessages.HashRingEntry hre)
+    {
+        Map<String,CoordMessages.HashRingEntry> hashRing = new TreeMap<>();
+
+        for (Map.Entry<BigInteger,HashRingEntry> entry: entryMap.entrySet()){
+            String key = entry.getKey().toString();
+            ByteString pos = ByteString.copyFrom(entry.getValue().position.toByteArray(), 0, entry.getValue().position.toByteArray().length);
+            CoordMessages.HashRingEntry coord_hre = CoordMessages.HashRingEntry.newBuilder()
+                    .setPosition(pos)
+                    .setIpaddress(entry.getValue().inetaddress)
+                    .setPort(entry.getValue().port)
+                    .build();
+            hashRing.put(key,coord_hre);
+        }
+
+        return CoordMessages.HashRing.newBuilder().setHre(hre).putAllHashRings(hashRing).build();
 
     }
 
@@ -209,6 +231,17 @@ public class HashRing<T> {
             return entryMap.ceilingEntry(BigInteger.ZERO).getValue();
         else
             return entryMap.ceilingEntry(pos).getValue();
+    }
+
+    public HashRingEntry get_previous_entry(BigInteger pos)
+    {
+        pos = pos.subtract(BigInteger.ONE);
+
+        BigInteger node = entryMap.floorKey(pos);
+        if(node == null)
+            return entryMap.floorEntry(maxHash).getValue();
+        else
+            return entryMap.floorEntry(pos).getValue();
     }
 
     @Override

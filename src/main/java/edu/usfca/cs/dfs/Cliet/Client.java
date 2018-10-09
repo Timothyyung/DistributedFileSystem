@@ -300,6 +300,15 @@ different chunks to be sent to the storage nodes. We will allow the storage node
        }
    }
 
+    private int make_check_sum(byte[] data_chunk)
+    {
+        int sum = 0;
+        for (int i = 0; i < data_chunk.length; i++){
+            sum += data_chunk[i];
+        }
+        return sum;
+    }
+
     public String hashring_toString()
     {
         return hashRing.toString();

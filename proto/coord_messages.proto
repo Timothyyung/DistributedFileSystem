@@ -15,6 +15,7 @@ message HashRingEntry{
 
 message HashRing{
     map<string, HashRingEntry> hashRings = 1;
+    HashRingEntry hre = 2;
 }
 
 message RequestMap{

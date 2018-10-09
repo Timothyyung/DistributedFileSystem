@@ -4,7 +4,6 @@ package edu.usfca.cs.dfs.Data;
 import edu.usfca.cs.dfs.StorageMessages;
 
 public class Chunk {
-    //byte[] data_chunk;
     int checksum;
     String file_name = "";
     int chunk_id;
@@ -12,7 +11,6 @@ public class Chunk {
 
     public Chunk(StorageMessages.DataPacket dataPacket){
         if(dataPacket.hasSinglechunk()){
-          //  data_chunk = dataPacket.getSinglechunk().getData().toByteArray();
             file_name = dataPacket.getSinglechunk().getFileName();
             chunk_id = dataPacket.getSinglechunk().getChunkNumber();
             isLast = dataPacket.getSinglechunk().getIsLast();
@@ -23,11 +21,18 @@ public class Chunk {
 
     public Chunk(byte[] chunk, String file_name, int chunk_id, boolean isLast)
     {
-      //  this.data_chunk = chunk;
         this.file_name = file_name;
         this.chunk_id = chunk_id;
         this.isLast = isLast;
         this.checksum = make_check_sum(chunk);
+    }
+
+    public Chunk(int checksum, String file_name, int chunk_id, boolean isLast)
+    {
+        this.file_name = file_name;
+        this.chunk_id = chunk_id;
+        this.isLast = isLast;
+        this.checksum = checksum;
     }
 
     private int make_check_sum(byte[] data_chunk)

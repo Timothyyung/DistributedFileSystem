@@ -127,8 +127,9 @@ public class Coordinator{
         private void process_entry(CoordMessages.DataPacket dataPacket, OutputStream outputStream) throws HashTopologyException, HashException, IOException {
             CoordMessages.RequestEntry entryRequest = dataPacket.getRequestentry();
             CoordMessages.HashRingEntry hashRingEntry = put_in_map(entryRequest);
+
             CoordMessages.DataPacket response = CoordMessages.DataPacket.newBuilder()
-                    .setHashring(hashRing.treemap_to_map())
+                    .setHashring(hashRing.treemap_to_map(hashRingEntry))
                     .build();
             response.writeDelimitedTo(outputStream);
             hashRing.sendUpdate(entryRequest.getIpaddress(),entryRequest.getPort(),hashRingEntry);

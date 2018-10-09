@@ -18,6 +18,7 @@ import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -32,6 +33,8 @@ public class StorageNode extends Thread{
     private boolean run;
     private Heartbeat heartbeat;
     private File dir;
+    private BigInteger mypos;
+    private String path;
 
     public StorageNode(int port,String coordip,int coordport){
         try {
@@ -40,9 +43,14 @@ public class StorageNode extends Thread{
             e.printStackTrace();
         }
         this.port = port;
-        dir = new File("bigdata/"+ Integer.toString(port) +"/tyung");
+        path = "bigdata/"+ Integer.toString(port) +"/tyung";
+        dir = new File(path);
         dir.mkdirs();
         this.run = request_access(coordip,coordport);
+        if(this.run && hashRing.get_size() > 1)
+        {
+            get_chunks_from_neighbor();
+        }
         heartbeat = new Heartbeat(hashRing.get_size(),ipaddress+Integer.toString(port),coordip,coordport);
         heartbeat.start();
     }
@@ -83,6 +91,35 @@ public class StorageNode extends Thread{
         System.out.println("Server Ending");
     }
 
+    private void get_chunks_from_neighbor()
+    {
+        System.out.println("Getting chunks from neighbors");
+        HashRingEntry hre =  hashRing.get_previous_entry(mypos);
+        try(
+                Socket s = new Socket(hre.inetaddress,hre.port);
+                OutputStream outputStream = s.getOutputStream();
+                InputStream inputStream = s.getInputStream();
+        ){
+            StorageMessages.AllChunks allChunks = StorageMessages.AllChunks.newBuilder()
+                    .setGet(true)
+                    .build();
+            StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                    .setAllchunks(allChunks)
+                    .build();
+            dataPacket.writeDelimitedTo(outputStream);
+
+            StorageMessages.DataPacket response = StorageMessages.DataPacket.getDefaultInstance();
+            response = response.parseDelimitedFrom(inputStream);
+
+            convert_from_chunk_store(response.getAllchunks());
+            write_to_disk(response.getAllchunks());
+
+        }catch (IOException | HashException ie){
+            ie.getStackTrace();
+        }
+
+    }
+
     private class store_chunk_listener extends Thread{
         private Socket s;
         public store_chunk_listener(Socket s){
@@ -100,17 +137,22 @@ public class StorageNode extends Thread{
                 if(dataPacket.hasRequest()) {
                     System.out.println("Request Recieved");
                     process_request(dataPacket.getRequest(), s);
+                    send_ack(outputStream);
                 }
                 else if(dataPacket.hasHashringentry()) {
                     process_hre(dataPacket);
+                    send_ack(outputStream);
                 }else if(dataPacket.hasSinglechunk()){
                     process_single_chunk(dataPacket, s);
+                    send_ack(outputStream);
                 }else if(dataPacket.hasChunklife()){
+                    send_ack(outputStream);
                     pipline_update(dataPacket);
+                }else if(dataPacket.hasAllchunks()){
+                    System.out.println("proccessing all chunks");
+                    process_allchunks(dataPacket.getAllchunks(), s.getOutputStream());
                 }
-                StorageMessages.Ack ack = StorageMessages.Ack.newBuilder().setAck(true).build();
-                dataPacket = StorageMessages.DataPacket.newBuilder().setAck(ack).build();
-                dataPacket.writeDelimitedTo(outputStream);
+
 
                 s.close();
             }catch(IOException e) {
@@ -121,6 +163,87 @@ public class StorageNode extends Thread{
         }
 
     }
+
+    private void send_ack(OutputStream outputStream) throws IOException {
+
+        StorageMessages.Ack ack = StorageMessages.Ack.newBuilder().setAck(true).build();
+        StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder().setAck(ack).build();
+        dataPacket.writeDelimitedTo(outputStream);
+    }
+
+    private void process_allchunks(StorageMessages.AllChunks allChunks, OutputStream outputStream) throws IOException {
+        if(allChunks.getGet()){
+            send_files(outputStream);
+        }
+
+    }
+
+    private void send_files(OutputStream outputStream) throws IOException {
+        System.out.println("sending files");
+        StorageMessages.AllChunks allChunks = StorageMessages.AllChunks.newBuilder()
+                .putAllChunkMap(convert_to_chunk_store())
+                .putAllFiles(convert_to_files())
+                .build();
+        StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                .setAllchunks(allChunks)
+                .build();
+        dataPacket.writeDelimitedTo(outputStream);
+    }
+
+    private void convert_from_chunk_store(StorageMessages.AllChunks allChunks) throws HashException {
+        chunk_storage.clear();
+        for (Map.Entry<String,StorageMessages.SingleChunk> entry : allChunks.getChunkMap().entrySet()) {
+            String key = entry.getKey();
+
+            Chunk chunk = new Chunk(entry.getValue().getChecksum(), entry.getValue().getFileName(), entry.getValue().getChunkNumber(), entry.getValue().getIsLast());
+            chunk_storage.put(key, chunk);
+
+        }
+    }
+
+    private void write_to_disk(StorageMessages.AllChunks allChunks) throws IOException, HashException {
+        for( Map.Entry<String, ByteString> entry: allChunks.getFilesMap().entrySet()){
+            String filename = entry.getKey();
+            Path path = Paths.get(dir + "/" + filename);
+            Files.write(path, entry.getValue().toByteArray());
+            System.out.println(filename);
+
+        }
+
+    }
+
+
+    private Map<String, StorageMessages.SingleChunk> convert_to_chunk_store()
+    {
+        Map<String, StorageMessages.SingleChunk> singleChunkMap = new HashMap<>();
+        for (Map.Entry<String, Chunk> entry : chunk_storage.entrySet()) {
+            String key = entry.getKey();
+            StorageMessages.SingleChunk singleChunk = StorageMessages.SingleChunk.newBuilder()
+                    .setChunkNumber(entry.getValue().getChunk_id())
+                    .setIsLast(entry.getValue().getIs_last())
+                    .setFileName(entry.getValue().getFile_name())
+                    .setChecksum(entry.getValue().getChecksum())
+                    .build();
+            singleChunkMap.put(key, singleChunk);
+        }
+        return singleChunkMap;
+    }
+
+    private Map<String, ByteString> convert_to_files() throws IOException {
+        Map<String, ByteString> file_map = new HashMap<>();
+        File folder = new File(path);
+        File[] listOfFiles = folder.listFiles();
+        for(File file : listOfFiles){
+            if(file.isFile()) {
+                byte[] c_bytes = Files.readAllBytes(file.toPath());
+                ByteString bsval = ByteString.copyFrom(c_bytes, 0, c_bytes.length);
+                file_map.put(file.getName(),bsval);
+            }
+        }
+        return file_map;
+
+    }
+
     /*
     Function used to proccess hash ring request
      */
@@ -163,8 +286,11 @@ public class StorageNode extends Thread{
             dataPacket.writeDelimitedTo(outputStream);
             CoordMessages.DataPacket response = CoordMessages.DataPacket.getDefaultInstance();
             response = response.parseDelimitedFrom(inputStream);
+
             hashRing = new HashRing(sha1,response.getHashring());
+            mypos = new BigInteger(response.getHashring().getHre().getPosition().toByteArray());
             System.out.println(hashRing.toString());
+            System.out.println("My position in the hash ring is: " + mypos);
             return true;
 
         }catch (IOException ioe){
@@ -358,7 +484,7 @@ public class StorageNode extends Thread{
             throws Exception {
         String hostname = getHostname();
         System.out.println("Starting storage node on " + hostname + "...");
-        StorageNode storageNode = new StorageNode(5003,"localhost",6000);
+        StorageNode storageNode = new StorageNode(5010,"localhost",6000);
         storageNode.startNode();
 
     }
