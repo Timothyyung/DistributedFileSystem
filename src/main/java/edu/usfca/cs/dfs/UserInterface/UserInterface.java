@@ -43,6 +43,9 @@ public class UserInterface {
                 case "request_max_chunks":
                     request_max();
                     break;
+                case "request_chunk_map":
+                    request_chunk_map();
+                    break;
 
             }
         }
@@ -50,6 +53,14 @@ public class UserInterface {
 
     private void help(){
 
+    }
+
+    private void request_chunk_map() throws IOException {
+        System.out.println("Ipaddress of storage node?");
+        String ipaddress = br.readLine();
+        System.out.println("Port of storage node");
+        int port = Integer.parseInt(br.readLine());
+        client.request_chunk_map(ipaddress,port);
     }
 
     private void request_max() throws IOException, HashException {

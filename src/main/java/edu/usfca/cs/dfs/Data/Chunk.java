@@ -44,6 +44,11 @@ public class Chunk {
         return sum;
     }
 
+    public boolean validate(byte[] data_chunk)
+    {
+        return make_check_sum(data_chunk) == checksum;
+    }
+
     public int getChecksum() {
         return checksum;
     }

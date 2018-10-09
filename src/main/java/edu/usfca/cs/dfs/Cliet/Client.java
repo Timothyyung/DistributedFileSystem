@@ -21,6 +21,7 @@ import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -204,12 +205,47 @@ different chunks to be sent to the storage nodes. We will allow the storage node
                 if( i == max_chunk)
                     last = true;
                request_from_storage(filename,i,ipaddress,port,last);
-               Thread.sleep(1000);
+               Thread.sleep(8);
            }
            System.out.println(max_chunk);
 
        } catch (HashException | InterruptedException e) {
            e.printStackTrace();
+       }
+   }
+
+   public void request_chunk_map(String ipaddress, int port){
+       try(
+               Socket s = new Socket(ipaddress,port);
+               OutputStream outputStream = s.getOutputStream();
+               InputStream inputStream = s.getInputStream()
+       ) {
+
+           StorageMessages.AllChunks allChunks = StorageMessages.AllChunks.newBuilder()
+                   .setGet(false)
+                   .build();
+           StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                   .setAllchunks(allChunks)
+                   .build();
+
+           dataPacket.writeDelimitedTo(outputStream);
+           StorageMessages.DataPacket response = StorageMessages.DataPacket.getDefaultInstance();
+           response = StorageMessages.DataPacket.parseDelimitedFrom(inputStream);
+
+           allChunks = response.getAllchunks();
+
+           System.out.println("Listing all chunks \n\n");
+           for(Map.Entry<String, StorageMessages.SingleChunk> entry : allChunks.getChunkMap().entrySet())
+           {
+               System.out.println("\n_________________________________________");
+               System.out.println(entry.getValue().getFileName() + " : " + entry.getValue().getChunkNumber());
+               System.out.println("\n_________________________________________");
+           }
+           System.out.println("_______________________________________");
+
+
+       }catch(IOException ioe){
+
        }
    }
 
@@ -235,6 +271,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
            dataPacket = StorageMessages.DataPacket.parseDelimitedFrom(inputStream);
            return dataPacket.getSinglechunk().getChunkNumber();
        }catch(IOException ioe){
+            System.out.println(filename + " not found");
            ioe.printStackTrace();
        }
        return -1;
@@ -255,7 +292,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
         String key = key_gen(filename,chunknumber,islast);
         BigInteger pos = hashRing.locate((key.getBytes()));
         HashRingEntry node = hashRing.returnNode(pos);
-        DataRequester dataRequester = new DataRequester(dataPacket,node.inetaddress ,node.port);
+        DataRequesterWithAck dataRequester = new DataRequesterWithAck(dataPacket,node.inetaddress ,node.port);
         dataRequester.start();
     }
 
@@ -300,14 +337,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
        }
    }
 
-    private int make_check_sum(byte[] data_chunk)
-    {
-        int sum = 0;
-        for (int i = 0; i < data_chunk.length; i++){
-            sum += data_chunk[i];
-        }
-        return sum;
-    }
+
 
     public String hashring_toString()
     {
@@ -316,7 +346,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
 
     public static void main(String[] args) throws HashException {
 
-        Data data = new Data("inputs/dennis.txt","a.txt");
+        Data data = new Data("inputs/Cat03.jpg","CatCopy.jpg");
         System.out.println(data.getData().length);
         Client client = new Client(7000);
         client.request_hashring("localhost",6000);
@@ -327,8 +357,8 @@ different chunks to be sent to the storage nodes. We will allow the storage node
             e.printStackTrace();
         }
 
-        System.out.println(client.find_max_chunks("a.txt"));
-        client.request_data_mkII("a.txt");
+        System.out.println(client.find_max_chunks("CatCopy.jpg"));
+        client.request_data_mkII("CatCopy.jpg");
     }
 
 }

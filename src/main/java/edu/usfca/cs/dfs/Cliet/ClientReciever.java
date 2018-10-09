@@ -67,10 +67,11 @@ public class ClientReciever extends Thread {
 
                 if(chunk.getIs_last()){
                     System.out.println(dataPacket.toString());
+                    Thread.sleep(1000);
                     reassemble(dataPacket.getSinglechunk().getFileName(),dataPacket.getSinglechunk().getIpaddress(), dataPacket.getSinglechunk().getPort(),chunk.getChunk_id());
                 }
 
-            }catch(IOException e) {
+            }catch(IOException | InterruptedException e) {
                 e.printStackTrace();
             }
 
@@ -156,7 +157,7 @@ public class ClientReciever extends Thread {
                 dataPacket.writeDelimitedTo(outputStream);
 
                 dataPacket = StorageMessages.DataPacket.parseDelimitedFrom(inputStream);
-                Chunk chunk = new Chunk(dataPacket);
+
                 return dataPacket.getSinglechunk().getData().toByteArray();
             } catch (IOException e) {
                 e.printStackTrace();
