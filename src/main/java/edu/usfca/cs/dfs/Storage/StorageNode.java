@@ -9,6 +9,7 @@ import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
 import edu.usfca.cs.dfs.Coordinator.HashRing;
 import edu.usfca.cs.dfs.Data.Chunk;
 import edu.usfca.cs.dfs.DataSender.DataRequester;
+import edu.usfca.cs.dfs.DataSender.DataRequesterCoord;
 import edu.usfca.cs.dfs.DataSender.DataRequesterWithAck;
 import edu.usfca.cs.dfs.StorageMessages;
 
@@ -53,7 +54,7 @@ public class StorageNode extends Thread{
         {
             get_chunks_from_neighbor();
         }
-        heartbeat = new Heartbeat(hashRing.get_size(),ipaddress+Integer.toString(port),coordip,coordport);
+        heartbeat = new Heartbeat(hashRing.get_size(),ipaddress,port,coordip,coordport);
         heartbeat.start();
     }
 
@@ -158,7 +159,8 @@ public class StorageNode extends Thread{
                     process_disk_space(outputStream);
                 }else if(dataPacket.hasNumberofrequest()){
                     process_requests_handled(outputStream);
-                }
+                }else if(dataPacket.hasHashring())
+                    process_hash_ring_request(s);
                 number_request_handled += 1;
                 System.out.println("______________________\n\n\n");
                 s.close();
@@ -184,6 +186,15 @@ public class StorageNode extends Thread{
         }else
             get_chunk_map(outputStream);
 
+    }
+
+    private void process_hash_ring_request (Socket s) throws IOException {
+        System.out.println("HashRing Request Recieved");
+        System.out.println(hashRing.toString());
+        CoordMessages.DataPacket dataPacket = CoordMessages.DataPacket.newBuilder()
+                .setHashring(hashRing.treemap_to_map())
+                .build();
+        dataPacket.writeDelimitedTo(s.getOutputStream());
     }
 
     private void process_disk_space(OutputStream outputStream) throws IOException {
@@ -569,7 +580,7 @@ public class StorageNode extends Thread{
             throws Exception {
         String hostname = getHostname();
         System.out.println("Starting storage node on " + hostname + "...");
-        StorageNode storageNode = new StorageNode(5060,"localhost",6000);
+        StorageNode storageNode = new StorageNode(5090,"localhost",6000);
         storageNode.startNode();
 
     }

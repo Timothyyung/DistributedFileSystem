@@ -9,7 +9,6 @@ import edu.usfca.cs.dfs.Coordinator.HashRing;
 import edu.usfca.cs.dfs.Data.Chunk;
 import edu.usfca.cs.dfs.Data.Data;
 import edu.usfca.cs.dfs.DataSender.DataRequester;
-import edu.usfca.cs.dfs.DataSender.DataRequesterRunnable;
 import edu.usfca.cs.dfs.DataSender.DataRequesterWithAck;
 import edu.usfca.cs.dfs.Storage.StorageNode;
 import edu.usfca.cs.dfs.StorageMessages;

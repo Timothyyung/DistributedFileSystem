@@ -13,12 +13,14 @@ import java.util.HashMap;
 public class Heartbeat extends Thread{
     private int mapsize;
     boolean running = true;
-    private String key;
+    private String ipaddress;
+    private int port;
     private String coordip;
     private int coordport;
-    public Heartbeat (int mapsize, String key,String coordip,int coordport){
+    public Heartbeat (int mapsize, String ipaddress,int port,String coordip,int coordport){
         this.mapsize = mapsize;
-        this.key = key;
+        this.ipaddress = ipaddress;
+        this.port = port;
         this.coordip = coordip;
         this.coordport = coordport;
     }
@@ -30,7 +32,7 @@ public class Heartbeat extends Thread{
                 i_am_alive(coordip,coordport);
                 Thread.sleep(1500);
             } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
         }
@@ -40,10 +42,10 @@ public class Heartbeat extends Thread{
 
         Socket s = new Socket(ipaddress,port);
         OutputStream outputStream = s.getOutputStream();
-        InputStream inputStream = s.getInputStream();
         CoordMessages.Heartbeat heartbeat = CoordMessages.Heartbeat.newBuilder()
                 .setMapSize(mapsize)
-                .setNodeKey(key)
+                .setIpaddress(this.ipaddress)
+                .setPort(this.port)
                 .build();
         CoordMessages.DataPacket dataPacket = CoordMessages.DataPacket.newBuilder()
                 .setHeartbeat(heartbeat)

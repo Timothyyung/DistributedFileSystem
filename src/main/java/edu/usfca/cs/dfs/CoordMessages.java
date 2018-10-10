@@ -2917,14 +2917,19 @@ public final class CoordMessages {
     boolean getMapCorrect();
 
     /**
-     * <code>string node_key = 3;</code>
+     * <code>string ipaddress = 3;</code>
      */
-    java.lang.String getNodeKey();
+    java.lang.String getIpaddress();
     /**
-     * <code>string node_key = 3;</code>
+     * <code>string ipaddress = 3;</code>
      */
     com.google.protobuf.ByteString
-        getNodeKeyBytes();
+        getIpaddressBytes();
+
+    /**
+     * <code>int32 port = 4;</code>
+     */
+    int getPort();
   }
   /**
    * Protobuf type {@code Heartbeat}
@@ -2941,7 +2946,8 @@ public final class CoordMessages {
     private Heartbeat() {
       mapSize_ = 0;
       mapCorrect_ = false;
-      nodeKey_ = "";
+      ipaddress_ = "";
+      port_ = 0;
     }
 
     @java.lang.Override
@@ -2981,7 +2987,12 @@ public final class CoordMessages {
             case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              nodeKey_ = s;
+              ipaddress_ = s;
+              break;
+            }
+            case 32: {
+
+              port_ = input.readInt32();
               break;
             }
             default: {
@@ -3034,38 +3045,47 @@ public final class CoordMessages {
       return mapCorrect_;
     }
 
-    public static final int NODE_KEY_FIELD_NUMBER = 3;
-    private volatile java.lang.Object nodeKey_;
+    public static final int IPADDRESS_FIELD_NUMBER = 3;
+    private volatile java.lang.Object ipaddress_;
     /**
-     * <code>string node_key = 3;</code>
+     * <code>string ipaddress = 3;</code>
      */
-    public java.lang.String getNodeKey() {
-      java.lang.Object ref = nodeKey_;
+    public java.lang.String getIpaddress() {
+      java.lang.Object ref = ipaddress_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        nodeKey_ = s;
+        ipaddress_ = s;
         return s;
       }
     }
     /**
-     * <code>string node_key = 3;</code>
+     * <code>string ipaddress = 3;</code>
      */
     public com.google.protobuf.ByteString
-        getNodeKeyBytes() {
-      java.lang.Object ref = nodeKey_;
+        getIpaddressBytes() {
+      java.lang.Object ref = ipaddress_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        nodeKey_ = b;
+        ipaddress_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
+    }
+
+    public static final int PORT_FIELD_NUMBER = 4;
+    private int port_;
+    /**
+     * <code>int32 port = 4;</code>
+     */
+    public int getPort() {
+      return port_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -3088,8 +3108,11 @@ public final class CoordMessages {
       if (mapCorrect_ != false) {
         output.writeBool(2, mapCorrect_);
       }
-      if (!getNodeKeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, nodeKey_);
+      if (!getIpaddressBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, ipaddress_);
+      }
+      if (port_ != 0) {
+        output.writeInt32(4, port_);
       }
       unknownFields.writeTo(output);
     }
@@ -3108,8 +3131,12 @@ public final class CoordMessages {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(2, mapCorrect_);
       }
-      if (!getNodeKeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, nodeKey_);
+      if (!getIpaddressBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, ipaddress_);
+      }
+      if (port_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, port_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3131,8 +3158,10 @@ public final class CoordMessages {
           == other.getMapSize());
       result = result && (getMapCorrect()
           == other.getMapCorrect());
-      result = result && getNodeKey()
-          .equals(other.getNodeKey());
+      result = result && getIpaddress()
+          .equals(other.getIpaddress());
+      result = result && (getPort()
+          == other.getPort());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -3149,8 +3178,10 @@ public final class CoordMessages {
       hash = (37 * hash) + MAP_CORRECT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getMapCorrect());
-      hash = (37 * hash) + NODE_KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getNodeKey().hashCode();
+      hash = (37 * hash) + IPADDRESS_FIELD_NUMBER;
+      hash = (53 * hash) + getIpaddress().hashCode();
+      hash = (37 * hash) + PORT_FIELD_NUMBER;
+      hash = (53 * hash) + getPort();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3288,7 +3319,9 @@ public final class CoordMessages {
 
         mapCorrect_ = false;
 
-        nodeKey_ = "";
+        ipaddress_ = "";
+
+        port_ = 0;
 
         return this;
       }
@@ -3318,7 +3351,8 @@ public final class CoordMessages {
         edu.usfca.cs.dfs.CoordMessages.Heartbeat result = new edu.usfca.cs.dfs.CoordMessages.Heartbeat(this);
         result.mapSize_ = mapSize_;
         result.mapCorrect_ = mapCorrect_;
-        result.nodeKey_ = nodeKey_;
+        result.ipaddress_ = ipaddress_;
+        result.port_ = port_;
         onBuilt();
         return result;
       }
@@ -3373,9 +3407,12 @@ public final class CoordMessages {
         if (other.getMapCorrect() != false) {
           setMapCorrect(other.getMapCorrect());
         }
-        if (!other.getNodeKey().isEmpty()) {
-          nodeKey_ = other.nodeKey_;
+        if (!other.getIpaddress().isEmpty()) {
+          ipaddress_ = other.ipaddress_;
           onChanged();
+        }
+        if (other.getPort() != 0) {
+          setPort(other.getPort());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3458,71 +3495,97 @@ public final class CoordMessages {
         return this;
       }
 
-      private java.lang.Object nodeKey_ = "";
+      private java.lang.Object ipaddress_ = "";
       /**
-       * <code>string node_key = 3;</code>
+       * <code>string ipaddress = 3;</code>
        */
-      public java.lang.String getNodeKey() {
-        java.lang.Object ref = nodeKey_;
+      public java.lang.String getIpaddress() {
+        java.lang.Object ref = ipaddress_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          nodeKey_ = s;
+          ipaddress_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>string node_key = 3;</code>
+       * <code>string ipaddress = 3;</code>
        */
       public com.google.protobuf.ByteString
-          getNodeKeyBytes() {
-        java.lang.Object ref = nodeKey_;
+          getIpaddressBytes() {
+        java.lang.Object ref = ipaddress_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          nodeKey_ = b;
+          ipaddress_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>string node_key = 3;</code>
+       * <code>string ipaddress = 3;</code>
        */
-      public Builder setNodeKey(
+      public Builder setIpaddress(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        nodeKey_ = value;
+        ipaddress_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string node_key = 3;</code>
+       * <code>string ipaddress = 3;</code>
        */
-      public Builder clearNodeKey() {
+      public Builder clearIpaddress() {
         
-        nodeKey_ = getDefaultInstance().getNodeKey();
+        ipaddress_ = getDefaultInstance().getIpaddress();
         onChanged();
         return this;
       }
       /**
-       * <code>string node_key = 3;</code>
+       * <code>string ipaddress = 3;</code>
        */
-      public Builder setNodeKeyBytes(
+      public Builder setIpaddressBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        nodeKey_ = value;
+        ipaddress_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int port_ ;
+      /**
+       * <code>int32 port = 4;</code>
+       */
+      public int getPort() {
+        return port_;
+      }
+      /**
+       * <code>int32 port = 4;</code>
+       */
+      public Builder setPort(int value) {
+        
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 port = 4;</code>
+       */
+      public Builder clearPort() {
+        
+        port_ = 0;
         onChanged();
         return this;
       }
@@ -6037,17 +6100,17 @@ public final class CoordMessages {
       "RingsEntry\022\033\n\003hre\030\002 \001(\0132\016.HashRingEntry\032" +
       "@\n\016HashRingsEntry\022\013\n\003key\030\001 \001(\t\022\035\n\005value\030" +
       "\002 \001(\0132\016.HashRingEntry:\0028\001\"-\n\nRequestMap\022" +
-      "\021\n\tipaddress\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\"D\n\tHear" +
+      "\021\n\tipaddress\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\"S\n\tHear" +
       "tbeat\022\020\n\010map_size\030\001 \001(\005\022\023\n\013map_correct\030\002" +
-      " \001(\010\022\020\n\010node_key\030\003 \001(\t\"+\n\nRemoveNode\022\013\n\003" +
-      "key\030\001 \001(\t\022\020\n\010position\030\002 \001(\014\"\357\001\n\nDataPack" +
-      "et\022%\n\014requestentry\030\001 \001(\0132\r.RequestEntryH" +
-      "\000\022\035\n\010hashring\030\002 \001(\0132\t.HashRingH\000\022\'\n\rhash" +
-      "ringentry\030\003 \001(\0132\016.HashRingEntryH\000\022!\n\nreq" +
-      "uestmap\030\004 \001(\0132\013.RequestMapH\000\022\037\n\theartbea" +
-      "t\030\005 \001(\0132\n.HeartbeatH\000\022!\n\nremovenode\030\006 \001(" +
-      "\0132\013.RemoveNodeH\000B\013\n\tresponsesB\022\n\020edu.usf" +
-      "ca.cs.dfsb\006proto3"
+      " \001(\010\022\021\n\tipaddress\030\003 \001(\t\022\014\n\004port\030\004 \001(\005\"+\n" +
+      "\nRemoveNode\022\013\n\003key\030\001 \001(\t\022\020\n\010position\030\002 \001" +
+      "(\014\"\357\001\n\nDataPacket\022%\n\014requestentry\030\001 \001(\0132" +
+      "\r.RequestEntryH\000\022\035\n\010hashring\030\002 \001(\0132\t.Has" +
+      "hRingH\000\022\'\n\rhashringentry\030\003 \001(\0132\016.HashRin" +
+      "gEntryH\000\022!\n\nrequestmap\030\004 \001(\0132\013.RequestMa" +
+      "pH\000\022\037\n\theartbeat\030\005 \001(\0132\n.HeartbeatH\000\022!\n\n" +
+      "removenode\030\006 \001(\0132\013.RemoveNodeH\000B\013\n\trespo" +
+      "nsesB\022\n\020edu.usfca.cs.dfsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6096,7 +6159,7 @@ public final class CoordMessages {
     internal_static_Heartbeat_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Heartbeat_descriptor,
-        new java.lang.String[] { "MapSize", "MapCorrect", "NodeKey", });
+        new java.lang.String[] { "MapSize", "MapCorrect", "Ipaddress", "Port", });
     internal_static_RemoveNode_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_RemoveNode_fieldAccessorTable = new

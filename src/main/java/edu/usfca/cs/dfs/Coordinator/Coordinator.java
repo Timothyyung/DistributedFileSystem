@@ -2,7 +2,8 @@ package edu.usfca.cs.dfs.Coordinator;
 
 
 import com.google.protobuf.ByteString;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
+import com.google.protobuf.MapEntry;
 import edu.usfca.cs.dfs.CoordMessages;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashRingEntry;
@@ -12,7 +13,8 @@ import edu.usfca.cs.dfs.DataSender.DataRequester;
 import edu.usfca.cs.dfs.DataSender.DataRequesterWithAck;
 import edu.usfca.cs.dfs.StorageMessages;
 
-import javax.xml.soap.Node;
+
+import javax.annotation.processing.SupportedSourceVersion;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -44,9 +46,8 @@ public class Coordinator{
         while (run){
             try(
                     ServerSocket serverSocket = new ServerSocket(port);
-                    Socket sock = serverSocket.accept()
             ){
-                coordinator_listener cl = new coordinator_listener(sock, this.ipaddress,this.port);
+                coordinator_listener cl = new coordinator_listener(serverSocket.accept(), this.ipaddress,this.port);
                 cl.run();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -85,11 +86,16 @@ public class Coordinator{
                     remove_node(request.getRemovenode().getKey());
                     System.out.println(hashRing.toString());
                 }else if(request.hasHeartbeat()) {
-                    System.out.println("heartbeat recieved: " + request.getHeartbeat().getNodeKey());
-                    if(node_map.containsKey(request.getHeartbeat().getNodeKey()))
-                        node_map.get(request.getHeartbeat().getNodeKey()).resetTime();
+                    System.out.println("heartbeat recieved: " + request.getHeartbeat().getIpaddress() + ":" + Integer.toString(request.getHeartbeat().getPort()));
+                    String key = request.getHeartbeat().getIpaddress() + Integer.toString(request.getHeartbeat().getPort());
+                    if(node_map.containsKey(key))
+                        node_map.get(key).resetTime();
                     else{
+                        System.out.println("Coordinator has failed, Requesting map from storage node");
 
+                        s.close();
+                        get_node_map(request.getHeartbeat().getIpaddress(),request.getHeartbeat().getPort());
+                        System.out.println("Hash ring recieved : \n" + hashRing.toString());
                     }
                 }
                 s.close();
@@ -99,21 +105,37 @@ public class Coordinator{
             }
         }
 
-        private void get_node_map() throws IOException {
-            Socket s = new Socket();
-            OutputStream outputStream = s.getOutputStream();
-            InputStream inputStream = s.getInputStream();
+        private void get_node_map(String ipaddress, int port) {
+            try{
+                Socket s = new Socket(ipaddress,port);
+                OutputStream outputStream = s.getOutputStream();
+                InputStream inputStream = s.getInputStream();
+                StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                        .setHashring(StorageMessages.HashRing.getDefaultInstance())
+                        .build();
+                dataPacket.writeDelimitedTo(outputStream);
 
-            StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
-                    .setHashring(StorageMessages.HashRing.getDefaultInstance())
-                    .build();
-            dataPacket.writeDelimitedTo(outputStream);
+                CoordMessages.DataPacket response = CoordMessages.DataPacket.getDefaultInstance();
+                response = response.parseDelimitedFrom(inputStream);
 
-            CoordMessages.DataPacket response = CoordMessages.DataPacket.getDefaultInstance();
-            response = response.parseDelimitedFrom(inputStream);
+                hashRing.map_to_treemap(response.getHashring());
+                create_node_map();
 
-            hashRing.map_to_treemap(response.getHashring());
+            }catch (IOException ie){
 
+            }
+
+        }
+
+        private void create_node_map(){
+            for (Map.Entry<BigInteger,HashRingEntry> entry : hashRing.getMap().entrySet()){
+                String key = entry.getValue().inetaddress + Integer.toString(entry.getValue().port);
+                if(!node_map.containsKey(key)){
+                    NodeTimer insertnode = new NodeTimer(entry.getValue().position,key,this.ip,this.port);
+                    node_map.put(key, insertnode);
+                    insertnode.start();
+                }
+            }
         }
 
 

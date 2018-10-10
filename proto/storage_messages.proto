@@ -33,6 +33,10 @@ message HashRingEntry{
     bool add = 4;
 }
 
+message HashRing{
+    bool coord = 1;
+}
+
 
 
 message NumberOfChunks{

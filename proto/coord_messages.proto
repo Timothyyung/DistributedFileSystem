@@ -26,7 +26,8 @@ message RequestMap{
 message Heartbeat{
     int32 map_size = 1;
     bool map_correct = 2;
-    string node_key = 3;
+    string ipaddress = 3;
+    int32 port = 4;
 }
 
 message RemoveNode{
