@@ -1,6 +1,7 @@
 package edu.usfca.cs.dfs.Cliet;
 
 import com.google.protobuf.ByteString;
+import com.google.protobuf.MapEntry;
 import edu.usfca.cs.dfs.CoordMessages;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashException;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashRingEntry;
@@ -12,6 +13,8 @@ import edu.usfca.cs.dfs.DataSender.DataRequester;
 import edu.usfca.cs.dfs.DataSender.DataRequesterWithAck;
 import edu.usfca.cs.dfs.Storage.StorageNode;
 import edu.usfca.cs.dfs.StorageMessages;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +34,7 @@ public class Client extends Thread{
     private HashRing<byte[]> hashRing;
     private SHA1 sha1 = new SHA1();
     private ClientReciever clientReciever;
+    private static final Logger logger = LogManager.getRootLogger();
 
 
     /*
@@ -101,7 +105,6 @@ different chunks to be sent to the storage nodes. We will allow the storage node
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(data_chunk.length);
         Chunk chunk = new Chunk(data_chunk, data.getFilename(), j,true);
         send_chunk_direct(chunk,data_chunk);
     }
@@ -139,9 +142,9 @@ different chunks to be sent to the storage nodes. We will allow the storage node
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(data_chunk.length);
         Chunk chunk = new Chunk(data_chunk, data.getFilename(), j,true);
         send_chunk(ipaddress,port,chunk,data_chunk);
+        System.out.println("Send Successful");
     }
 
     private int check_size(int chunk_size, int b_val)
@@ -168,7 +171,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
                 .build();
         DataRequester requester = new DataRequester(dataPacket,ipaddress,port);
         requester.start();
-        System.out.println("Chunk has been sent " + s_chunk.getChunkId() +s_chunk.getData());
+        logger.debug("Chunk has been sent " + s_chunk.getChunkId() +s_chunk.getData());
     }
 
 
@@ -192,7 +195,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
         DataRequesterWithAck requester = new DataRequesterWithAck(dataPacket,node.inetaddress,node.port);
         requester.start();
 
-        System.out.println("Chunk has been sent " + s_chunk.getChunkId() +s_chunk.getData());
+        logger.debug("Chunk has been sent " + s_chunk.getChunkId() +s_chunk.getData());
     }
 
    public void request_data_mkII(String filename)
@@ -228,7 +231,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
                    .build();
 
            dataPacket.writeDelimitedTo(outputStream);
-           StorageMessages.DataPacket response = StorageMessages.DataPacket.getDefaultInstance();
+           StorageMessages.DataPacket response;
            response = StorageMessages.DataPacket.parseDelimitedFrom(inputStream);
 
            allChunks = response.getAllchunks();
@@ -241,7 +244,7 @@ different chunks to be sent to the storage nodes. We will allow the storage node
            }
            System.out.println("_______________________________________");
        }catch(IOException ioe){
-
+            ioe.printStackTrace();
        }
    }
 
@@ -267,6 +270,36 @@ different chunks to be sent to the storage nodes. We will allow the storage node
        {
            ie.printStackTrace();
        }
+   }
+
+   public double request_total_disk_space(String cipaddress, int cport){
+        request_hashring(cipaddress,cport);
+        double disk_space = 0;
+        for(Map.Entry<BigInteger,HashRingEntry> entry : hashRing.getMap().entrySet())
+        {
+            String hipaddress = entry.getValue().inetaddress;
+            int hport = entry.getValue().port;
+            try(
+                    Socket s = new Socket(hipaddress,hport);
+                    OutputStream outputStream = s.getOutputStream();
+                    InputStream inputStream = s.getInputStream()
+            ) {
+                StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                        .setDiskspace(StorageMessages.DiskSpace.getDefaultInstance())
+                        .build();
+                dataPacket.writeDelimitedTo(outputStream);
+
+                StorageMessages.DataPacket response = StorageMessages.DataPacket.getDefaultInstance();
+                response = response.parseDelimitedFrom(inputStream);
+                StorageMessages.DiskSpace diskSpace = response.getDiskspace();
+                disk_space = diskSpace.getDiskspace() + disk_space;
+            }catch(IOException ie)
+            {
+                ie.printStackTrace();
+            }
+
+        }
+        return disk_space;
    }
 
    public void request_handled(String ipaddress, int port){

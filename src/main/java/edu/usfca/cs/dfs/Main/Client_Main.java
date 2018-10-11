@@ -1,15 +1,12 @@
 package edu.usfca.cs.dfs.Main;
 
-import edu.usfca.cs.dfs.Storage.StorageNode;
+import edu.usfca.cs.dfs.UserInterface.UserInterface;
 
-
-
-public class StorageNode_Main {
-
+public class Client_Main {
     private int port;
     private int cport;
     private String cip;
-    public StorageNode_Main(String[] args)
+    public Client_Main(String[] args)
     {
         for(int i = 0; i < args.length;i++){
             System.out.println(args[i]);
@@ -33,12 +30,14 @@ public class StorageNode_Main {
 
     public static void main(String[] args) {
 
-        StorageNode_Main smain = new StorageNode_Main(args);
+        Client_Main smain = new Client_Main(args);
         System.out.println(smain.cip);
         System.out.println(smain.cport);
         System.out.println(smain.port);
-        StorageNode storageNode = new StorageNode(smain.port,smain.cip,smain.cport);
-        System.out.println("Starting node on " + storageNode.toString());
-        storageNode.startNode();
+        UserInterface userInterface = new UserInterface(smain.port,smain.cip, smain.cport);
+
+        userInterface.main_menu();
+
+
     }
 }

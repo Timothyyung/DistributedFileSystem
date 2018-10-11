@@ -4,6 +4,7 @@ import edu.usfca.cs.dfs.Cliet.Client;
 import edu.usfca.cs.dfs.Coordinator.HashPackage.HashException;
 import edu.usfca.cs.dfs.Data.Data;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,12 +14,14 @@ public class UserInterface {
     private Client client;
     private String coordip = "localhost";
     private int coordport = 6000;
-    public UserInterface(int port){
+    public UserInterface(int port, String coordip, int coordport){
         System.out.println("Welcome to small data file transfer");
         client = new Client(port);
+        this.coordip = coordip;
+        this.coordport = coordport;
     }
 
-    public void main_menu() throws HashException {
+    public void main_menu(){
         System.out.println("Enter Command Here: For help type help?");
         boolean running = true;
         while(running){
@@ -42,7 +45,7 @@ public class UserInterface {
                     case "request_map":
                         request_map();
                         break;
-                    case "request_max_chunks":
+                    case "request_max":
                         request_max();
                         break;
                     case "request_chunk_map":
@@ -51,6 +54,9 @@ public class UserInterface {
                     case "request_disk_space":
                         request_disk_space();
                         break;
+                    case "request_total_disk_space":
+                        request_t_disk_space();
+                        break;
                     case "request_load":
                         request_requests_load();
                         break;
@@ -58,6 +64,8 @@ public class UserInterface {
                 }
             }catch(IOException ie){
                 System.out.println("Something went wrong? Bad file name?");
+            }catch(Exception e){
+                System.out.println("Something ELSE went wrong... (but i don't know what)");
             }
         }
     }
@@ -72,6 +80,7 @@ public class UserInterface {
         System.out.println("Request a list of chunks that a storage node has                       request_chunk_map");
         System.out.println("Request the available disk space                                       request_disk_space");
         System.out.println("Request request load from storage node                                 request_load");
+        System.out.println("Request total disk space                                               request_total_disk_space");
         System.out.println("_______");
     }
 
@@ -163,8 +172,12 @@ public class UserInterface {
     }
 
     public static void main(String[] args) throws IOException, HashException {
-        UserInterface userInterface = new UserInterface(7000);
+        UserInterface userInterface = new UserInterface(6000,"localhost", 7000);
         userInterface.main_menu();
+    }
+
+    private void request_t_disk_space(){
+        System.out.println("Total Disk Space in cluster is:  " + Double.toString(client.request_total_disk_space(coordip, coordport)));
     }
 
 }

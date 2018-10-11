@@ -1,6 +1,8 @@
 package edu.usfca.cs.dfs.DataSender;
 
 import edu.usfca.cs.dfs.StorageMessages;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +14,7 @@ public class DataRequesterWithAck extends Thread{
     private boolean sent;
     private String ipaddress;
     private int port;
-
+    private static final Logger logger = LogManager.getRootLogger();
     public DataRequesterWithAck(StorageMessages.DataPacket dataPacket, String ipaddress, int port){
         this.dataPacket = dataPacket;
         this.sent = false;
@@ -22,7 +24,7 @@ public class DataRequesterWithAck extends Thread{
 
     @Override
     public void run() {
-        System.out.println("Packet with ack sent to:  " + ipaddress +":"+Integer.toString(port));
+        logger.debug("Packet with ack sent to:  " + ipaddress +":"+Integer.toString(port));
         while(!sent){
             try(
                     Socket s = new Socket(this.ipaddress,this.port);
@@ -34,7 +36,7 @@ public class DataRequesterWithAck extends Thread{
                 Thread.sleep(100);
                 dataPacket = dataPacket.parseDelimitedFrom(inputStream);
                if(dataPacket.hasAck()) {
-                    System.out.println("Ack Recieved");
+                    logger.debug("Ack Recieved");
                     sent = true;
                 }
 
@@ -42,6 +44,5 @@ public class DataRequesterWithAck extends Thread{
                 ie.getStackTrace();
             }
         }
-        System.out.println("done");
     }
 }

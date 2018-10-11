@@ -12,6 +12,8 @@ import edu.usfca.cs.dfs.Coordinator.HashPackage.SHA1;
 import edu.usfca.cs.dfs.DataSender.DataRequester;
 import edu.usfca.cs.dfs.DataSender.DataRequesterWithAck;
 import edu.usfca.cs.dfs.StorageMessages;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 import javax.annotation.processing.SupportedSourceVersion;
@@ -19,8 +21,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,12 +35,18 @@ public class Coordinator{
     private String ipaddress;
     private int port;
     private  SHA1 sha1 = new SHA1();
-    public Coordinator() {
+    private static final Logger logger = LogManager.getRootLogger();
+    public Coordinator(int port) {
 
         hashRing = new HashRing<>(sha1);
         node_map = new HashMap<>();
-        this.ipaddress = "localhost";
-        this.port = 6000;
+        this.port = port;
+        try {
+            ipaddress = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void startCoord()
@@ -53,6 +63,11 @@ public class Coordinator{
                 e.printStackTrace();
             }
         }
+    }
+
+    public void outputInfo() {
+        System.out.println("Coordinator located at ip address: " + ipaddress);
+        System.out.println("Coordinator port: " +  Integer.toString(port));
     }
 
     private class coordinator_listener extends Thread{
@@ -72,7 +87,6 @@ public class Coordinator{
                 InputStream instream = s.getInputStream();
                 OutputStream outputStream = s.getOutputStream();
                 CoordMessages.DataPacket request = CoordMessages.DataPacket.parseDelimitedFrom(instream);
-                System.out.println("Data Packet Accepted");
                 if(request.hasRequestentry())
                 {
                     process_entry(request,outputStream);
@@ -82,16 +96,16 @@ public class Coordinator{
                     process_map_request(outputStream);
                 }else if(request.hasRemovenode())
                 {
-                    System.out.println("removing node: " + request.getRemovenode().getKey());
+                    logger.debug("removing node: " + request.getRemovenode().getKey());
                     remove_node(request.getRemovenode().getKey());
                     System.out.println(hashRing.toString());
                 }else if(request.hasHeartbeat()) {
-                    System.out.println("heartbeat recieved: " + request.getHeartbeat().getIpaddress() + ":" + Integer.toString(request.getHeartbeat().getPort()));
+                    //logger.debug("heartbeat recieved: " + request.getHeartbeat().getIpaddress() + ":" + Integer.toString(request.getHeartbeat().getPort()));
                     String key = request.getHeartbeat().getIpaddress() + Integer.toString(request.getHeartbeat().getPort());
                     if(node_map.containsKey(key))
                         node_map.get(key).resetTime();
                     else{
-                        System.out.println("Coordinator has failed, Requesting map from storage node");
+                        logger.debug("Coordinator has failed, Requesting map from storage node");
 
                         s.close();
                         get_node_map(request.getHeartbeat().getIpaddress(),request.getHeartbeat().getPort());
@@ -185,7 +199,7 @@ public class Coordinator{
             String key = entryRequest.getIpaddress()+Integer.toString(entryRequest.getPort());
             if(!node_map.containsKey(key)){
                 pos = hashRing.addNode(entryRequest.getIpaddress(),entryRequest.getPort());
-                System.out.println("adding new node " + pos);
+                logger.debug("adding new node " + pos);
                 NodeTimer insertnode = new NodeTimer(pos,key,this.ip,this.port);
                 node_map.put(key, insertnode);
                 insertnode.start();
@@ -208,14 +222,17 @@ public class Coordinator{
         }
 
 
+
     }
+
+
 
 
     public static void main(String[] args) {
 
         System.out.println("Starting coordinator on localhost");
 
-        Coordinator coordinator = new Coordinator();
+        Coordinator coordinator = new Coordinator(7000);
         coordinator.startCoord();
 
 

@@ -97,16 +97,6 @@ public class HashRing<T> {
 
     }
 
-    private void addRingEntry(BigInteger position, HashRingEntry predecessor) throws HashTopologyException{
-        if (entryMap.get(position) != null){
-            System.out.println(position);
-            throw new HashTopologyException("Hash space exhausted!");
-        }
-
-        HashRingEntry newEntry = new HashRingEntry(position,predecessor.neighbor);
-        predecessor.neighbor = newEntry;
-        entryMap.put(position,newEntry);
-    }
 
     private void addRingEntry(BigInteger position, HashRingEntry predecessor,String ipaddress, int port) throws HashTopologyException{
         if (entryMap.get(position) != null){
@@ -260,22 +250,14 @@ public class HashRing<T> {
 
         do {
             nextEntry = currentEntry.neighbor;
-            str += currentEntry.position + " - > " + nextEntry.position;
+            str += currentEntry.inetaddress +":"+Integer.toString(currentEntry.port) + "  |  ";
+            str += currentEntry.position  + " - > " + nextEntry.position;
             str += System.lineSeparator();
             currentEntry = nextEntry;
         }while (currentEntry != firstEntry);
         return str;
     }
 
-    public void unneighbor()
-    {
-        for (Map.Entry<BigInteger, HashRingEntry> entry : entryMap.entrySet()) {
-            BigInteger pos = entry.getKey();
-            HashRingEntry hashRingEntry = entry.getValue();
-            hashRingEntry.neighbor = hashRingEntry;
-
-        }
-    }
 
     public void remap_hashring() {
         HashRingEntry firstEntry = entryMap.values().iterator().next();

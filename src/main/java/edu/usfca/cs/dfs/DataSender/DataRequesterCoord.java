@@ -2,6 +2,8 @@ package edu.usfca.cs.dfs.DataSender;
 
 import edu.usfca.cs.dfs.CoordMessages;
 import edu.usfca.cs.dfs.StorageMessages;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,7 +14,7 @@ public class DataRequesterCoord extends Thread{
     private boolean sent;
     private String ipaddress;
     private int port;
-
+    private static final Logger logger = LogManager.getRootLogger();
     public DataRequesterCoord(CoordMessages.DataPacket dataPacket, String ipaddress, int port){
         this.dataPacket = dataPacket;
         this.sent = false;
@@ -22,7 +24,8 @@ public class DataRequesterCoord extends Thread{
 
     @Override
     public void run() {
-        System.out.println("Packet sent to:  " + ipaddress +":"+Integer.toString(port));
+
+        logger.debug("Packet sent to:  " + ipaddress +":"+Integer.toString(port));
         while(!sent){
             try(
                     Socket s = new Socket(this.ipaddress,this.port);

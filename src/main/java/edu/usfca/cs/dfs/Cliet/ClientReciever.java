@@ -2,6 +2,8 @@ package edu.usfca.cs.dfs.Cliet;
 
 import edu.usfca.cs.dfs.Data.Chunk;
 import edu.usfca.cs.dfs.StorageMessages;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -17,6 +19,7 @@ public class ClientReciever extends Thread {
     private ConcurrentHashMap<String, byte[]> chunkmap;
     private String ipaddress;
     private int port;
+    private static final Logger logger = LogManager.getRootLogger();
 
     public ClientReciever(int port){
         this.running = true;
@@ -124,7 +127,7 @@ public class ClientReciever extends Thread {
         } catch ( IOException ie){
             ie.getStackTrace();
         }
-        System.out.println("Written to outputs");
+        logger.debug("Written to outputs");
     }
 
     private static byte[] toByteArray(List<Byte> in){
