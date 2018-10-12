@@ -20,12 +20,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 
-public class StorageNode extends Thread{
+public class StorageNode extends Thread {
 
-    private ConcurrentHashMap<String,Chunk> chunk_storage = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Chunk> chunk_storage = new ConcurrentHashMap<>();
     private HashRing<byte[]> hashRing;
     private SHA1 sha1 = new SHA1();
     private String ipaddress;
@@ -36,8 +38,9 @@ public class StorageNode extends Thread{
     private BigInteger mypos;
     private String path;
     private int number_request_handled;
+    private static final Logger logger = LogManager.getRootLogger();
 
-    public StorageNode(int port,String coordip,int coordport){
+    public StorageNode(int port, String coordip, int coordport) {
         try {
             ipaddress = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
@@ -45,15 +48,14 @@ public class StorageNode extends Thread{
         }
         this.port = port;
         this.number_request_handled = 0;
-        path = "bigdata/"+ Integer.toString(port) +"/tyung";
+        path = "bigdata/" + Integer.toString(port) + "/tyung";
         dir = new File(path);
         dir.mkdirs();
-        this.run = request_access(coordip,coordport);
-        if(this.run && hashRing.get_size() > 1)
-        {
+        this.run = request_access(coordip, coordport);
+        if (this.run && hashRing.get_size() > 1) {
             get_chunks_from_neighbor();
         }
-        heartbeat = new Heartbeat(hashRing.get_size(),ipaddress,port,coordip,coordport);
+        heartbeat = new Heartbeat(hashRing.get_size(), ipaddress, port, coordip, coordport);
         heartbeat.start();
     }
 
@@ -63,7 +65,7 @@ public class StorageNode extends Thread{
      * @return name of the current host
      */
     private static String getHostname()
-    throws UnknownHostException {
+            throws UnknownHostException {
         return InetAddress.getLocalHost().getHostName();
     }
 
@@ -73,17 +75,16 @@ public class StorageNode extends Thread{
     }
 
     @Override
-    public void start(){
+    public void start() {
         startNode();
     }
 
-    public void startNode()
-    {
+    public void startNode() {
         System.out.println("Server Started");
-        while (run){
-            try(
-                ServerSocket serverSocket = new ServerSocket(this.port);
-            ){
+        while (run) {
+            try (
+                    ServerSocket serverSocket = new ServerSocket(this.port);
+            ) {
                 store_chunk_listener scl = new store_chunk_listener(serverSocket.accept());
                 scl.start();
             } catch (IOException e) {
@@ -93,15 +94,14 @@ public class StorageNode extends Thread{
         System.out.println("Server Ending");
     }
 
-    private void get_chunks_from_neighbor()
-    {
+    private void get_chunks_from_neighbor() {
         System.out.println("Getting chunks from neighbors");
-        HashRingEntry hre =  hashRing.get_previous_entry(mypos);
-        try(
-                Socket s = new Socket(hre.inetaddress,hre.port);
+        HashRingEntry hre = hashRing.get_previous_entry(mypos);
+        try (
+                Socket s = new Socket(hre.inetaddress, hre.port);
                 OutputStream outputStream = s.getOutputStream();
                 InputStream inputStream = s.getInputStream();
-        ){
+        ) {
             StorageMessages.AllChunks allChunks = StorageMessages.AllChunks.newBuilder()
                     .setGet(true)
                     .build();
@@ -117,56 +117,52 @@ public class StorageNode extends Thread{
             convert_from_chunk_store(response.getAllchunks());
 
 
-        }catch (IOException | HashException ie){
+        } catch (IOException | HashException ie) {
             ie.getStackTrace();
         }
 
     }
 
-    private class store_chunk_listener extends Thread{
+    private class store_chunk_listener extends Thread {
         private Socket s;
-        public store_chunk_listener(Socket s){
+
+        public store_chunk_listener(Socket s) {
             this.s = s;
         }
 
         @Override
         public synchronized void run() {
-            System.out.println(s.getInetAddress() + "  " + Integer.toString(s.getPort()));
             try {
                 InputStream instream = s.getInputStream();
                 OutputStream outputStream = s.getOutputStream();
                 StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.parseDelimitedFrom(instream);
 
-                if(dataPacket.hasRequest()) {
-                    System.out.println("Request Recieved");
+                if (dataPacket.hasRequest()) {
+                    logger.debug("Request Recieved");
                     process_request(dataPacket.getRequest(), s);
                     send_ack(outputStream);
-                }
-                else if(dataPacket.hasHashringentry()) {
+                } else if (dataPacket.hasHashringentry()) {
                     process_hre(dataPacket);
                     send_ack(outputStream);
-                }else if(dataPacket.hasSinglechunk()){
+                } else if (dataPacket.hasSinglechunk()) {
                     process_single_chunk(dataPacket, s);
                     send_ack(outputStream);
-                }else if(dataPacket.hasChunklife()){
+                } else if (dataPacket.hasChunklife()) {
                     send_ack(outputStream);
                     pipline_update(dataPacket);
-                }else if(dataPacket.hasAllchunks()){
-                    System.out.println("proccessing all chunks");
+                } else if (dataPacket.hasAllchunks()) {
+                    logger.debug("proccessing all chunks");
                     process_allchunks(dataPacket.getAllchunks(), s.getOutputStream());
-                }else if(dataPacket.hasDiskspace()){
-                    System.out.println("proccessing disk space");
+                } else if (dataPacket.hasDiskspace()) {
+                    logger.debug("proccessing disk space");
                     process_disk_space(outputStream);
-                }else if(dataPacket.hasNumberofrequest()){
+                } else if (dataPacket.hasNumberofrequest()) {
                     process_requests_handled(outputStream);
-                }else if(dataPacket.hasHashring())
+                } else if (dataPacket.hasHashring())
                     process_hash_ring_request(s);
                 number_request_handled += 1;
-                System.out.println("______________________\n\n\n");
                 s.close();
-            }catch(IOException | HashException e) {
-
-            } catch (InterruptedException e) {
+            } catch (IOException | HashException e) {
                 e.printStackTrace();
             }
         }
@@ -181,14 +177,14 @@ public class StorageNode extends Thread{
     }
 
     private void process_allchunks(StorageMessages.AllChunks allChunks, OutputStream outputStream) throws IOException {
-        if(allChunks.getGet()){
+        if (allChunks.getGet()) {
             send_files(outputStream);
-        }else
+        } else
             get_chunk_map(outputStream);
 
     }
 
-    private void process_hash_ring_request (Socket s) throws IOException {
+    private void process_hash_ring_request(Socket s) throws IOException {
         System.out.println("HashRing Request Recieved");
         System.out.println(hashRing.toString());
         CoordMessages.DataPacket dataPacket = CoordMessages.DataPacket.newBuilder()
@@ -199,7 +195,7 @@ public class StorageNode extends Thread{
 
     private void process_disk_space(OutputStream outputStream) throws IOException {
         long byte_len = new File("/").getFreeSpace();
-        double gb = byte_len/1e+9;
+        double gb = byte_len / 1e+9;
         StorageMessages.DiskSpace diskSpace = StorageMessages.DiskSpace.newBuilder().setDiskspace(gb).build();
         StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder().setDiskspace(diskSpace).build();
         dataPacket.writeDelimitedTo(outputStream);
@@ -217,6 +213,7 @@ public class StorageNode extends Thread{
     }
 
     private void send_files(OutputStream outputStream) throws IOException {
+        logger.debug("Sending files ");
         System.out.println("sending files");
         StorageMessages.AllChunks allChunks = StorageMessages.AllChunks.newBuilder()
                 .putAllChunkMap(convert_to_chunk_store())
@@ -228,8 +225,20 @@ public class StorageNode extends Thread{
         dataPacket.writeDelimitedTo(outputStream);
     }
 
-    private void get_chunk_map(OutputStream outputStream) throws IOException{
-        System.out.println("Converting chunk map");
+    private void send_replicas(OutputStream outputStream) throws IOException, HashException {
+        logger.debug("Sending files ");
+        System.out.println("sending files");
+        StorageMessages.AllChunks allChunks = StorageMessages.AllChunks.newBuilder()
+                .putAllChunkMap(convert_to_chunk_store_prima_only())
+                .putAllFiles(convert_to_files_prima_only())
+                .build();
+        StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
+                .setAllchunks(allChunks)
+                .build();
+        dataPacket.writeDelimitedTo(outputStream);
+    }
+
+    private void get_chunk_map(OutputStream outputStream) throws IOException {
         StorageMessages.AllChunks allChunks = StorageMessages.AllChunks.newBuilder()
                 .putAllChunkMap(convert_to_chunk_store())
                 .build();
@@ -240,19 +249,19 @@ public class StorageNode extends Thread{
     }
 
     private void convert_from_chunk_store(StorageMessages.AllChunks allChunks) throws HashException {
-        for (Map.Entry<String,StorageMessages.SingleChunk> entry : allChunks.getChunkMap().entrySet()) {
+        for (Map.Entry<String, StorageMessages.SingleChunk> entry : allChunks.getChunkMap().entrySet()) {
             String key = entry.getKey();
             Chunk chunk = new Chunk(entry.getValue().getChecksum(), entry.getValue().getFileName(), entry.getValue().getChunkNumber(), entry.getValue().getIsLast());
-            if(!chunk_storage.containsKey(entry.getKey()))
+            if (!chunk_storage.containsKey(entry.getKey()))
                 chunk_storage.put(key, chunk);
         }
         System.out.println(chunk_storage.size());
     }
 
     private void write_to_disk(StorageMessages.AllChunks allChunks) throws IOException, HashException {
-        for( Map.Entry<String, ByteString> entry: allChunks.getFilesMap().entrySet()){
+        for (Map.Entry<String, ByteString> entry : allChunks.getFilesMap().entrySet()) {
             String filename = entry.getKey();
-            if(!chunk_storage.containsKey(entry.getKey())) {
+            if (!chunk_storage.containsKey(entry.getKey())) {
                 Path path = Paths.get(dir + "/" + filename);
                 Files.write(path, entry.getValue().toByteArray());
                 System.out.println(filename);
@@ -263,18 +272,39 @@ public class StorageNode extends Thread{
     }
 
 
-    private Map<String, StorageMessages.SingleChunk> convert_to_chunk_store()
-    {
+    private Map<String, StorageMessages.SingleChunk> convert_to_chunk_store() {
         Map<String, StorageMessages.SingleChunk> singleChunkMap = new HashMap<>();
-        for (Map.Entry<String, Chunk> entry : chunk_storage.entrySet()) {
-            String key = entry.getKey();
-            StorageMessages.SingleChunk singleChunk = StorageMessages.SingleChunk.newBuilder()
-                    .setChunkNumber(entry.getValue().getChunk_id())
-                    .setIsLast(entry.getValue().getIs_last())
-                    .setFileName(entry.getValue().getFile_name())
-                    .setChecksum(entry.getValue().getChecksum())
-                    .build();
-            singleChunkMap.put(key, singleChunk);
+        if (!chunk_storage.isEmpty()) {
+            for (Map.Entry<String, Chunk> entry : chunk_storage.entrySet()) {
+                String key = entry.getKey();
+                StorageMessages.SingleChunk singleChunk = StorageMessages.SingleChunk.newBuilder()
+                        .setChunkNumber(entry.getValue().getChunk_id())
+                        .setIsLast(entry.getValue().getIs_last())
+                        .setFileName(entry.getValue().getFile_name())
+                        .setChecksum(entry.getValue().getChecksum())
+                        .build();
+                singleChunkMap.put(key, singleChunk);
+            }
+        }
+        System.out.println(singleChunkMap.size());
+        return singleChunkMap;
+    }
+
+    private Map<String, StorageMessages.SingleChunk> convert_to_chunk_store_prima_only() throws HashException {
+        Map<String, StorageMessages.SingleChunk> singleChunkMap = new HashMap<>();
+        if (!chunk_storage.isEmpty()) {
+            for (Map.Entry<String, Chunk> entry : chunk_storage.entrySet()) {
+                String key = entry.getKey();
+                if (mypos == hashRing.locate(key.getBytes())) {
+                    StorageMessages.SingleChunk singleChunk = StorageMessages.SingleChunk.newBuilder()
+                            .setChunkNumber(entry.getValue().getChunk_id())
+                            .setIsLast(entry.getValue().getIs_last())
+                            .setFileName(entry.getValue().getFile_name())
+                            .setChecksum(entry.getValue().getChecksum())
+                            .build();
+                    singleChunkMap.put(key, singleChunk);
+                }
+            }
         }
         System.out.println(singleChunkMap.size());
         return singleChunkMap;
@@ -284,36 +314,55 @@ public class StorageNode extends Thread{
         Map<String, ByteString> file_map = new HashMap<>();
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
-        for(File file : listOfFiles){
-            if(file.isFile()) {
-                byte[] c_bytes = Files.readAllBytes(file.toPath());
-                ByteString bsval = ByteString.copyFrom(c_bytes, 0, c_bytes.length);
-                file_map.put(file.getName(),bsval);
+        if (listOfFiles.length != 0) {
+            for (File file : listOfFiles) {
+                if (file.isFile()) {
+                    byte[] c_bytes = Files.readAllBytes(file.toPath());
+                    ByteString bsval = ByteString.copyFrom(c_bytes, 0, c_bytes.length);
+                    file_map.put(file.getName(), bsval);
+                }
             }
         }
         return file_map;
-
     }
+
+    private Map<String, ByteString> convert_to_files_prima_only() throws IOException, HashException {
+        Map<String, ByteString> file_map = new HashMap<>();
+        File folder = new File(path);
+        File[] listOfFiles = folder.listFiles();
+        if (listOfFiles.length != 0) {
+            for (File file : listOfFiles) {
+                if (file.isFile() && mypos == hashRing.locate(file.getName().getBytes())) {
+                    byte[] c_bytes = Files.readAllBytes(file.toPath());
+                    ByteString bsval = ByteString.copyFrom(c_bytes, 0, c_bytes.length);
+                    file_map.put(file.getName(), bsval);
+                }
+            }
+        }
+        return file_map;
+    }
+
 
     /*
     Function used to proccess hash ring request
      */
-    private void process_hre(StorageMessages.DataPacket dataPacket)
-    {
+    private void process_hre(StorageMessages.DataPacket dataPacket) {
 
         StorageMessages.HashRingEntry hashRingEntry = dataPacket.getHashringentry();
         try {
-            if(hashRingEntry.getAdd()) {
+            if (hashRingEntry.getAdd()) {
+                logger.debug("Adding a new node to the hash map");
                 System.out.println("adding node");
                 hashRing.addNodePos(new BigInteger(hashRingEntry.getPosition().toByteArray()), hashRingEntry.getIpaddress(), hashRingEntry.getPort());
-            }
-            else if(!hashRingEntry.getAdd()) {
+            } else if (!hashRingEntry.getAdd()) {
+                logger.debug("Removing a node from the hash map");
                 System.out.println("removing node");
-                if(hashRing.get_next_entry(mypos).equals(new BigInteger(hashRingEntry.getPosition().toByteArray())))
-                {
+                if (hashRing.get_next_entry(mypos).position.equals(new BigInteger(hashRingEntry.getPosition().toByteArray()))
+                        || hashRing.get_previous_entry(mypos).position.equals(new BigInteger(hashRingEntry.getPosition().toByteArray()))) {
+                    logger.debug("One of our neighbors has failed... Replicating Twice");
                     hashRing.remove_node(new BigInteger(hashRingEntry.getPosition().toByteArray()));
                     replicate(2);
-                }else
+                } else
                     hashRing.remove_node(new BigInteger(hashRingEntry.getPosition().toByteArray()));
 
 
@@ -323,19 +372,18 @@ public class StorageNode extends Thread{
         }
     }
 
-    private void replicate(int times)
-    {
+    private void replicate(int times) {
 
         BigInteger tpos = mypos;
-        for(int i = 1; i <= times; i++)
-        {
+        for (int i = 1; i <= times; i++) {
             HashRingEntry hre = hashRing.get_next_entry(tpos);
             tpos = hre.position;
+            System.out.println("replicating to " + hre.inetaddress + ":" + Integer.toString(hre.port));
             try {
                 Socket s = new Socket(hre.inetaddress, hre.port);
                 OutputStream outputstream = s.getOutputStream();
-                send_files(outputstream);
-            } catch (UnknownHostException e) {
+                send_replicas(outputstream);
+            } catch (UnknownHostException | HashException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -346,14 +394,13 @@ public class StorageNode extends Thread{
     /*
     Request access from the coordinator.
      */
-    private boolean request_access(String ipaddress, int port)
-    {
+    private boolean request_access(String ipaddress, int port) {
         System.out.println("requesting access");
         try (
-                Socket s = new Socket(ipaddress,port);
+                Socket s = new Socket(ipaddress, port);
                 OutputStream outputStream = s.getOutputStream();
                 InputStream inputStream = s.getInputStream();
-        ){
+        ) {
             CoordMessages.RequestEntry requestEntry = CoordMessages.RequestEntry.newBuilder()
                     .setIpaddress(this.ipaddress)
                     .setPort(this.port)
@@ -365,13 +412,13 @@ public class StorageNode extends Thread{
             CoordMessages.DataPacket response = CoordMessages.DataPacket.getDefaultInstance();
             response = response.parseDelimitedFrom(inputStream);
 
-            hashRing = new HashRing(sha1,response.getHashring());
+            hashRing = new HashRing(sha1, response.getHashring());
             mypos = new BigInteger(response.getHashring().getHre().getPosition().toByteArray());
             System.out.println(hashRing.toString());
             System.out.println("My position in the hash ring is: " + mypos);
             return true;
 
-        }catch (IOException ioe){
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
 
@@ -383,43 +430,39 @@ public class StorageNode extends Thread{
     -   Storage packets
     -   Get requests
      */
-    private void process_request(StorageMessages.Request r_chunk,Socket s) throws InterruptedException, IOException, HashException {
-        Chunk s_chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
-        System.out.println(chunk_storage.toString());
-        if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.store_chunk) {
+    private void process_request(StorageMessages.Request r_chunk, Socket s) throws IOException, HashException {
+        if (r_chunk.getOpcode() == StorageMessages.Request.Op_code.store_chunk) {
             try {
                 store_chunk(r_chunk);
             } catch (HashException | IOException e) {
                 e.printStackTrace();
             }
-            System.out.println(s_chunk.getChunk_id());
-            System.out.println(s_chunk.getFile_name());
-        }
-        else if(r_chunk.getOpcode() == StorageMessages.Request.Op_code.get_chunk) {
-            String key = key_gen(r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
-            if(chunk_storage.containsKey(key))
-                get_chunk(key, r_chunk.getIpaddress(),r_chunk.getPort());
+        } else if (r_chunk.getOpcode() == StorageMessages.Request.Op_code.get_chunk) {
+            String key = key_gen(r_chunk.getFileName(), r_chunk.getChunkId(), r_chunk.getIslast());
+            if (chunk_storage.containsKey(key))
+                get_chunk(key, r_chunk.getIpaddress(), r_chunk.getPort());
             else
                 forward_request(r_chunk);
         }
 
 
     }
+
     /*
     processes a single chunk to send back to cliet
      */
-    public void get_chunk(String key,String ipaddress,int port) throws IOException{
+    public void get_chunk(String key, String ipaddress, int port) throws IOException {
 
         Chunk chunk = chunk_storage.get(key);
         Path file = Paths.get(dir + "/" + key);
         byte[] c_bytes = Files.readAllBytes(file);
-        System.out.println("checking for corruption ...");
-        if(!chunk.validate(c_bytes)) {
-            System.out.println("data corrupted");
+        logger.debug("Checking data for corruption");
+        if (!chunk.validate(c_bytes)) {
+            logger.debug("Corruption detected");
             HashRingEntry hre = hashRing.get_next_entry(mypos);
-            c_bytes = uncorrupt(hre,chunk);
-        }else
-            System.out.println("No corruption detected");
+            c_bytes = uncorrupt(hre, chunk);
+        } else
+            logger.debug("No Corruption detected");
         ByteString bsval = ByteString.copyFrom(c_bytes, 0, c_bytes.length);
         StorageMessages.SingleChunk singleChunk = StorageMessages.SingleChunk.newBuilder()
                 .setChunkNumber(chunk.getChunk_id())
@@ -436,8 +479,8 @@ public class StorageNode extends Thread{
 
     }
 
-    private byte[] uncorrupt (HashRingEntry hre, Chunk chunk) throws IOException {
-        Socket s = new Socket(hre.inetaddress,hre.port);
+    private byte[] uncorrupt(HashRingEntry hre, Chunk chunk) throws IOException {
+        Socket s = new Socket(hre.inetaddress, hre.port);
         OutputStream outputStream = s.getOutputStream();
         InputStream inputStream = s.getInputStream();
         StorageMessages.SingleChunk singleChunk = StorageMessages.SingleChunk.newBuilder()
@@ -450,28 +493,27 @@ public class StorageNode extends Thread{
                 .build();
 
         dataPacket.writeDelimitedTo(outputStream);
-        System.out.println("Contacting Neighbor Node ...");
+        logger.debug("Contacting neighbor node for uncorrupted data");
         dataPacket = dataPacket.parseDelimitedFrom(inputStream);
 
         singleChunk = dataPacket.getSinglechunk();
-        System.out.println("Data recieved");
-        String key = key_gen(singleChunk.getFileName(),singleChunk.getChunkNumber(),singleChunk.getIsLast());
+        logger.debug("Data Recieved");
+        String key = key_gen(singleChunk.getFileName(), singleChunk.getChunkNumber(), singleChunk.getIsLast());
         Path path = Paths.get(dir + "/" + key);
         Files.write(path, singleChunk.getData().toByteArray());
-        System.out.println("Data Recovered\n\n\n");
+        logger.debug("Data Recoverved and rewritten \n\n\n");
         return singleChunk.getData().toByteArray();
-
 
 
     }
 
 
     public void store_chunk(StorageMessages.Request r_chunk) throws HashException, IOException {
-        Chunk chunk = new Chunk(r_chunk.getData().toByteArray(),r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
-        String key = key_gen(chunk.getFile_name(),chunk.getChunk_id(),chunk.getIs_last());
+        Chunk chunk = new Chunk(r_chunk.getData().toByteArray(), r_chunk.getFileName(), r_chunk.getChunkId(), r_chunk.getIslast());
+        String key = key_gen(chunk.getFile_name(), chunk.getChunk_id(), chunk.getIs_last());
         BigInteger pos = hashRing.locate(key.getBytes());
         HashRingEntry node = hashRing.returnNode(pos);
-        if(node.inetaddress.equals(this.ipaddress) && node.port == this.port) {
+        if (node.inetaddress.equals(this.ipaddress) && node.port == this.port) {
             chunk_storage.put(key, chunk);
 
             Path path = Paths.get(dir + "/" + key);
@@ -484,29 +526,27 @@ public class StorageNode extends Thread{
             StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
                     .setChunklife(chunkLife)
                     .build();
-            HashRingEntry hre = get_next_neighbor(key,2);
-            if(hre.inetaddress != this.ipaddress && hre.port != this.port) {
+            HashRingEntry hre = get_next_neighbor(key, 2);
+            if (hre.inetaddress != this.ipaddress && hre.port != this.port) {
                 DataRequesterWithAck dataRequester = new DataRequesterWithAck(dataPacket, hre.inetaddress, hre.port);
                 dataRequester.start();
             }
-        }
-        else {
-           forward_chunk(chunk,node,r_chunk);
+        } else {
+            forward_chunk(chunk, node, r_chunk);
         }
     }
 
-    private HashRingEntry get_next_neighbor(String key,int life) throws HashException {
+    private HashRingEntry get_next_neighbor(String key, int life) throws HashException {
         BigInteger location = hashRing.locate(key.getBytes());
         HashRingEntry hre = null;
-        for(int i = 1; i <= life; i++){
+        for (int i = 1; i <= life; i++) {
             hre = hashRing.get_next_entry(location);
             location = hre.position;
         }
         return hre;
     }
 
-    private StorageMessages.SingleChunk request_to_chunk(StorageMessages.Request request)
-    {
+    private StorageMessages.SingleChunk request_to_chunk(StorageMessages.Request request) {
         return StorageMessages.SingleChunk.newBuilder()
                 .setData(request.getData())
                 .setWrite(true)
@@ -516,39 +556,39 @@ public class StorageNode extends Thread{
                 .build();
     }
 
-    private void forward_chunk(Chunk chunk, HashRingEntry node,StorageMessages.Request r_chunk) throws HashException{
+    private void forward_chunk(Chunk chunk, HashRingEntry node, StorageMessages.Request r_chunk) throws HashException {
         System.out.println("Storing on external node " + chunk.getFile_name() + Integer.toString(chunk.getChunk_id()));
         System.out.println(node.inetaddress + " " + Integer.toString(node.port));
 
         StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
                 .setRequest(r_chunk)
                 .build();
-        DataRequester dataRequester = new DataRequester(dataPacket,node.inetaddress,node.port);
+        DataRequester dataRequester = new DataRequester(dataPacket, node.inetaddress, node.port);
         dataRequester.start();
     }
 
-    private void forward_request(StorageMessages.Request r_chunk) throws HashException{
+    private void forward_request(StorageMessages.Request r_chunk) throws HashException {
         StorageMessages.DataPacket dataPacket = StorageMessages.DataPacket.newBuilder()
                 .setRequest(r_chunk)
                 .build();
-        String key = key_gen(r_chunk.getFileName(),r_chunk.getChunkId(),r_chunk.getIslast());
+        String key = key_gen(r_chunk.getFileName(), r_chunk.getChunkId(), r_chunk.getIslast());
         BigInteger pos = hashRing.locate(key.getBytes());
         HashRingEntry hre = hashRing.returnNode(pos);
-        DataRequester dataRequester = new DataRequester(dataPacket,hre.inetaddress,hre.port);
+        DataRequester dataRequester = new DataRequester(dataPacket, hre.inetaddress, hre.port);
         dataRequester.start();
     }
 
     private void pipline_update(StorageMessages.DataPacket dataPacket) throws IOException {
-        System.out.println("pipline updating chunk life : " + Integer.toString(dataPacket.getChunklife().getLife()));
+        logger.debug("pipline updating chunk life : " + Integer.toString(dataPacket.getChunklife().getLife()));
         StorageMessages.ChunkLife chunkLife = dataPacket.getChunklife();
         chunkLife = StorageMessages.ChunkLife.newBuilder()
                 .setLife(chunkLife.getLife() - 1)
                 .setSingleChunk(chunkLife.getSingleChunk())
                 .build();
         StorageMessages.SingleChunk singleChunk = chunkLife.getSingleChunk();
-        Chunk chunk = new Chunk(singleChunk.getData().toByteArray(),singleChunk.getFileName(),singleChunk.getChunkNumber(),singleChunk.getIsLast());
-        String key = key_gen(chunk.getFile_name(),chunk.getChunk_id(),chunk.getIs_last());
-        if(!chunk_storage.containsKey(key)) {
+        Chunk chunk = new Chunk(singleChunk.getData().toByteArray(), singleChunk.getFileName(), singleChunk.getChunkNumber(), singleChunk.getIsLast());
+        String key = key_gen(chunk.getFile_name(), chunk.getChunk_id(), chunk.getIs_last());
+        if (!chunk_storage.containsKey(key)) {
             chunk_storage.put(key, chunk);
             Path path = Paths.get(dir + "/" + key);
             Files.write(path, singleChunk.getData().toByteArray());
@@ -568,20 +608,20 @@ public class StorageNode extends Thread{
 
     }
 
-    private String key_gen(String filename, int chunkid, boolean islast){
-        if(islast)
+    private String key_gen(String filename, int chunkid, boolean islast) {
+        if (islast)
             return filename + "last";
         else
             return filename + Integer.toString(chunkid);
     }
 
-    private void process_single_chunk(StorageMessages.DataPacket dataPacket, Socket s){
+    private void process_single_chunk(StorageMessages.DataPacket dataPacket, Socket s) {
         StorageMessages.SingleChunk singleChunk = dataPacket.getSinglechunk();
         try (
                 OutputStream outputStream = s.getOutputStream();
         ) {
 
-            String key = key_gen(singleChunk.getFileName(),singleChunk.getChunkNumber(),singleChunk.getIsLast());
+            String key = key_gen(singleChunk.getFileName(), singleChunk.getChunkNumber(), singleChunk.getIsLast());
             Chunk chunk = chunk_storage.get(key);
 
             Path file = Paths.get(dir + "/" + key);
@@ -598,23 +638,23 @@ public class StorageNode extends Thread{
                     .setSinglechunk(singleChunk)
                     .build();
             dataPacket.writeDelimitedTo(outputStream);
-        }catch(IOException ioe){
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
-
-
 
 
     public static void main(String[] args)
             throws Exception {
         String hostname = getHostname();
         System.out.println("Starting storage node on " + hostname + "...");
-        StorageNode storageNode = new StorageNode(5110,"localhost",6000);
+
+        StorageNode storageNode = new StorageNode(5070, "localhost", 7000);
+
         storageNode.startNode();
 
     }
-
-
-
 }
+
+
+

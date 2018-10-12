@@ -100,16 +100,20 @@ public class Coordinator{
                     remove_node(request.getRemovenode().getKey());
                     System.out.println(hashRing.toString());
                 }else if(request.hasHeartbeat()) {
-                    //logger.debug("heartbeat recieved: " + request.getHeartbeat().getIpaddress() + ":" + Integer.toString(request.getHeartbeat().getPort()));
+                    System.out.println("heartbeat recieved: " + request.getHeartbeat().getIpaddress() + ":" + Integer.toString(request.getHeartbeat().getPort()));
                     String key = request.getHeartbeat().getIpaddress() + Integer.toString(request.getHeartbeat().getPort());
-                    if(node_map.containsKey(key))
+                    if(node_map.containsKey(key)) {
                         node_map.get(key).resetTime();
-                    else{
+                        CoordMessages.Heartbeat.getDefaultInstance().writeDelimitedTo(outputStream);
+                    }
+                    else if(node_map.isEmpty()){
                         logger.debug("Coordinator has failed, Requesting map from storage node");
 
                         s.close();
                         get_node_map(request.getHeartbeat().getIpaddress(),request.getHeartbeat().getPort());
                         System.out.println("Hash ring recieved : \n" + hashRing.toString());
+                    }else{
+
                     }
                 }
                 s.close();
@@ -144,6 +148,7 @@ public class Coordinator{
         private void create_node_map(){
             for (Map.Entry<BigInteger,HashRingEntry> entry : hashRing.getMap().entrySet()){
                 String key = entry.getValue().inetaddress + Integer.toString(entry.getValue().port);
+                System.out.println(key);
                 if(!node_map.containsKey(key)){
                     NodeTimer insertnode = new NodeTimer(entry.getValue().position,key,this.ip,this.port);
                     node_map.put(key, insertnode);

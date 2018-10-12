@@ -42,6 +42,7 @@ public class Heartbeat extends Thread{
 
         Socket s = new Socket(ipaddress,port);
         OutputStream outputStream = s.getOutputStream();
+        InputStream inputStream = s.getInputStream();
         CoordMessages.Heartbeat heartbeat = CoordMessages.Heartbeat.newBuilder()
                 .setMapSize(mapsize)
                 .setIpaddress(this.ipaddress)
@@ -52,6 +53,8 @@ public class Heartbeat extends Thread{
                 .build();
         dataPacket.writeDelimitedTo(outputStream);
 
+        dataPacket = dataPacket.parseDelimitedFrom(inputStream);
+        System.out.println(dataPacket);
 
 
     }

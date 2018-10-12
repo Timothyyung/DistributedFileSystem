@@ -89,8 +89,7 @@ public class ClientReciever extends Thread {
     }
 
 
-    private void reassemble(String filename, String ipaddress, int port, int max_chunk)
-    {
+    private void reassemble(String filename, String ipaddress, int port, int max_chunk) throws InterruptedException {
         List<Byte> file = new ArrayList<>();
         boolean finished = false;
         int i = 1;
@@ -127,7 +126,8 @@ public class ClientReciever extends Thread {
         } catch ( IOException ie){
             ie.getStackTrace();
         }
-        logger.debug("Written to outputs");
+        Thread.sleep(1000);
+        System.out.println("File Successfully Retrieved");
     }
 
     private static byte[] toByteArray(List<Byte> in){

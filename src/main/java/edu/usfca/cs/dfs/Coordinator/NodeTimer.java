@@ -25,7 +25,7 @@ public class NodeTimer extends Thread {
         this.alive = true;
         this.pos = pos;
         this.timer = new Timer();
-        this.time = 5;
+        this.time = 15;
         this.key = key;
         this.coordIp = coordIp;
         this.coordport = coordport;
@@ -53,6 +53,7 @@ public class NodeTimer extends Thread {
                                     .setRemovenode(removeNode)
                                     .build();
                             dataPacket.writeDelimitedTo(outputStream);
+                            System.out.println("Timer Expired " + key);
                             sent = true;
                         }catch (IOException ie){
                             ie.getStackTrace();
